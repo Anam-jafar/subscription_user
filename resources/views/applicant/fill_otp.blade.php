@@ -48,7 +48,7 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="mt-8">
+            <div class="!mt-8 !mb-8">
                 <button id="submitBtn" disabled
                     class="w-full bg-gray-700 text-white py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
                     Hantar Permohonan
@@ -61,9 +61,6 @@
             </div>
         </div>
 
-        <div class="text-center">
-            <a href="#" class="text-blue-600 hover:underline">Kembali ke Halaman Utama</a>
-        </div>
     </div>
 @endsection
 

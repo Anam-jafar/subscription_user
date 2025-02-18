@@ -90,15 +90,19 @@ class BaseController extends Controller
                 ->where('uid', $request->institute_refno)
                 ->first();
 
+            // Get current date and time
+            $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
+
             if ($institute) {
-                return view('applicant.institute_subscribed', ['institute' => $institute]);
+                return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
             } else {
-                return view('applicant.institute_not_found');
+                return view('applicant.institute_not_found', ['currentDateTime' => $currentDateTime]);
             }
         } catch (\Exception $e) {
             return back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
 
     public function instituteDetails($id)
     {

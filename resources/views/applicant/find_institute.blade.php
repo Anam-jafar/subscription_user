@@ -8,7 +8,6 @@
     <!-- Title -->
     <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
 
-    <x-alert />
 
     <div class="max-w-md mx-auto space-y-6">
         <!-- Header -->
@@ -19,15 +18,17 @@
         <!-- Subtitle -->
         <div class="text-center space-y-1">
             <h2 class="text-black text-lg">Cari / Pilih Institusi Anda</h2>
-            <p class="text-black">Carian Manual</p>
+            <p class="text-black font-normal">Carian Manual</p>
         </div>
 
-        <form action="{{ route('instituteCheck') }}" method="POST" class="space-y-8">
+        <form action="{{ route('instituteCheck') }}" method="POST" class="space-y-8 p-4 lg:p-0">
             @csrf
+            <x-alert />
+
             <!-- Search Input -->
             <div class="relative">
                 <input type="text" id="searchInstitute" placeholder="Nama Institusi"
-                    class="w-full h-[3.5rem] py-3 px-4  !rounded-full pr-10 shadow-lg bg-white">
+                    class="w-full h-[3.5rem] py-3 px-4  !rounded-full pr-10 shadow-lg bg-white" autocomplete="off">
                 <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                     <i class="fe fe-search"></i>
                 </span>
@@ -43,14 +44,14 @@
             <input type="hidden" id="institute_refno" name="institute_refno">
 
             <!-- Or Section -->
-            <p class="text-center text-black">Atau Pilih Dari Senarai</p>
+            <p class="text-center text-black font-semibold text-sm">Atau Pilih Dari Senarai</p>
 
             <!-- Dropdowns -->
             <div class="space-y-4">
                 <!-- City Input -->
                 <div class="relative">
-                    <input type="text" id="city" placeholder="Daerah"
-                        class="w-full  h-[3.5rem]  py-3 px-4 !rounded-full pr-10 shadow-lg bg-white">
+                    <input type="text" id="city" placeholder="Pilih Daerah"
+                        class="w-full  h-[3.5rem]  py-3 px-4 !rounded-full pr-10 shadow-lg bg-white" autocomplete="off">
                     <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                         <i class="fe fe-chevron-down"></i>
                     </span>
@@ -63,8 +64,8 @@
 
                 <!-- Institute Input -->
                 <div class="relative">
-                    <input type="text" id="institute" placeholder="Nama Institusi"
-                        class="w-full  h-[3.5rem]  py-3 px-4 !rounded-full pr-10 shadow-lg bg-white">
+                    <input type="text" id="institute" placeholder="Pilih Institusi"
+                        class="w-full  h-[3.5rem]  py-3 px-4 !rounded-full pr-10 shadow-lg bg-white" autocomplete="off">
                     <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                         <i class="fe fe-chevron-down"></i>
                     </span>
@@ -83,8 +84,9 @@
             </button>
         </form>
 
-        <div class="text-center">
-            <a href="#" class="text-blue-600 hover:underline">Kembali ke Halaman Utama</a>
+        <div class="text-center !mt-8 !mb-8">
+            <a href="{{ route('subscriptionLogin') }}" class="text-base text-blue-600 hover:underline">Kembali ke Halaman
+                Utama</a>
         </div>
     </div>
 @endsection

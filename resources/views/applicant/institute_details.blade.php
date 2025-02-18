@@ -25,37 +25,42 @@
             <!-- Mosque Name -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_mosque.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span class="font-semibold text-lg">MASJID NUR-HIDAYAH</span>
+                <span class="font-semibold text-lg">{{ $institute->name }}</span>
             </div>
 
             <!-- Address -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_location.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span>USJ9, SUBANG JAYA, SELANGOR</span>
+                <p class="font-semibold">
+                    {{ $institute->name }}
+                    {{ optional($institute)->addr ? ', ' . $institute->addr : '' }}
+                    {{ optional($institute)->city ? ', ' . $institute->city : '' }}
+                    {{ optional($institute)->state ? ', ' . $institute->state : '' }}
+                </p>
             </div>
 
             <!-- Contact Person -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_account.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span>Khairly bin Ismail</span>
+                <span class="font-semibold">Khairly bin Ismail</span>
             </div>
 
             <!-- Phone -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_mobile.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span>601138394440</span>
+                <span class="font-semibold">{{ $institute->hp }}</span>
             </div>
 
             <!-- Email -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_email.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span>masjidnurhidayah@gmail.com</span>
+                <span class="font-semibold">{{ $institute->mel }}</span>
             </div>
 
             <!-- Role -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_document.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span>Bendahari</span>
+                <span class="font-semibold">Bendahari</span>
             </div>
         </div>
         {{-- 
@@ -71,15 +76,15 @@
         <!-- Submit Button -->
         <a href="{{ route('fillOtp') }}">
             <button
-                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4">
+                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium !mt-8">
                 Teruskan
             </button>
         </a>
 
         {{-- </form> --}}
 
-        <div class="text-center">
-            <a href="#" class="text-blue-600 hover:underline">Kemas Kini Wakil Institusi Baru</a>
+        <div class="text-center !mt-8 !mb-8">
+            <a href="" class="text-base text-blue-600 hover:underline">Kemas Kini Wakil Institusi Baru</a>
         </div>
     </div>
 @endsection

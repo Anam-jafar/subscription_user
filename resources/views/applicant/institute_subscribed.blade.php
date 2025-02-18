@@ -19,14 +19,22 @@
 
               <!-- Results Section -->
               <div class="space-y-4 flex flex-col items-center text-center">
-                  <p class="text-black">
-                      Keputusan sehingga 7 Januari 2025 2:39pm:
+                  <p class="text-black font-semibold">
+                      Keputusan sehingga {{ $currentDateTime }}:
                   </p>
 
-                  <div class="flex items-center gap-3 text-gray-800">
-                      <img src="{{ asset('assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo" class="w-5 h-5" />
-                      <span class="font-medium">MASJID SELAMAT USJ2 SUBANG JAYA, SELANGOR</span>
+
+                  <div class="flex items-start gap-3 text-gray-800">
+                      <img src="{{ asset('assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
+                          class="w-5 h-5 align-top" />
+                      <p class="font-semibold">
+                          {{ $institute->name }}
+                          {{ optional($institute)->addr ? ', ' . $institute->addr : '' }}
+                          {{ optional($institute)->city ? ', ' . $institute->city : '' }}
+                          {{ optional($institute)->state ? ', ' . $institute->state : '' }}
+                      </p>
                   </div>
+
               </div>
 
 
@@ -38,7 +46,7 @@
               <!-- Login Button instituteDetails-->
               <a href="{{ route('instituteDetails', ['id' => $institute->uid]) }}">
                   <button
-                      class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg">
+                      class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg !mt-8 !mb-8">
                       Log Masuk
                   </button>
               </a>

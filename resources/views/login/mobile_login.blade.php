@@ -24,7 +24,8 @@
                     <i class="fe fe-phone"></i>
                 </span>
                 <input type="text" id="mobileInput" placeholder="+60 00 000 0000" name="mobile"
-                    class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pl-12 pr-10 shadow-lg bg-white ">
+                    class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pl-12 pr-10 shadow-lg bg-white "
+                    autocomplete="off">
             </div>
             <a href="{{ route('subscriptionLoginEmail') }}"
                 class="text-center text-sm font-normal text-black mt-4 mb-8 block hover:underline">
@@ -34,7 +35,7 @@
             <!-- Adjusted gap -->
             <div class="!mt-12">
                 <button id="submitBtn" disabled
-                    class="w-full bg-gray-700 text-white py-4 px-6 rounded-full shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+                    class="w-full bg-gray-700 text-base font-bold text-white py-4 px-6 rounded-full shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 !mt-8 !mb-8">
                     Teruskan
                 </button>
             </div>
