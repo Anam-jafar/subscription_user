@@ -6,13 +6,13 @@
         <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl font-semibold text-blue-600">SISTEM LANGGANAN MAIS</h1>
+    <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
 
     <x-alert />
 
 
-    <div class="max-w-sm mx-auto w-full">
-        <h1 class="text-center text-2xl font-semibold text-blue-600">LOGIN</h1>
+    <div class="max-w-sm mx-auto w-full space-y-8">
+        <h1 class="text-center text-2xl !font-extrabold text-[#2624D0]">LOGIN</h1>
         <p class="text-center text-sm font-normal text-black mt-4 mb-4">Sebuah sistem pengurusan masjid yang pintar dan
             lengkap dalam menguruskan hal pentadbiran instutusi masjid di
             Malaysia.</p>

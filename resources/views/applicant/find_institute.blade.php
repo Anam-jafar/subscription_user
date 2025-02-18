@@ -6,13 +6,13 @@
         <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl font-semibold text-blue-600">SISTEM LANGGANAN MAIS</h1>
+    <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
 
     <x-alert />
 
     <div class="max-w-md mx-auto space-y-6">
         <!-- Header -->
-        <h1 class="text-blue-600 text-2xl font-bold text-center">
+        <h1 class="text-[#2624D0] text-2xl !font-extrabold text-center">
             SEMAK PENDAFTARAN
         </h1>
 
@@ -22,13 +22,13 @@
             <p class="text-black">Carian Manual</p>
         </div>
 
-        <form action="{{ route('instituteCheck') }}" method="POST">
+        <form action="{{ route('instituteCheck') }}" method="POST" class="space-y-8">
             @csrf
             <!-- Search Input -->
             <div class="relative">
                 <input type="text" id="searchInstitute" placeholder="Nama Institusi"
-                    class="w-full py-3 px-4 bg-gray-200 rounded-lg pr-10">
-                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                    class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pr-10">
+                <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                     <i class="fe fe-search"></i>
                 </span>
 
@@ -50,8 +50,8 @@
                 <!-- City Input -->
                 <div class="relative">
                     <input type="text" id="city" placeholder="Daerah"
-                        class="w-full py-3 px-4 bg-gray-200 rounded-lg pr-10">
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        class="w-full  h-[3.5rem]  py-3 px-4 bg-gray-200 !rounded-full pr-10">
+                    <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                         <i class="fe fe-chevron-down"></i>
                     </span>
 
@@ -64,8 +64,8 @@
                 <!-- Institute Input -->
                 <div class="relative">
                     <input type="text" id="institute" placeholder="Nama Institusi"
-                        class="w-full py-3 px-4 bg-gray-200 rounded-lg pr-10">
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        class="w-full  h-[3.5rem]  py-3 px-4 bg-gray-200 !rounded-full pr-10">
+                    <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                         <i class="fe fe-chevron-down"></i>
                     </span>
 
@@ -78,7 +78,7 @@
 
             <!-- Submit Button -->
             <button
-                class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4">
+                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4">
                 Semak
             </button>
         </form>
