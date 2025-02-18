@@ -50,7 +50,7 @@
             <!-- Submit Button -->
             <div class="mt-8">
                 <button id="submitBtn" disabled
-                    class="w-full bg-gray-400 text-white py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+                    class="w-full bg-gray-700 text-white py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
                     Hantar Permohonan
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -99,7 +99,7 @@
                 submitBtn.disabled = !allFilled;
                 submitBtn.classList.toggle('bg-blue-500', allFilled);
                 submitBtn.classList.toggle('hover:bg-blue-600', allFilled);
-                submitBtn.classList.toggle('bg-gray-400', !allFilled);
+                submitBtn.classList.toggle('bg-gray-700', !allFilled);
                 submitBtn.classList.toggle('disabled:opacity-50', !allFilled);
                 submitBtn.classList.toggle('disabled:cursor-not-allowed', !allFilled);
             }

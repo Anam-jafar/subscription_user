@@ -17,10 +17,10 @@
             lengkap dalam menguruskan hal pentadbiran instutusi masjid di
             Malaysia.</p>
         <x-alert />
-        <div class="max-w-md mx-auto p-4 space-y-4 mb-8">
+        <div class="max-w-md mx-auto p-4 space-y-4 !mt-12 !mb-8">
             <!-- Log Masuk Button -->
-            <button
-                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-full flex justify-between items-center hover:bg-indigo-700 transition-colors">
+            <button onclick="window.location.href='{{ route('subscriptionLoginEmail') }}'"
+                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-indigo-700 transition-colors">
                 <span class="text-lg font-normal">Log Masuk</span>
                 <img src="{{ asset('assets/icons/subscription_login.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
 
@@ -28,7 +28,7 @@
 
             <!-- Semak Pendaftaran Button -->
             <button onclick="window.location.href='{{ route('findInstitute') }}'"
-                class="w-full bg-purple-600 text-white py-3 px-6 rounded-full flex justify-between items-center hover:bg-purple-700 transition-colors">
+                class="w-full bg-purple-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-purple-700 transition-colors">
                 <span class="text-lg font-normal">Semak Pendaftaran</span>
                 <i class="fe fe-search text-xl"></i>
             </button>

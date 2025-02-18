@@ -100,5 +100,35 @@ class BaseController extends Controller
         }
     }
 
+    public function instituteDetails($id)
+    {
+        try {
+            $institute = DB::table('client')->where('uid', $id)->first();
+
+            if ($institute) {
+                return view('applicant.institute_details', ['institute' => $institute]);
+            } else {
+                return view('applicant.institute_not_found');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+
+    public function fillOtp()
+    {
+        return view('applicant.fill_otp');
+    }
+
+    public function showLoginByEmail()
+    {
+        return view('login.email_login');
+    }
+
+    public function showLoginByMobile()
+    {
+        return view('login.mobile_login');
+    }
+
 
 }

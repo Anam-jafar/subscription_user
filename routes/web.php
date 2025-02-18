@@ -50,6 +50,11 @@ Route::prefix('financial')->group(function () {
 
     Route::prefix('subscription')->group(function () {
         Route::get('/login', [BaseController::class, 'showLoginForm'])->name('subscriptionLogin');
+        Route::get('/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
+        Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
+
+
+
         Route::get('/find-institute', [BaseController::class, 'findInstitute'])->name('findInstitute');
         Route::get('/institute-not-found', [BaseController::class, 'instituteNotFound'])->name('instituteNotFound');
         Route::get('/institute-not-subscribed', [BaseController::class, 'instituteNotSubscribed'])->name('instituteNotSubscribed');
@@ -59,6 +64,8 @@ Route::prefix('financial')->group(function () {
         Route::get('/get-cities', [BaseController::class, 'getCities'])->name('getCities');
         Route::get('/get-institutes', [BaseController::class, 'getInstitutesByCity'])->name('getInstitutes');
         Route::post('/institute-check', [BaseController::class, 'instituteCheck'])->name('instituteCheck');
+        Route::get('/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
+        Route::get('/fill-otp', [BaseController::class, 'fillOtp'])->name('fillOtp');
 
 
     });

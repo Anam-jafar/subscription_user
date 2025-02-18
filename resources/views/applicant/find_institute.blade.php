@@ -27,7 +27,7 @@
             <!-- Search Input -->
             <div class="relative">
                 <input type="text" id="searchInstitute" placeholder="Nama Institusi"
-                    class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pr-10">
+                    class="w-full h-[3.5rem] py-3 px-4  !rounded-full pr-10 shadow-lg bg-white">
                 <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                     <i class="fe fe-search"></i>
                 </span>
@@ -50,7 +50,7 @@
                 <!-- City Input -->
                 <div class="relative">
                     <input type="text" id="city" placeholder="Daerah"
-                        class="w-full  h-[3.5rem]  py-3 px-4 bg-gray-200 !rounded-full pr-10">
+                        class="w-full  h-[3.5rem]  py-3 px-4 !rounded-full pr-10 shadow-lg bg-white">
                     <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                         <i class="fe fe-chevron-down"></i>
                     </span>
@@ -64,7 +64,7 @@
                 <!-- Institute Input -->
                 <div class="relative">
                     <input type="text" id="institute" placeholder="Nama Institusi"
-                        class="w-full  h-[3.5rem]  py-3 px-4 bg-gray-200 !rounded-full pr-10">
+                        class="w-full  h-[3.5rem]  py-3 px-4 !rounded-full pr-10 shadow-lg bg-white">
                     <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500">
                         <i class="fe fe-chevron-down"></i>
                     </span>
@@ -78,7 +78,7 @@
 
             <!-- Submit Button -->
             <button
-                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4">
+                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4 shadow-lg">
                 Semak
             </button>
         </form>
