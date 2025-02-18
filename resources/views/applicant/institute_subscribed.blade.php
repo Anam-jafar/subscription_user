@@ -35,11 +35,14 @@
                   <img src="{{ asset('assets/icons/institute_subscribed.svg') }}" alt="MAIS Logo" class="w-48 h-48" />
               </div>
 
-              <!-- Login Button -->
-              <button
-                  class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg">
-                  Log Masuk
-              </button>
+              <!-- Login Button instituteDetails-->
+              <a href="{{ route('instituteDetails', ['id' => $institute->uid]) }}">
+                  <button
+                      class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg">
+                      Log Masuk
+                  </button>
+              </a>
+
           </div>
 
 
