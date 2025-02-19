@@ -76,15 +76,12 @@
         <!-- Submit Button -->
         <a href="{{ route('fillOtp') }}">
             <button
-                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium !mt-8">
+                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium !mt-8 !mb-8">
                 Teruskan
             </button>
         </a>
 
         {{-- </form> --}}
 
-        <div class="text-center !mt-8 !mb-8">
-            <a href="" class="text-base text-blue-600 hover:underline">Kemas Kini Wakil Institusi Baru</a>
-        </div>
     </div>
 @endsection

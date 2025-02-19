@@ -1,0 +1,71 @@
+      @extends('layouts.loginLayout')
+
+      @section('content')
+          <!-- Logo -->
+          <div class="flex justify-center">
+              <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+          </div>
+          <!-- Title -->
+          <h1 class="text-center text-3xl font-semibold text-blue-600">SISTEM LANGGANAN MAIS</h1>
+
+          <x-alert />
+
+
+          <div class="max-w-md mx-auto p-6 space-y-6">
+
+
+              <!-- Results Section -->
+              <div class="space-y-4 flex flex-col items-center text-center">
+                  <p class="text-black font-semibold">
+                      Keputusan sehingga 7 Januari 2025 2:39pm:
+                  </p>
+
+                  <div class="flex items-center gap-3 text-gray-800">
+                      <img src="{{ asset('assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo" class="w-5 h-5" />
+                      <span class="font-semibold">MASJID SELAMAT USJ2 SUBANG JAYA, SELANGOR</span>
+                  </div>
+              </div>
+              <!-- Header -->
+              <h1 class="text-blue-600 text-2xl font-bold text-center">
+                  BAYAR BELUM DIBUAT
+              </h1>
+
+              <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm">
+                  <img src="{{ asset('assets/icons/subscription_pdf.svg') }}" alt="PDF Icon" class="w-10 h-10 mr-3" />
+                  <span class="flex-grow font-semibold text-gray-900">INVOIS LANGGANAN SPM 2025</span>
+                  <button class="text-blue-600 hover:text-blue-800">
+                      <span class="fe fe-eye text-2xl"></span>
+                  </button>
+              </div>
+              <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm">
+                  <img src="{{ asset('assets/icons/subscription_payment_01.svg') }}" alt="PDF Icon"
+                      class="w-10 h-10 mr-3" />
+                  <img src="{{ asset('assets/icons/subscription_payment_02.svg') }}" alt="PDF Icon"
+                      class="w-10 h-10 mr-3" />
+
+                  <span class="flex-grow font-semibold text-gray-900">BAYAR YURAN LANGGANAN</span>
+              </div>
+
+
+
+
+              <!-- Logout Button -->
+              <button onclick="window.location.href='{{ route('subscriptionLogin') }}'"
+                  class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-semibold flex items-center justify-center">
+                  Keluar
+                  <span class="fe fe-log-out text-2xl ml-4"></span>
+              </button>
+
+          </div>
+
+
+
+
+
+
+          {{-- <!-- Copyright -->
+    <div class="flex justify-center items-center gap-2 text-sm text-gray-900">
+        <img src="{{ asset('assets/icons/fin_logo_tiny.svg') }}" alt="Admin" class="w-18 h-18" />
+        <p>Hakcipta terpelihara oleh Majlis Agama Islam Selangor (MAIS)</p>
+    </div> --}}
+      @endsection

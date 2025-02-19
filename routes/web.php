@@ -12,8 +12,7 @@ use App\Http\Controllers\FinancialStatementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FinancialStatementReviewController;
 use App\Http\Controllers\BaseController;
-
-    use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +51,8 @@ Route::prefix('financial')->group(function () {
         Route::get('/login', [BaseController::class, 'showLoginForm'])->name('subscriptionLogin');
         Route::get('/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
         Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
+        Route::get('/login-otp', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
+        Route::get('/activate-subscription', [BaseController::class, 'activateSubscription'])->name('activateSubscription');
 
 
 

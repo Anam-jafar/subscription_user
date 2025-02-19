@@ -32,7 +32,7 @@
                 Log Masuk Menggunakan No Telefon
             </a>
             <div class="!mt-12">
-                <button id="submitBtn" disabled
+                <button id="submitBtn" disabled onclick="window.location.href='{{ route('subscriptionLoginOtp') }}'"
                     class="w-full bg-gray-700 text-white text-base font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 !mt-8 !mb-8">
                     Teruskan
                 </button>

@@ -34,7 +34,7 @@
 
             <!-- Adjusted gap -->
             <div class="!mt-12">
-                <button id="submitBtn" disabled
+                <button id="submitBtn" disabled onclick="window.location.href='{{ route('subscriptionLoginOtp') }}'"
                     class="w-full bg-gray-700 text-base font-bold text-white py-4 px-6 rounded-full shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 !mt-8 !mb-8">
                     Teruskan
                 </button>

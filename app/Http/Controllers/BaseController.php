@@ -93,10 +93,10 @@ class BaseController extends Controller
             // Get current date and time
             $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
-            if ($institute) {
+            if ($institute->isActivated == 1) {
                 return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
             } else {
-                return view('applicant.institute_not_found', ['currentDateTime' => $currentDateTime]);
+                return view('applicant.institute_not_subscribed', ['currentDateTime' => $currentDateTime]);
             }
         } catch (\Exception $e) {
             return back()->with('error', 'An error occurred: ' . $e->getMessage());
@@ -132,6 +132,16 @@ class BaseController extends Controller
     public function showLoginByMobile()
     {
         return view('login.mobile_login');
+    }
+
+    public function fillOtpLogin()
+    {
+        return view('login.fill_otp');
+    }
+
+    public function activateSubscription() 
+    {
+        return view('applicant.activate_subscription');
     }
 
 
