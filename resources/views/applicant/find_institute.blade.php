@@ -38,6 +38,11 @@
                     class="absolute w-full bg-white border border-gray-300 rounded-lg mt-1 hidden max-h-60 overflow-y-auto shadow-lg z-10">
                 </div>
             </div>
+            <!-- Info Message -->
+            <p class="mt-2 text-md  text-gray-800 text-center">
+                <span class="fe fe-info"></span>
+                Jika institusi tidak ditemukan, silakan hubungi admin.
+            </p>
 
             <!-- Hidden Inputs -->
             <input type="hidden" id="institute_name" name="institute_name">
