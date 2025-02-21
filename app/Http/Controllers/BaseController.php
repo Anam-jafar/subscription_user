@@ -82,7 +82,7 @@ class BaseController extends Controller
 
             $request->validate([
                 'institute_name' => 'required|string|min:1',
-                'institute_refno' => 'nullable|string|min:1',
+                'institute_refno' => 'required|string|min:1',
             ]);
 
             $institute = DB::table('client')
@@ -99,7 +99,7 @@ class BaseController extends Controller
                 return view('applicant.institute_not_subscribed', ['currentDateTime' => $currentDateTime]);
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'An error occurred: ' . $e->getMessage());
+            return back()->with('error', 'Untuk meneruskan anda mesti memilih institut');
         }
     }
 

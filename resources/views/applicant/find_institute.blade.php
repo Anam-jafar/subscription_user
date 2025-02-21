@@ -41,7 +41,7 @@
             <!-- Info Message -->
             <p class="mt-2 text-md  text-gray-800 text-center">
                 <span class="fe fe-info"></span>
-                Jika institusi tidak ditemukan, silakan hubungi admin.
+                Jika institusi anda tiada di dalam senarai, sila hubungi Pihak MaIS
             </p>
 
             <!-- Hidden Inputs -->
@@ -89,7 +89,7 @@
             </button>
         </form>
 
-        <div class="text-center !mt-8 !mb-8">
+        <div class="text-center !mt-4 !mb-4">
             <a href="{{ route('subscriptionLogin') }}" class="text-base text-blue-600 hover:underline">Kembali ke Halaman
                 Utama</a>
         </div>
@@ -113,6 +113,13 @@
 
             let selectedCity = "";
 
+            function createNoRecordItem() {
+                const noRecordItem = document.createElement("div");
+                noRecordItem.classList.add("p-2", "text-gray-500", "bg-gray-100", "cursor-not-allowed");
+                noRecordItem.textContent = "Tiada Rekod";
+                return noRecordItem;
+            }
+
             // ✅ Search Institute (Trigger on Focus and Input)
             searchInstituteInput.addEventListener("focus", fetchAndShowInstitutes);
             searchInstituteInput.addEventListener("input", fetchAndShowInstitutes);
@@ -131,7 +138,8 @@
                     .then(data => {
                         searchResults.innerHTML = "";
                         if (Object.keys(data).length === 0) {
-                            searchResults.classList.add("hidden");
+                            searchResults.appendChild(createNoRecordItem());
+                            searchResults.classList.remove("hidden");
                             return;
                         }
 
@@ -170,7 +178,8 @@
                     .then(data => {
                         cityResults.innerHTML = "";
                         if (data.length === 0) {
-                            cityResults.classList.add("hidden");
+                            cityResults.appendChild(createNoRecordItem());
+                            cityResults.classList.remove("hidden");
                             return;
                         }
 
@@ -212,7 +221,8 @@
                     .then(data => {
                         instituteResults.innerHTML = "";
                         if (Object.keys(data).length === 0) {
-                            instituteResults.classList.add("hidden");
+                            instituteResults.appendChild(createNoRecordItem());
+                            instituteResults.classList.remove("hidden");
                             return;
                         }
 

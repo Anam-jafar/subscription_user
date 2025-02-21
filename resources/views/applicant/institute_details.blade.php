@@ -42,7 +42,7 @@
             <!-- Contact Person -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_account.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span class="font-semibold">Khairly bin Ismail</span>
+                <span class="font-semibold">{{ $institute->con1 }}</span>
             </div>
 
             <!-- Phone -->
@@ -60,7 +60,7 @@
             <!-- Role -->
             <div class="flex items-center gap-4">
                 <img src="{{ asset('assets/icons/subscription_details_document.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
-                <span class="font-semibold">Bendahari</span>
+                <span class="font-semibold">{{ $institute->pos1 }}</span>
             </div>
         </div>
         {{-- 
