@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class BaseController extends Controller
 {
@@ -156,7 +157,7 @@ class BaseController extends Controller
             ]);
 
             if ($otpResponse->successful()) {
-                return view('login.fill_otp', ['email' => $email]);
+                return redirect()->route('subscriptionLoginOtp');
             } else {
                 return back()->with('error', 'Failed to send OTP. Please try again.');
             }
@@ -211,7 +212,16 @@ class BaseController extends Controller
             ]);
 
             if ($otpResponse->successful()) {
-                return view('applicant.activate_subscription')->with('success', 'OTP verified successfully.');
+                // Step 3: Authenticate User $otpResponse->json('data.encrypted_key')
+                $user = User::where('uid', $otpResponse->json('data.user_id'))->first();
+
+                if (!$user) {
+                    return back()->with('error', 'User not found.');
+                }
+
+                Auth::login($user); // Log in the user
+
+                return redirect()->route('activateSubscription')->with('success', 'OTP verified successfully.');
             } else {
                 return back()->with('error', 'Failed to verify OTP. Please try again.');
             }
@@ -221,7 +231,8 @@ class BaseController extends Controller
 
     public function activateSubscription() 
     {
-        return view('applicant.activate_subscription');
+        $user = Auth::user();
+        return view('applicant.activate_subscription', compact('user'));
     }
 
 

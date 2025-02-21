@@ -22,7 +22,7 @@
 
                   <div class="flex items-center gap-3 text-gray-800">
                       <img src="{{ asset('assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo" class="w-5 h-5" />
-                      <span class="font-semibold">MASJID SELAMAT USJ2 SUBANG JAYA, SELANGOR</span>
+                      <span class="font-semibold">{{ Auth::user()->name }}</span>
                   </div>
               </div>
               <!-- Header -->
