@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 
 class BaseController extends Controller
@@ -124,18 +125,97 @@ class BaseController extends Controller
         return view('applicant.fill_otp');
     }
 
-    public function showLoginByEmail()
+    public function showLoginByEmail(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'email' => 'required|email'
+            ]);
+
+            $email = $request->email;
+
+            // Step 1: Get the Encrypted Key
+            $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
+                'appcode' => 'MAISMSADMIN'
+            ]);
+
+            if (!$keyResponse->successful()) {
+                return back()->with('error', 'Failed to retrieve encryption key.');
+            }
+            $encryptedKey = $keyResponse->json('data.encrypted_key');
+            if (!$encryptedKey) {
+                return back()->with('error', 'Invalid encryption key response.');
+            }
+
+            // Step 2: Send OTP Request
+            $otpResponse = Http::withHeaders([
+                'x-encrypted-key' => $encryptedKey
+            ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
+                'input' => $email,
+                'role' => 'general'
+            ]);
+
+            if ($otpResponse->successful()) {
+                return view('login.fill_otp', ['email' => $email]);
+            } else {
+                return back()->with('error', 'Failed to send OTP. Please try again.');
+            }
+        }
+
         return view('login.email_login');
     }
+
 
     public function showLoginByMobile()
     {
         return view('login.mobile_login');
     }
 
-    public function fillOtpLogin()
+    public function fillOtpLogin(Request $request)
     {
+        if($request->isMethod('post')) {
+
+            $otp = implode('', $request->input('otp')); 
+            $otp = intval($otp); 
+
+            $request->merge(['otp' => $otp]); 
+
+            $request->validate([
+                'otp' => 'required|numeric|digits:6'
+            ]);
+
+            $otp = $request->otp;
+
+            // Step 1: Get the Encrypted Key
+            $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
+                'appcode' => 'MAISMSADMIN'
+            ]);
+
+            if (!$keyResponse->successful()) {
+                return back()->with('error', 'Failed to retrieve encryption key.');
+            }
+            $encryptedKey = $keyResponse->json('data.encrypted_key');
+            if (!$encryptedKey) {
+                return back()->with('error', 'Invalid encryption key response.');
+            }
+
+            // Step 2: Verify OTP
+            $otpResponse = Http::withHeaders([
+                'x-encrypted-key' => $encryptedKey
+            ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/login/otp', [
+                'app_version' => "1.0.0",
+                'otp' => $otp,
+                'firebase_id' => '',
+                'platform_code' => 3,
+                'device_model' => ''
+            ]);
+
+            if ($otpResponse->successful()) {
+                return view('applicant.activate_subscription')->with('success', 'OTP verified successfully.');
+            } else {
+                return back()->with('error', 'Failed to verify OTP. Please try again.');
+            }
+        }
         return view('login.fill_otp');
     }
 

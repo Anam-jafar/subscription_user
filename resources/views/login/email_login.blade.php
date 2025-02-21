@@ -18,26 +18,30 @@
             dibawah:</p>
         <x-alert />
 
-        <div class="max-w-md mx-auto p-4 space-y-4 mb-">
-            <div class="relative mb-8">
-                <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500">
-                    <i class="fe fe-mail"></i>
-                </span>
-                <input type="text" id="emailInput" placeholder="contoh@gmail.com" name="email"
-                    class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pl-12 pr-10 shadow-lg bg-white"
-                    autocomplete="off">
+        <form action="" method="POST">
+            @csrf
+            <div class="max-w-md mx-auto p-4 space-y-4 mb-">
+                <div class="relative mb-8">
+                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500">
+                        <i class="fe fe-mail"></i>
+                    </span>
+                    <input type="text" id="emailInput" placeholder="contoh@gmail.com" name="email"
+                        class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pl-12 pr-10 shadow-lg bg-white"
+                        autocomplete="off">
+                </div>
+                <a href="{{ route('subscriptionLoginPhone') }}"
+                    class="text-center text-sm font-normal text-black mt-4 mb-8 block hover:underline">
+                    Log Masuk Menggunakan No Telefon
+                </a>
+                <div class="!mt-12">
+                    {{-- onclick="window.location.href='{{ route('subscriptionLoginOtp') }}'" --}}
+                    <button id="submitBtn" disabled type="submit"
+                        class="w-full bg-gray-700 text-white text-base font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 !mt-8 !mb-8">
+                        Teruskan
+                    </button>
+                </div>
             </div>
-            <a href="{{ route('subscriptionLoginPhone') }}"
-                class="text-center text-sm font-normal text-black mt-4 mb-8 block hover:underline">
-                Log Masuk Menggunakan No Telefon
-            </a>
-            <div class="!mt-12">
-                <button id="submitBtn" disabled onclick="window.location.href='{{ route('subscriptionLoginOtp') }}'"
-                    class="w-full bg-gray-700 text-white text-base font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 !mt-8 !mb-8">
-                    Teruskan
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
 @endsection
 
