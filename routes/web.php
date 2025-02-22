@@ -65,8 +65,8 @@ Route::prefix('financial')->group(function () {
         Route::get('/get-cities', [BaseController::class, 'getCities'])->name('getCities');
         Route::get('/get-institutes', [BaseController::class, 'getInstitutesByCity'])->name('getInstitutes');
         Route::post('/institute-check', [BaseController::class, 'instituteCheck'])->name('instituteCheck');
-        Route::get('/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
-        Route::get('/fill-otp', [BaseController::class, 'fillOtp'])->name('fillOtp');
+        Route::match(['get', 'post'], '/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
+        Route::match(['get', 'post'], '/fill-otp', [BaseController::class, 'fillOtp'])->name('fillOtp');
 
 
     });

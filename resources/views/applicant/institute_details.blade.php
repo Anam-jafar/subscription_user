@@ -74,12 +74,13 @@
 
 
         <!-- Submit Button -->
-        <a href="{{ route('fillOtp') }}">
+        <form action="" method="POST">
+            @csrf
             <button
                 class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium !mt-8 !mb-8">
                 Teruskan
             </button>
-        </a>
+        </form>
 
         {{-- </form> --}}
 

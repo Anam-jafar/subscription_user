@@ -24,41 +24,51 @@
                 <p class="text-gray-900">Sila isi kod dibawah.</p>
             </div>
 
-            <!-- Verification Code Inputs -->
-            <div class="flex justify-center gap-4 my-8">
-                <input type="text" maxlength="1"
-                    class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                <input type="text" maxlength="1"
-                    class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                <input type="text" maxlength="1"
-                    class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                <input type="text" maxlength="1"
-                    class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-            </div>
+            <form action="" method="POST">
+                @csrf
 
-            <!-- Resend Button -->
-            <div class="flex justify-center">
-                <button class="flex items-center gap-2 text-gray-900 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                    </svg>
-                    Hantar Semula
-                </button>
-            </div>
+                <!-- Verification Code Inputs -->
+                <div class="flex justify-center gap-4 my-8">
+                    <input type="text" name="otp[]" maxlength="1"
+                        class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
+                    <input type="text" name="otp[]" maxlength="1"
+                        class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
+                    <input type="text" name="otp[]" maxlength="1"
+                        class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
+                    <input type="text" name="otp[]" maxlength="1"
+                        class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
+                    <input type="text" name="otp[]" maxlength="1"
+                        class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
+                    <input type="text" name="otp[]" maxlength="1"
+                        class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
+                </div>
 
-            <!-- Submit Button -->
-            <div class="!mt-8 !mb-8">
-                <button id="submitBtn" disabled
-                    class="w-full bg-gray-700 text-white py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
-                    Hantar Permohonan
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 2L11 13" />
-                        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
-                    </svg>
-                </button>
-            </div>
+
+                <!-- Resend Button -->
+                <div class="flex justify-center">
+                    <button class="flex items-center gap-2 text-gray-900 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                        Hantar Semula
+                    </button>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="!mt-8 !mb-8">
+                    {{-- onclick="window.location.href='{{ route('activateSubscription') }}'" --}}
+                    <button id="submitBtn" disabled type="submit"
+                        class="w-full bg-gray-700 text-white py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+                        Hantar Permohonan
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 2L11 13" />
+                            <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
         </div>
 
     </div>
