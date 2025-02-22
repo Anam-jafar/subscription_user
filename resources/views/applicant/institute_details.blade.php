@@ -30,10 +30,9 @@
 
             <!-- Address -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_location.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
+                <img src="{{ asset('assets/icons/subscription_details_location.svg') }}" alt="MAIS Logo" class="w-7 h-7" />
                 <p class="font-semibold">
-                    {{ $institute->name }}
-                    {{ optional($institute)->addr ? ', ' . $institute->addr : '' }}
+                    {{ $institute->addr }}
                     {{ optional($institute)->city ? ', ' . $institute->city : '' }}
                     {{ optional($institute)->state ? ', ' . $institute->state : '' }}
                 </p>
@@ -53,7 +52,7 @@
 
             <!-- Email -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_email.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
+                <img src="{{ asset('assets/icons/subscription_details_email.svg') }}" alt="MAIS Logo" class="w-5 h-5" />
                 <span class="font-semibold">{{ $institute->mel }}</span>
             </div>
 

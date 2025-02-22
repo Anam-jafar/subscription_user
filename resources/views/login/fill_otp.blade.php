@@ -31,17 +31,17 @@
 
                 <!-- Verification Code Inputs -->
                 <div class="flex justify-center gap-4 my-8">
-                    <input type="text" name="otp[]" maxlength="1"
+                    <input type="text" name="otp[]" maxlength="1" autocomplete="off"
                         class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                    <input type="text" name="otp[]" maxlength="1"
+                    <input type="text" name="otp[]" maxlength="1" autocomplete="off"
                         class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                    <input type="text" name="otp[]" maxlength="1"
+                    <input type="text" name="otp[]" maxlength="1" autocomplete="off"
                         class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                    <input type="text" name="otp[]" maxlength="1"
+                    <input type="text" name="otp[]" maxlength="1" autocomplete="off"
                         class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                    <input type="text" name="otp[]" maxlength="1"
+                    <input type="text" name="otp[]" maxlength="1" autocomplete="off"
                         class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
-                    <input type="text" name="otp[]" maxlength="1"
+                    <input type="text" name="otp[]" maxlength="1" autocomplete="off"
                         class="otp-input w-16 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-gray-400 focus:outline-none" />
                 </div>
 

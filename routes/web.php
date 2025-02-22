@@ -52,7 +52,11 @@ Route::prefix('financial')->group(function () {
         Route::match(['get', 'post'], '/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
         Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
         Route::match(['get', 'post'],'/login-otp', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
-        Route::get('/activate-subscription', [BaseController::class, 'activateSubscription'])->name('activateSubscription');
+        Route::get('/activate-subscription', [BaseController::class, 'activateSubscription'])
+            ->name('activateSubscription')
+            ->middleware('customAuth'); // Apply the custom middleware
+
+        Route::post('/logout', [BaseController::class, 'logout'])->name('subscriptionLogout');
 
 
 
@@ -66,7 +70,8 @@ Route::prefix('financial')->group(function () {
         Route::get('/get-institutes', [BaseController::class, 'getInstitutesByCity'])->name('getInstitutes');
         Route::post('/institute-check', [BaseController::class, 'instituteCheck'])->name('instituteCheck');
         Route::match(['get', 'post'], '/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
-        Route::match(['get', 'post'], '/fill-otp', [BaseController::class, 'fillOtp'])->name('fillOtp');
+        Route::match(['get', 'post'], '/fill-otp/{email}', [BaseController::class, 'fillOtp'])->name('fillOtp');
+
 
 
     });

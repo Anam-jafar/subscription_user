@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\ApplicationConfirmation;
+use Illuminate\Support\Facades\Mail;
+
+
 
 class BaseController extends Controller
 {
@@ -135,7 +139,7 @@ class BaseController extends Controller
             ]);
 
             if ($otpResponse->successful()) {
-                return redirect()->route('fillOtp');
+                return redirect()->route('fillOtp', ['email' => $email]);
             } else {
                 return back()->with('error', 'Failed to send OTP. Please try again.');
             }
@@ -153,7 +157,7 @@ class BaseController extends Controller
         }
     }
 
-    public function fillOtp(Request $request)
+    public function fillOtp(Request $request, $email)
     {
         if($request->isMethod('post')) {
 
@@ -189,8 +193,8 @@ class BaseController extends Controller
             ]);
 
             if ($otpResponse->successful()) {
-
-                return redirect()->route('fillOtp')->with('success', 'OTP verified successfully.');
+                Mail::to($email)->send(new ApplicationConfirmation());
+                return redirect()->route('fillOtp', ['email' => $email])->with('success', 'OTP verified successfully.');
             } else {
                 return back()->with('error', 'Failed to verify OTP. Please try again.');
             }
@@ -293,7 +297,7 @@ class BaseController extends Controller
 
                 Auth::login($user); // Log in the user
 
-                return redirect()->route('activateSubscription')->with('success', 'OTP verified successfully.');
+                return redirect()->route('activateSubscription')->with('success', 'Log Masuk Berjaya');
             } else {
                 return back()->with('error', 'Failed to verify OTP. Please try again.');
             }
@@ -303,8 +307,16 @@ class BaseController extends Controller
 
     public function activateSubscription() 
     {
+        $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
+
         $user = Auth::user();
-        return view('applicant.activate_subscription', compact('user'));
+        return view('applicant.activate_subscription', compact(['user', 'currentDateTime']));
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('subscriptionLogin');
     }
 
 
