@@ -309,8 +309,15 @@ class BaseController extends Controller
     {
         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
+
+        $invoiceDetails = DB::table('fin_ledger')
+            ->select('dt', 'tid', 'item', 'total', 'src', 'code')
+            ->where('vid', 'C00504')
+            ->first();
+
+
         $user = Auth::user();
-        return view('applicant.activate_subscription', compact(['user', 'currentDateTime']));
+        return view('applicant.activate_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
     }
 
     public function logout()
