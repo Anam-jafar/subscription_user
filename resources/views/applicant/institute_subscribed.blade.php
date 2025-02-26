@@ -44,7 +44,7 @@
               </div>
 
               <!-- Login Button instituteDetails-->
-              <a href="{{ route('instituteDetails', ['id' => $institute->uid]) }}">
+              <a href="{{ route('subscriptionLoginEmail') }}">
                   <button
                       class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg !mt-8 !mb-8">
                       Log Masuk

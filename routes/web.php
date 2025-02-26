@@ -52,9 +52,14 @@ Route::prefix('financial')->group(function () {
         Route::match(['get', 'post'], '/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
         Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
         Route::match(['get', 'post'],'/login-otp', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
-        Route::get('/activate-subscription', [BaseController::class, 'activateSubscription'])
+        Route::get('/activate-subscription/{id}', [BaseController::class, 'activateSubscription'])
             ->name('activateSubscription')
             ->middleware('customAuth'); // Apply the custom middleware
+        Route::get('/activated-subscription/{id}', [BaseController::class, 'activatedSubscription'])
+            ->name('activatedSubscription')
+            ->middleware('customAuth'); // Apply the custom middleware
+        Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
+        
 
         Route::post('/logout', [BaseController::class, 'logout'])->name('subscriptionLogout');
 

@@ -11,8 +11,6 @@
         Log Masuk
     </h1>
 
-    <x-alert />
-
     <div class="max-w-sm mx-auto w-full space-y-8">
         <p class="text-center text-sm font-normal text-black mt-4 mb-4">Sila isi emel atau o telefon rasmi institusi anda
             dibawah:</p>
