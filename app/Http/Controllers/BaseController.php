@@ -409,12 +409,7 @@ class BaseController extends Controller
             'Content-Type' => 'application/json'
         ];
 
-        // Debugging: Dump the request details before sending
-        dd([
-            'url' => $url,
-            'headers' => $headers,
-            'payload' => $payload
-        ]);
+
 
         // Make the API request
         $response = Http::withHeaders($headers)->post($url, $payload);

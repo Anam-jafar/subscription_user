@@ -40,7 +40,7 @@
 
               <!-- Success Message -->
               <div class="flex justify-center">
-                  <img src="{{ asset('assets/icons/institute_subscribed.svg') }}" alt="MAIS Logo" class="w-48 h-48" />
+                  <img src="{{ asset('assets/icons/subscription__found.svg') }}" alt="MAIS Logo" class="w-48 h-48" />
               </div>
 
               <!-- Login Button instituteDetails-->
