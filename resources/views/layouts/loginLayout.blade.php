@@ -20,7 +20,7 @@
     <link rel="icon" href="{{ asset('assets/icons/sd_logo_half.svg') }}" type="image/x-icon">
 
     <!-- ICONS CSS -->
-    <link href="{{ asset('build/assets/icon-fonts/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('subscription/build/assets/icon-fonts/icons.css') }}" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- APP SCSS -->
@@ -34,7 +34,7 @@
     @include('layouts.components.styles')
 
     <!-- MAIN JS -->
-    <script src="{{ asset('build/assets/main.js') }}"></script>
+    <script src="{{ asset('subscription/build/assets/main.js') }}"></script>
 
     @yield('styles')
 
@@ -49,7 +49,7 @@
 
     <!-- LOADER -->
     <div id="loader">
-        <img src="{{ asset('build/assets/images/media/loader.svg') }}" alt="">
+        <img src="{{ asset('subscription/build/assets/images/media/loader.svg') }}" alt="">
     </div>
     <!-- LOADER -->
 
@@ -82,7 +82,7 @@
     @yield('scripts')
 
     <!-- STICKY JS -->
-    <script src="{{ asset('build/assets/sticky.js') }}"></script>
+    <script src="{{ asset('subscription/build/assets/sticky.js') }}"></script>
 
     <!-- APP JS -->
     @vite('resources/js/app.js')
