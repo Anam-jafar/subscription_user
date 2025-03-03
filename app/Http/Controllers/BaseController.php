@@ -107,7 +107,7 @@ class BaseController extends Controller
         }
     }
 
-
+    #MAISMSADMIN
     public function instituteDetails(Request $request, $id)
     {
         if($request->isMethod('post')){
@@ -117,8 +117,9 @@ class BaseController extends Controller
             $email = $institute->mel;
             // Step 1: Get the Encrypted Key
             $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-                'appcode' => 'MAISMSADMIN'
+                'appcode' => 'MAISADMINEBOSS'
             ]);
+
 
             if (!$keyResponse->successful()) {
                 return back()->with('error', 'Failed to retrieve encryption key.');
@@ -172,7 +173,7 @@ class BaseController extends Controller
 
             // Step 1: Get the Encrypted Key
             $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-                'appcode' => 'MAISMSADMIN'
+                'appcode' => 'MAISADMINEBOSS'
             ]);
 
             if (!$keyResponse->successful()) {
@@ -221,7 +222,7 @@ class BaseController extends Controller
 
             // Step 1: Get the Encrypted Key
             $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-                'appcode' => 'MAISMSADMIN'
+                'appcode' => 'MAISADMINEBOSS'
             ]);
 
             if (!$keyResponse->successful()) {
@@ -273,7 +274,7 @@ class BaseController extends Controller
 
             // Step 1: Get the Encrypted Key
             $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-                'appcode' => 'MAISMSADMIN'
+                'appcode' => 'MAISADMINEBOSS'
             ]);
 
             if (!$keyResponse->successful()) {
