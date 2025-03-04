@@ -395,7 +395,9 @@ class BaseController extends Controller
             ],
             "type_payment" => "multi",
             "client_id" => $uid,
-            "client_sid" => (string) $user->sid,
+            // "client_sid" => (string) $user->sid,
+            "client_sid" => "1",
+
             "modepay" => "FPX",
             "amount" => $item->val,
             "app" => "EBOSS",

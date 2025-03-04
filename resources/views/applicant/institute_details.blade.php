@@ -3,7 +3,7 @@
 @section('content')
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
     </div>
     <!-- Title -->
     <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
@@ -24,13 +24,15 @@
         <div class="bg-white !rounded-xl p-8 max-w-md w-full space-y-6 shadow-lg">
             <!-- Mosque Name -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_mosque.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
+                <img src="{{ asset('subscription/assets/icons/subscription_details_mosque.svg') }}" alt="MAIS Logo"
+                    class="w-6 h-6" />
                 <span class="font-semibold text-lg">{{ $institute->name }}</span>
             </div>
 
             <!-- Address -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_location.svg') }}" alt="MAIS Logo" class="w-7 h-7" />
+                <img src="{{ asset('subscription/assets/icons/subscription_details_location.svg') }}" alt="MAIS Logo"
+                    class="w-7 h-7" />
                 <p class="font-semibold">
                     {{ $institute->addr }}
                     {{ optional($institute)->city ? ', ' . $institute->city : '' }}
@@ -40,25 +42,29 @@
 
             <!-- Contact Person -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_account.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
+                <img src="{{ asset('subscription/assets/icons/subscription_details_account.svg') }}" alt="MAIS Logo"
+                    class="w-6 h-6" />
                 <span class="font-semibold">{{ $institute->con1 }}</span>
             </div>
 
             <!-- Phone -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_mobile.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
+                <img src="{{ asset('subscription/assets/icons/subscription_details_mobile.svg') }}" alt="MAIS Logo"
+                    class="w-6 h-6" />
                 <span class="font-semibold">{{ $institute->hp }}</span>
             </div>
 
             <!-- Email -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_email.svg') }}" alt="MAIS Logo" class="w-5 h-5" />
+                <img src="{{ asset('subscription/assets/icons/subscription_details_email.svg') }}" alt="MAIS Logo"
+                    class="w-5 h-5" />
                 <span class="font-semibold">{{ $institute->mel }}</span>
             </div>
 
             <!-- Role -->
             <div class="flex items-center gap-4">
-                <img src="{{ asset('assets/icons/subscription_details_document.svg') }}" alt="MAIS Logo" class="w-6 h-6" />
+                <img src="{{ asset('subscription/assets/icons/subscription_details_document.svg') }}" alt="MAIS Logo"
+                    class="w-6 h-6" />
                 <span class="font-semibold">{{ $institute->pos1 }}</span>
             </div>
         </div>

@@ -3,7 +3,7 @@
       @section('content')
           <!-- Logo -->
           <div class="flex justify-center">
-              <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+              <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
           </div>
           <!-- Title -->
           <h1 class="text-center text-3xl font-semibold text-blue-600">SISTEM LANGGANAN MAIS</h1>
@@ -22,7 +22,7 @@
 
 
                   <div class="flex items-start gap-3 text-gray-800">
-                      <img src="{{ asset('assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
+                      <img src="{{ asset('subscription/assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
                           class="w-5 h-5 align-top" />
                       <p class="font-semibold">
                           {{ $user->name }}
@@ -43,16 +43,17 @@
               </p>
 
               <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm">
-                  <img src="{{ asset('assets/icons/subscription_pdf.svg') }}" alt="PDF Icon" class="w-10 h-10 mr-3" />
+                  <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}" alt="PDF Icon"
+                      class="w-10 h-10 mr-3" />
                   <span class="flex-grow font-semibold text-gray-900">RESIT BAYARAN LANGGANAN SPM 2025</span>
                   <button class="text-blue-600 hover:text-blue-800">
                       <span class="fe fe-download-cloud text-2xl"></span>
                   </button>
               </div>
               {{-- <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm">
-                  <img src="{{ asset('assets/icons/subscription_payment_01.svg') }}" alt="PDF Icon"
+                  <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}" alt="PDF Icon"
                       class="w-10 h-10 mr-3" />
-                  <img src="{{ asset('assets/icons/subscription_payment_02.svg') }}" alt="PDF Icon"
+                  <img src="{{ asset('subscription/assets/icons/subscription_payment_02.svg') }}" alt="PDF Icon"
                       class="w-10 h-10 mr-3" />
 
                   <span class="flex-grow font-semibold text-gray-900">BAYAR YURAN LANGGANAN
@@ -81,7 +82,7 @@
 
           {{-- <!-- Copyright -->
     <div class="flex justify-center items-center gap-2 text-sm text-gray-900">
-        <img src="{{ asset('assets/icons/fin_logo_tiny.svg') }}" alt="Admin" class="w-18 h-18" />
+        <img src="{{ asset('subscription/assets/icons/fin_logo_tiny.svg') }}" alt="Admin" class="w-18 h-18" />
         <p>Hakcipta terpelihara oleh Majlis Agama Islam Selangor (MAIS)</p>
     </div> --}}
       @endsection

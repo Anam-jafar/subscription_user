@@ -35,7 +35,7 @@
 
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
     </div>
 
     <!-- Title -->

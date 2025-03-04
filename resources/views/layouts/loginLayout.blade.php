@@ -17,7 +17,7 @@
     <title> Mais </title>
 
     <!-- FAVICON -->
-    <link rel="icon" href="{{ asset('assets/icons/sd_logo_half.svg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('subscription/assets/icons/sd_logo_half.svg') }}" type="image/x-icon">
 
     <!-- ICONS CSS -->
     <link href="{{ asset('subscription/build/assets/icon-fonts/icons.css') }}" rel="stylesheet">
@@ -59,7 +59,7 @@
         <div
             class="min-h-screen flex items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
             <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-5xl p-0 lg:p-2 lg:px-20 lg:pt-20 lg:pb-10 space-y-8 relative overflow-hidden lg:rounded-xl lg:border"
-                style="background-image: url('{{ asset('assets/icons/background.png') }}'); background-size: cover; background-position: center;">
+                style="background-image: url('{{ asset('subscription/assets/icons/background.png') }}'); background-size: cover; background-position: center;">
 
                 <!-- White overlay with blur - only visible on large screens -->
                 <div class="absolute inset-0 backdrop-blur-md bg-white/60 lg:block lg:rounded-2xl"></div>

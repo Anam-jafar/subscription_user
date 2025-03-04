@@ -3,7 +3,7 @@
       @section('content')
           <!-- Logo -->
           <div class="flex justify-center">
-              <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+              <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
           </div>
           <!-- Title -->
           <h1 class="text-center text-3xl font-semibold text-blue-600">SISTEM LANGGANAN MAIS</h1>
@@ -25,7 +25,7 @@
 
 
                   <div class="flex items-start gap-3 text-gray-800">
-                      <img src="{{ asset('assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
+                      <img src="{{ asset('subscription/assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
                           class="w-5 h-5 align-top" />
                       <p class="font-semibold">
                           {{ $institute->name }}
@@ -39,7 +39,8 @@
 
               <!-- Success Message -->
               <div class="flex justify-center">
-                  <img src="{{ asset('assets/icons/institute_not_subscribed.svg') }}" alt="MAIS Logo" class="w-48 h-48" />
+                  <img src="{{ asset('subscription/assets/icons/institute_not_subscribed.svg') }}" alt="MAIS Logo"
+                      class="w-48 h-48" />
               </div>
 
               <!-- Login Button instituteDetails-->
@@ -58,7 +59,7 @@
 
           {{-- <!-- Copyright -->
     <div class="flex justify-center items-center gap-2 text-sm text-gray-900">
-        <img src="{{ asset('assets/icons/fin_logo_tiny.svg') }}" alt="Admin" class="w-18 h-18" />
+        <img src="{{ asset('subscription/assets/icons/fin_logo_tiny.svg') }}" alt="Admin" class="w-18 h-18" />
         <p>Hakcipta terpelihara oleh Majlis Agama Islam Selangor (MAIS)</p>
     </div> --}}
       @endsection

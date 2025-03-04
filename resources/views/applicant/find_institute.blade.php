@@ -3,7 +3,7 @@
 @section('content')
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
     </div>
     <!-- Title -->
     <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
