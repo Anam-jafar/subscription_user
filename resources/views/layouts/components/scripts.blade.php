@@ -22,7 +22,8 @@
 
 <!-- SIMPLEBAR JS -->
 <script src="{{ asset('subscription/build/assets/libs/simplebar/simplebar.min.js') }}"></script>
-@vite('resources/assets/js/simplebar.js')
+@vite(['resources/assets/js/simplebar.js'], 'subscription/build')
+
 
 
 <!-- Auto Complete JS -->

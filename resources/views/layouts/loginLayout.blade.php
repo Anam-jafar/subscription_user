@@ -24,11 +24,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- APP SCSS -->
-    @vite(['resources/sass/app.scss'])
+    @vite(['resources/sass/app.scss'], 'subscription/build')
+
 
 
     <!-- APP CSS -->
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css'], 'subscription/build')
+
 
 
     @include('layouts.components.styles')
@@ -81,7 +83,8 @@
     <script src="{{ asset('subscription/build/assets/sticky.js') }}"></script>
 
     <!-- APP JS -->
-    @vite('resources/js/app.js')
+    @vite(['resources/js/app.js'], 'subscription/build')
+
 
 
 

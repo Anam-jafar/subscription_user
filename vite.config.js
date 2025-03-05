@@ -239,15 +239,6 @@ export default defineConfig({
         },
     ],
 
-    server: {
-        host: "0.0.0.0", // Allow Vite to listen on all interfaces
-        port: 5173, // Default Vite port
-        hmr: {
-            host: "192.168.56.10", // Replace with your machine's IP
-        },
-        cors: true, // Allow CORS for cross-origin requests
-    },
-
     css: {
         preprocessorOptions: {
             scss: {
