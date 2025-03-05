@@ -3,11 +3,11 @@
 @section('content')
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
     </div>
     <!-- Title -->
     <h1 class="text-center text-3xl font-semibold text-[#2624D0] flex items-center justify-center gap-2">
-        <img src="{{ asset('assets/icons/subscription_login_blue.svg') }}" alt="MAIS Logo" class="w-10 h-10" />
+        <img src="{{ asset('subscription/assets/icons/subscription_login_blue.svg') }}" alt="MAIS Logo" class="w-10 h-10" />
         Log Masuk
     </h1>
 

@@ -7,6 +7,15 @@ import { join } from "path";
 
 export default defineConfig({
     plugins: [
+        // Remove old public/build directory before building
+        {
+            name: "clean-public-build",
+            buildStart() {
+                if (fsExtra.existsSync("public/build")) {
+                    fsExtra.removeSync("public/build");
+                }
+            },
+        },
         laravel({
             input: [
                 // Resources paths
@@ -141,6 +150,7 @@ export default defineConfig({
                 "resources/assets/js/wishlist.js",
             ],
             refresh: true,
+            buildDirectory: "subscription/build",
         }),
 
         viteStaticCopy({

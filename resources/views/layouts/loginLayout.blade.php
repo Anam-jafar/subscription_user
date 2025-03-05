@@ -42,10 +42,6 @@
 
 <body>
 
-    <!-- SWITCHER -->
-    @include('layouts.components.switcher')
-
-    <!-- END SWITCHER -->
 
     <!-- LOADER -->
     <div id="loader">
@@ -86,10 +82,6 @@
 
     <!-- APP JS -->
     @vite('resources/js/app.js')
-
-
-    <!-- CUSTOM-SWITCHER JS -->
-    @vite('resources/assets/js/custom-switcher.js')
 
 
 
