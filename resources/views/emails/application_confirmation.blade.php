@@ -74,14 +74,15 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <img src="{{ $message->embed(public_path('assets/icons/subscription_logo.png')) }}" alt="MAIS Logo" />
+            <img src="{{ $message->embed(public_path('subscription/assets/icons/subscription_logo.png')) }}"
+                alt="MAIS Logo" />
         </div>
 
         <!-- Title -->
         <div class="title">SISTEM LANGGANAN MAIS</div>
 
         <div class="arabic_text">
-            <img src="{{ $message->embed(public_path('assets/icons/arabic_text.png')) }}" alt="MAIS Logo" />
+            <img src="{{ $message->embed(public_path('subscription/assets/icons/arabic_text.png')) }}" alt="MAIS Logo" />
         </div>
 
         <!-- Greeting -->
