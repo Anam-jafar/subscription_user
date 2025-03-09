@@ -14,6 +14,86 @@ use Illuminate\Support\Facades\Mail;
 
 class BaseController extends Controller
 {
+     private function getCommonData()
+    {
+        return [
+            'cities' => DB::table('client')
+                ->distinct()
+                ->pluck('city')
+                ->mapWithKeys(fn ($city) => [$city => $city])
+                ->toArray(),
+            'schs' => collect(DB::select('SELECT sname, sid FROM sch'))
+                ->mapWithKeys(fn ($item) => [$item->sid => $item->sname])
+                ->toArray(),
+            'states' => DB::table('type')->where('grp', 'state')->get(),
+            'syslevels' => DB::table('type')
+                ->where('grp', 'syslevel')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            
+            'statuses' => DB::table('type')
+                ->where('grp', 'clientstatus')
+                ->distinct()
+                ->pluck('prm', 'val')
+                ->toArray(),
+            'areas' => DB::table('type')
+                ->where('grp', 'clientcate1')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            'categories' => DB::table('type')
+                ->where('grp', 'type_CLIENT')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            'institute_types' => DB::table('type')
+                ->where('grp', 'clientcate1')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),  
+            'institute_categories' => DB::table('type')
+                ->where('grp', 'type_CLIENT')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),              
+            'districts' => DB::table('type')
+                ->where('grp', 'district')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            'sub_districts' => DB::table('type')
+                ->where('grp', 'sub_district')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            'departments' => DB::table('type')
+                ->where('grp', 'jobdiv')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            'admin_positions' => DB::table('type')
+                ->where('grp', 'job')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+            'user_positions' => DB::table('type')
+                ->where('grp', 'externalposition')
+                ->distinct()
+                ->pluck('prm')
+                ->mapWithKeys(fn ($prm) => [$prm => $prm])
+                ->toArray(),
+        ];
+    }
     public function showLoginForm()
     {
         return view('applicant.login');
@@ -97,11 +177,17 @@ class BaseController extends Controller
             // Get current date and time
             $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
-            if ($institute->subscription_status != 0) {
-                return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
-            } else {
-                return view('applicant.institute_not_subscribed', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
+            if($institute->sta == 1){
+                if ($institute->subscription_status != 0) {
+                    return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
+                } else {
+                    return view('applicant.institute_not_subscribed', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
+                }
+            }elseif($institute->sta == 0){
+                return view('applicant.institute_not_found', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
             }
+
+
         } catch (\Exception $e) {
             return back()->with('error', 'Untuk meneruskan anda mesti memilih institut');
         }
@@ -202,7 +288,7 @@ class BaseController extends Controller
                 return back()->with('error', 'Failed to verify OTP. Please try again.');
             }
         }
-        return view('applicant.fill_otp');
+        return view('applicant.fill_otp', ['email' => $email]);
     }
 
     public function showLoginByEmail(Request $request)
@@ -428,6 +514,70 @@ class BaseController extends Controller
         } else {
             return back()->with('error', 'Payment failed. Please try again.');
         }
+    }
+
+    public function instituteRegistration(Request $request, $id)
+    {
+        if($request->isMethod('post')){
+        DB::table('client')
+            ->where('id', $id)
+            ->update(array_merge(
+                $request->except(['_token']), 
+                ['registration_request_date' => now()->toDateString()] // 'YYYY-MM-DD'
+
+            ));
+
+        return redirect()->back()
+            ->with('success', 'Your application has been submitted.');
+
+        }
+        $institute = DB::table('client')
+            ->where('uid', $id)
+            ->first();
+
+        $commonData = $this->getCommonData();
+        return view('applicant.institute_registration', compact('institute', 'commonData'));
+
+    }
+        public function showInstituteProfileRegistrationDetailsForm(Request $request)
+    {
+        $request->validate([
+            'inst_refno' => 'required|string',
+        ]);
+
+
+        // $institute = Institute::with(['instituteType', 'instituteCategory'])
+        //     ->where('inst_refno', $request->inst_refno)
+        //     ->firstOrFail(); 
+        $institute = DB::table('client')
+            ->where('uid', $request->inst_refno)
+            ->first();
+
+        $commonData = $this->getCommonData();
+
+        // $negeri = DB::table('parameters')
+        //     ->where('code', function ($query) use ($request) {
+        //         $query->select('parent_code')
+        //             ->from('parameters')
+        //             ->where('type', 'district')
+        //             ->where('code', $request->district)
+        //             ->limit(1);
+        //     })
+        //     ->value('parameter');
+
+        // $district = DB::table('parameters')
+        //     ->where('code', $request->district)
+        //     ->value('parameter');
+
+        // $subDistrict = DB::table('parameters')
+        //     ->where('code', $request->sub_district)
+        //     ->value('parameter');
+
+
+        // session()->flash('success', 'Your application has been submitted.');
+
+
+        return view('auth.registration_details', compact('institute', 'commonData'));
     }
 
 

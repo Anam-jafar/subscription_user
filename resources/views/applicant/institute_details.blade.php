@@ -3,16 +3,16 @@
 @section('content')
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
 
     <x-alert />
 
-    <div class="max-w-md mx-auto space-y-6">
+    <div class="max-w-md mx-auto space-y-4">
         <!-- Header -->
-        <h1 class="text-[#2624D0] text-2xl !font-extrabold text-center">
+        <h1 class="text-[#2624D0] text-2xl !font-extrabold text-center mt-4">
             MOHON LANGGANAN
         </h1>
 

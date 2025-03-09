@@ -3,16 +3,16 @@
 @section('content')
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
 
     <x-alert />
 
 
     <div class="max-w-sm mx-auto w-full space-y-8">
-        <h1 class="text-center text-2xl !font-extrabold text-[#2624D0]">LOGIN</h1>
+        <h1 class="text-center text-2xl !font-extrabold text-[#2624D0] mt-4">LOGIN</h1>
         <p class="text-center text-sm font-normal text-black mt-4 mb-4">Sebuah sistem pengurusan masjid yang pintar dan
             lengkap dalam menguruskan hal pentadbiran instutusi masjid di
             Malaysia.</p>
@@ -30,7 +30,7 @@
             <!-- Semak Pendaftaran Button -->
             <button onclick="window.location.href='{{ route('findInstitute') }}'"
                 class="w-full bg-purple-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-purple-700 transition-colors">
-                <span class="text-lg font-normal">Semak Pendaftaran</span>
+                <span class="text-lg font-normal">Semak / Daftar</span>
                 <i class="fe fe-search text-white text-xl"></i>
             </button>
         </div>

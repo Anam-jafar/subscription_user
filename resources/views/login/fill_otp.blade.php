@@ -22,7 +22,11 @@
         <div class="w-full max-w-md space-y-8">
             <!-- Header Text -->
             <div class="text-center space-y-2">
-                <p class="text-gray-900">Kod TAC telah dihantar ke ********8509.</p>
+                @php
+                    $maskedEmail = substr($email, 0, 4) . str_repeat('*', 6) . substr($email, strpos($email, '@'));
+                @endphp
+
+                <p class="text-gray-900">Kod TAC telah dihantar ke {{ $maskedEmail }}.</p>
                 <p class="text-gray-900">Sila isi kod dibawah.</p>
             </div>
 

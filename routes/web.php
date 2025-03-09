@@ -69,6 +69,9 @@ use Illuminate\Http\Request;
         Route::get('/institute-not-found', [BaseController::class, 'instituteNotFound'])->name('instituteNotFound');
         Route::get('/institute-not-subscribed', [BaseController::class, 'instituteNotSubscribed'])->name('instituteNotSubscribed');
         Route::get('/institute-subscribed', [BaseController::class, 'instituteSubscribed'])->name('instituteSubscribed');
+        Route::match(['get', 'post'], '/institute-registration/{id}', [BaseController::class, 'instituteRegistration'])->name('instituteRegistration');
+
+
 
         Route::get('/search-institutes', [BaseController::class, 'searchInstitutes'])->name('searchInstitutes');
         Route::get('/get-cities', [BaseController::class, 'getCities'])->name('getCities');

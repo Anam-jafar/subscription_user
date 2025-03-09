@@ -35,11 +35,10 @@
 
     <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
-
     <!-- Title -->
-    <h1 class="text-center text-3xl font-semibold text-[#2624D0]">SISTEM LANGGANAN MAIS</h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
 
     @if (session('error'))
         <div class="alert alert-danger bg-red-600 text-white rounded-md p-4 mb-4 animate-fade-out">
@@ -55,14 +54,18 @@
     @endif
     <div class="max-w-md mx-auto space-y-6">
         <!-- Header -->
-        <h1 class="text-[#2624D0] text-2xl font-extrabold text-center">
+        <h1 class="text-[#2624D0] text-2xl !font-extrabold text-center mt-4">
             MOHON LANGGANAN
         </h1>
 
         <div class="w-full max-w-md space-y-8">
             <!-- Header Text -->
             <div class="text-center space-y-2">
-                <p class="text-gray-900">Kod TAC telah dihantar ke ********8509.</p>
+                @php
+                    $maskedEmail = substr($email, 0, 4) . str_repeat('*', 6) . substr($email, strpos($email, '@'));
+                @endphp
+
+                <p class="text-gray-900">Kod TAC telah dihantar ke {{ $maskedEmail }}.</p>
                 <p class="text-gray-900">Sila isi kod dibawah.</p>
             </div>
 
