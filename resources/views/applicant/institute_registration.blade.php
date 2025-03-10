@@ -46,28 +46,31 @@
             <div class="grid grid-cols-12 gap-x-6">
                 <div class="xl:col-span-12 col-span-12">
                     <div class="box">
-                        <div class="box-header">
-                            <div class="box-title mt-4">
-                                Maklumat Institusi
-                            </div>
+                        <!-- Logo -->
+                        <div class="flex justify-center mt-4">
+                            <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo"
+                                class="w-24 h-24" />
                         </div>
+                        <!-- Title -->
+                        <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">PENDAFTARAN PROFIL
+                            MASJID</h1>
+                        {{-- <div class="box-header">
+                            <div class="box-title mt-4">
+                                Pendaftaran Profil Masjid
+                            </div>
+                        </div> --}}
                         <div class="box-body !p-0">
                             <form class="wizard wizard-tab horizontal" method="POST"
                                 action="{{ route('instituteRegistration', ['id' => $institute->id]) }}">
                                 @csrf
                                 <aside class="wizard-content container">
-                                    <div class="wizard-step " data-title="Personal Information"
+                                    <div class="wizard-step " data-title="Maklumat Institusi"
                                         data-id="2e8WqSV3slGIpTbnjcJzmDwBQaHrfh0Z">
                                         <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
-                                                    <h6 class="mb-3 font-medium">Registration :</h6>
+                                                    {{-- <h6 class="mb-3 font-medium">Registration :</h6> --}}
                                                     <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Nama Institusi" id="institusi"
-                                                                name="name" type="text" placeholder="Institusi"
-                                                                value="{{ $institute->name }}" disabled="true" />
-                                                        </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Institusi" id="institusi"
@@ -81,28 +84,29 @@
 
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
-                                                            <div class="grid grid-cols-2 gap-4">
-                                                                <x-input-field level="Bandar" id="institusi" name="city"
-                                                                    type="select" :valueList="$commonData['sub_districts']" placeholder="Pilih" />
+                                                            <x-input-field level="Nama Institusi" id="institusi"
+                                                                name="name" type="text" placeholder="Institusi"
+                                                                value="{{ $institute->name }}" disabled="true" />
+                                                        </div>
 
-                                                                <x-input-field level="Mukim" id="institusi" name="rem9"
-                                                                    type="text" placeholder="Institusi"
-                                                                    value="{{ $institute->rem9 }}" disabled="true" />
-
-
-                                                            </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Emel (Rasmi)" id="poskod"
+                                                                name="mel" type="text" placeholder=""
+                                                                :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
-                                                                <x-input-field level="Daerah" id="negeri" name="rem8"
-                                                                    type="text" placeholder="Enter negeri"
-                                                                    value="{{ $institute->rem8 }}" disabled="true" />
-                                                                <x-input-field level="Negiri" id="negeri" name="state"
-                                                                    type="text" placeholder="Enter negeri"
-                                                                    value="{{ $institute->state }}" disabled="true" />
+                                                                {{-- <x-input-field level="Poskod" id="poskod" name="pcode"
+                                                                    type="text" placeholder="" /> --}}
+                                                                <x-input-field level="Nombor Telefon (Rasmi)" id="poskod"
+                                                                    name="hp" type="text" placeholder=""
+                                                                    :required='true' />
+                                                                <x-input-field level="Nombor Fax" id="poskod"
+                                                                    name="fax" type="text" placeholder="" />
+
                                                             </div>
                                                         </div>
-                                                        <div class="xl:col-span-6 col-span-12">
+                                                        {{-- <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Total Area" id="institusi" name="rem13"
                                                                 type="text" placeholder="" />
                                                         </div>
@@ -111,110 +115,156 @@
                                                                 name="rem14" type="text" placeholder="" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Location" id="institusi"
-                                                                name="location" type="text" placeholder="" />
-                                                        </div>
+                                                            <x-input-field level="Location" id="institusi" name="location"
+                                                                type="text" placeholder="" />
+                                                        </div> --}}
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Tarikh Kelulusan Jawatankuasa (JATUMS)"
-                                                                id="institusi" name="rem15" type="date"
-                                                                placeholder="" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" wizard-step active" data-title="Select Service"
-                                        data-id="2e8WqSV3slGIpTbnjcJzmDwBQaHrfh0Z">
-                                        <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
-                                            <div class="xl:col-span-12 col-span-12">
-                                                <div class="register-page">
-                                                    <h6 class="mb-3 font-medium">Person In Charge :</h6>
-                                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Nama Pegawai/Wakil Institusi"
-                                                                id="institusi" name="con1" type="text"
-                                                                placeholder="" />
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="No. Kod Pengenalam" id="institusi"
-                                                                name="ic" type="text" placeholder="" />
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Jawatan" id="institusi" name="pos1"
-                                                                type="select" placeholder="pilih" :valueList="$commonData['user_positions']" />
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Telephone" id="institusi"
-                                                                name="tel1" type="text" placeholder="" />
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wizard-step" data-title="Appointment Details"
-                                        data-id="H53WJiv9blN17MYTztq4g8U6eSVkaZDx">
-                                        <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
-                                            <div class="xl:col-span-12 col-span-12">
-                                                <div class="register-page">
-                                                    <h6 class="mb-3 font-medium">Mosque Details</h6>
-                                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <div class="grid grid-cols-2 gap-4">
-                                                                <x-input-field level="Emel" id="poskod"
-                                                                    name="mel" type="text" placeholder="" />
-                                                                <x-input-field level="HP" id="poskod"
-                                                                    name="hp" type="text" placeholder="" />
-
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <div class="grid grid-cols-2 gap-4">
-                                                                <x-input-field level="Poskod" id="poskod"
-                                                                    name="pcode" type="text" placeholder="" />
-                                                                <x-input-field level="fax" id="poskod"
-                                                                    name="fax" type="text" placeholder="" />
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Alamat (Baris 1)" id="institusi"
-                                                                name="addr" type="text" placeholder="" />
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Alamat (Baris 2)" id="institusi"
-                                                                name="addr1" type="text" placeholder="" />
-                                                        </div>
-
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Dun" id="institusi" name="rem11"
-                                                                type="text" placeholder="" />
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Perliamen" id="institusi"
-                                                                name="rem12" type="text" placeholder="" />
+                                                                id="institusi" name="rem15" type="date" placeholder=""
+                                                                :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Website" id="social" name="web"
                                                                 type="text" placeholder="" />
 
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wizard-step " data-title="Maklumat Tambahan"
+                                        data-id="2e8WqSV3slGIpTbnjcJzmDwBQaHrfjHQ">
+                                        <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
+                                            <div class="xl:col-span-12 col-span-12">
+                                                <div class="register-page">
+                                                    {{-- <h6 class="mb-3 font-medium">Registration :</h6> --}}
+                                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+
                                                         <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Media Social" id="social"
+                                                            <x-input-field level="Dun" id="institusi" name="rem11"
+                                                                type="text" placeholder="" />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Parlimen" id="institusi" name="rem12"
+                                                                type="text" placeholder="" />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <div class="grid grid-cols-2 gap-4">
+                                                                <x-input-field level="Keluasan Institusi" id="institusi"
+                                                                    name="rem13" type="text" placeholder="" />
+                                                                <x-input-field level="Kapasiti Institusi Jemaah"
+                                                                    id="institusi" name="rem14" type="text"
+                                                                    placeholder="" />
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Media Sosial" id="social"
                                                                 name="rem10" type="text" placeholder="" />
 
                                                         </div>
+
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="wizard-step" data-title="Confirmation"
+                                    <div class="wizard-step" data-title="Alamat Institusi"
+                                        data-id="H53WJiv9blN17MYTztq4g8U6eSVkaZDx">
+                                        <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
+                                            <div class="xl:col-span-12 col-span-12">
+                                                <div class="register-page">
+                                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Alamat (Baris 1)" id="institusi"
+                                                                name="addr" type="text" placeholder=""
+                                                                :required='true' />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Alamat (Baris 2)" id="institusi"
+                                                                name="addr1" type="text" placeholder="" />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <div class="grid grid-cols-2 gap-4">
+                                                                <x-input-field level="Bandar" id="institusi"
+                                                                    name="city" type="select" :valueList="$commonData['sub_districts']"
+                                                                    placeholder="Pilih" :required='true' />
+
+                                                                <x-input-field level="Mukim" id="institusi"
+                                                                    name="rem9" type="text" placeholder="Institusi"
+                                                                    value="{{ $institute->rem9 }}" disabled="true" />
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <div class="grid grid-cols-2 gap-4">
+                                                                <x-input-field level="Daerah" id="negeri"
+                                                                    name="rem8" type="text"
+                                                                    placeholder="Enter negeri"
+                                                                    value="{{ $institute->rem8 }}" disabled="true" />
+                                                                <x-input-field level="Negeri" id="negeri"
+                                                                    name="state" type="text"
+                                                                    placeholder="Enter negeri"
+                                                                    value="{{ $institute->state }}" disabled="true" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Poskod" id="poskod" name="pcode"
+                                                                type="text" placeholder="" :required='true' />
+                                                        </div>
+
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Koordinat Institusi" id="institusi"
+                                                                name="location" type="text" placeholder=""
+                                                                :required='true' />
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" wizard-step active" data-title="Pegawai/Wakil Institusi"
+                                        data-id="2e8WqSV3slGIpTbnjcJzmDwBQaHrfh0Z">
+                                        <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
+                                            <div class="xl:col-span-12 col-span-12">
+                                                <div class="register-page">
+                                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Nama Pegawai/Wakil Institusi"
+                                                                id="institusi" name="con1" type="text"
+                                                                placeholder="" :required='true' />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="No. Kad Pengenalan" id="institusi"
+                                                                name="ic" type="text" placeholder=""
+                                                                :required='true' />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Jawatan" id="institusi" name="pos1"
+                                                                type="select" placeholder="pilih" :valueList="$commonData['user_positions']"
+                                                                :required='true' />
+                                                        </div>
+                                                        <div class="xl:col-span-6 col-span-12">
+                                                            <x-input-field level="Nombor Telefon" id="institusi"
+                                                                name="tel1" type="text" placeholder=""
+                                                                :required='true' />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="wizard-step" data-title="Pengesahan"
                                         data-id="dOM0iRAyJXsLTr9b3KZfQ2jNv4pgn6Gu" data-limit="3">
                                         <div class="grid grid-cols-12 sm:gap-x-6">
                                             <div class="xl:col-span-12 col-span-12">
@@ -222,26 +272,29 @@
                                                     <div class="mb-4">
                                                         {{-- <h5 class="text-success font-medium">Appointment Booked...</h5> --}}
                                                     </div>
-                                                    <div class="mb-4">
+                                                    {{-- <div class="mb-4">
                                                         <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}"
                                                             alt="" class="img-fluid !inline-flex">
-                                                    </div>
+                                                    </div> --}}
                                                     <label class="flex items-center mt-8">
                                                         <input type="checkbox" id="myCheckbox"
                                                             class="mr-5 w-3 h-3 border-2 border-black rounded-xs outline outline-1 outline-black focus:outline-4">
-                                                        <span class="text-red-500 font-bold">Saya Bersetuju Dengan Terma
+                                                        <span
+                                                            class="sm:text-left text-red-500 font-bold text-[0.875rem]">Saya
+                                                            Bersetuju
+                                                            Dengan Terma
                                                             Dan Syarat Di Bawah</span>
                                                     </label>
 
 
-
-                                                    <p class="font-semibold pl-8 mt-4 mb-4 justify-start">
+                                                    <p class="font-semibold pl-8 mt-4 mb-4 text-left text-[0.875rem]">
                                                         SEGALA MAKLUMAT DAN LAMPIRAN YANG DIBERIKAN ADALAH BENAR DAN SAYA
                                                         BERTANGGUNGJAWAB DI ATAS MAKLUMAT YANG
-                                                        DIBERIKAN INI. JIKA TERDAPAT MAKLUMAT PALSU YANG DIRERIKAN OLEH
+                                                        DIBERIKAN INI. JIKA TERDAPAT MAKLUMAT PALSU YANG DIBERIKAN OLEH
                                                         SAYA, PIHAK MAJLIS AGAMA ISLAM SELANGOR
-                                                        (MAIS) BERHAK MENGAMBIL TINDAKAN UNDANG-UNĎANG KE ATAS DIRI SAYA.
+                                                        (MAIS) BERHAK MENGAMBIL TINDAKAN UNDANG-UNDANG KE ATAS DIRI SAYA.
                                                     </p>
+
                                                     <button class="ti-btn ti-btn-success opacity-50 cursor-not-allowed"
                                                         type="submit" disabled>
                                                         Hantar
