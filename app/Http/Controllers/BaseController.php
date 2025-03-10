@@ -177,13 +177,13 @@ class BaseController extends Controller
             // Get current date and time
             $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
-            if($institute->sta == 1){
+            if($institute->sta == 0){
                 if ($institute->subscription_status != 0) {
                     return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
                 } else {
                     return view('applicant.institute_not_subscribed', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
                 }
-            }elseif($institute->sta == 0){
+            }elseif($institute->sta == 1){
                 return view('applicant.institute_not_found', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
             }
 
