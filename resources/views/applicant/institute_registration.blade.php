@@ -101,10 +101,9 @@
                                                                     type="text" placeholder="" /> --}}
                                                                 <x-input-field level="Nombor Telefon (Rasmi)" id="poskod"
                                                                     name="hp" type="text" placeholder=""
-                                                                    :required='true' value={{ $institute->hp ?? '' }} />
+                                                                    :required='true' />
                                                                 <x-input-field level="Nombor Fax" id="poskod"
-                                                                    name="fax" type="text" placeholder=""
-                                                                    value={{ $institute->fax ?? '' }} />
+                                                                    name="fax" type="text" placeholder="" />
 
                                                             </div>
                                                         </div>
@@ -124,12 +123,11 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Tarikh Kelulusan Jawatankuasa (JATUMS)"
                                                                 id="institusi" name="rem15" type="date" placeholder=""
-                                                                :required='true' value={{ $institute->rem15 ?? '' }} />
+                                                                :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Website" id="social" name="web"
-                                                                type="text" placeholder=""
-                                                                value={{ $institute->web ?? '' }} />
+                                                                type="text" placeholder="" />
 
                                                         </div>
                                                     </div>
@@ -147,29 +145,25 @@
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Dun" id="institusi" name="rem11"
-                                                                type="text" placeholder=""
-                                                                value={{ $institute->rem11 ?? '' }} />
+                                                                type="text" placeholder="" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Parlimen" id="institusi" name="rem12"
-                                                                type="text" placeholder=""
-                                                                value={{ $institute->rem12 ?? '' }} />
+                                                                type="text" placeholder="" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Keluasan Institusi" id="institusi"
-                                                                    name="rem13" type="text" placeholder=""
-                                                                    value={{ $institute->rem13 ?? '' }} />
+                                                                    name="rem13" type="text" placeholder="" />
                                                                 <x-input-field level="Kapasiti Institusi Jemaah"
                                                                     id="institusi" name="rem14" type="text"
-                                                                    placeholder="" value={{ $institute->rem14 ?? '' }} />
+                                                                    placeholder="" />
                                                             </div>
 
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Media Sosial" id="social"
-                                                                name="rem10" type="text" placeholder=""
-                                                                value={{ $institute->rem10 ?? '' }} />
+                                                                name="rem10" type="text" placeholder="" />
 
                                                         </div>
 
@@ -189,24 +183,22 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Alamat (Baris 1)" id="institusi"
                                                                 name="addr" type="text" placeholder=""
-                                                                :required='true' value={{ $institute->addr ?? '' }} />
+                                                                :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Alamat (Baris 2)" id="institusi"
-                                                                name="addr1" type="text" placeholder=""
-                                                                value={{ $institute->addr1 ?? '' }} />
+                                                                name="addr1" type="text" placeholder="" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Bandar" id="institusi"
                                                                     name="city" type="select" :valueList="$parameters['cities']"
-                                                                    placeholder="Pilih" :required='true'
-                                                                    value={{ $institute->city ?? '' }} />
+                                                                    placeholder="Pilih" :required='true' />
 
                                                                 <x-input-field level="Mukim" id="institusi"
                                                                     name="rem9" type="text" placeholder="Institusi"
                                                                     value="{{ $institute->Subdistrict->prm }}"
-                                                                    disabled="true" value={{ $institute->rem9 ?? '' }} />
+                                                                    disabled="true" />
 
 
                                                             </div>
@@ -227,14 +219,13 @@
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Poskod" id="poskod" name="pcode"
-                                                                type="text" placeholder="" :required='true'
-                                                                value={{ $institute->pcode ?? '' }} />
+                                                                type="text" placeholder="" :required='true' />
                                                         </div>
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Koordinat Institusi" id="institusi"
                                                                 name="location" type="text" placeholder=""
-                                                                :required='true' value={{ $institute->location ?? '' }} />
+                                                                :required='true' />
                                                         </div>
 
 
@@ -252,23 +243,22 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Nama Pegawai/Wakil Institusi"
                                                                 id="institusi" name="con1" type="text"
-                                                                placeholder="" :required='true'
-                                                                value={{ $institute->con1 ?? '' }} />
+                                                                placeholder="" :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="No. Kad Pengenalan" id="institusi"
                                                                 name="ic" type="text" placeholder=""
-                                                                :required='true' value={{ $institute->ic ?? '' }} />
+                                                                :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Jawatan" id="institusi" name="pos1"
                                                                 type="select" placeholder="pilih" :valueList="$parameters['user_positions']"
-                                                                :required='true' value={{ $institute->pos1 ?? '' }} />
+                                                                :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Nombor Telefon" id="institusi"
                                                                 name="tel1" type="text" placeholder=""
-                                                                :required='true' value={{ $institute->tel1 ?? '' }} />
+                                                                :required='true' />
                                                         </div>
 
                                                     </div>
