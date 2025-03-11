@@ -51,7 +51,7 @@ use Illuminate\Http\Request;
         Route::get('/login', [BaseController::class, 'showLoginForm'])->name('subscriptionLogin');
         Route::match(['get', 'post'], '/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
         Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
-        Route::match(['get', 'post'],'/login-otp', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
+        Route::match(['get', 'post'],'/login-otp/{email}', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
         Route::get('/activate-subscription/{id}', [BaseController::class, 'activateSubscription'])
             ->name('activateSubscription')
             ->middleware('customAuth'); // Apply the custom middleware

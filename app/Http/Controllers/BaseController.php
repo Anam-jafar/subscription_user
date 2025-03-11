@@ -334,7 +334,7 @@ class BaseController extends Controller
             ]);
 
             if ($otpResponse->successful()) {
-                return redirect()->route('subscriptionLoginOtp');
+                return redirect()->route('subscriptionLoginOtp',['email' => $email]);
             } else {
                 return back()->with('error', 'Failed to send OTP. Please try again.');
             }
@@ -349,7 +349,7 @@ class BaseController extends Controller
         return view('login.mobile_login');
     }
 
-    public function fillOtpLogin(Request $request)
+    public function fillOtpLogin(Request $request, $email)
     {
         if($request->isMethod('post')) {
 
@@ -410,7 +410,7 @@ class BaseController extends Controller
                 return back()->with('error', 'Failed to verify OTP. Please try again.');
             }
         }
-        return view('login.fill_otp');
+        return view('login.fill_otp', ['email' => $email]);
     }
 
     public function activateSubscription($id) 
