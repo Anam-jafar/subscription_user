@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\ApplicationConfirmation;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Institute;
 
 
 
@@ -531,12 +532,11 @@ class BaseController extends Controller
             ->with('success', 'Your application has been submitted.');
 
         }
-        $institute = DB::table('client')
-            ->where('uid', $id)
-            ->first();
 
-        $commonData = $this->getCommonData();
-        return view('applicant.institute_registration', compact('institute', 'commonData'));
+        $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
+
+        $parameters = $this->getCommon();
+        return view('applicant.institute_registration', compact('institute', 'parameters'));
 
     }
         public function showInstituteProfileRegistrationDetailsForm(Request $request)

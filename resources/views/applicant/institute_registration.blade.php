@@ -75,11 +75,12 @@
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Institusi" id="institusi"
                                                                     name="" type="text" placeholder="Institusi"
-                                                                    value="{{ $institute->cate1 }}" disabled="true" />
+                                                                    value="{{ $institute->Type->prm }}" disabled="true" />
 
                                                                 <x-input-field level="Jenis Institusi" id="institusi"
                                                                     name="" type="text" placeholder="Institusi"
-                                                                    value="{{ $institute->cate }}" disabled="true" />
+                                                                    value="{{ $institute->Category->prm }}"
+                                                                    disabled="true" />
                                                             </div>
 
                                                         </div>
@@ -191,12 +192,13 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Bandar" id="institusi"
-                                                                    name="city" type="select" :valueList="$commonData['sub_districts']"
+                                                                    name="city" type="select" :valueList="$parameters['cities']"
                                                                     placeholder="Pilih" :required='true' />
 
                                                                 <x-input-field level="Mukim" id="institusi"
                                                                     name="rem9" type="text" placeholder="Institusi"
-                                                                    value="{{ $institute->rem9 }}" disabled="true" />
+                                                                    value="{{ $institute->Subdistrict->prm }}"
+                                                                    disabled="true" />
 
 
                                                             </div>
@@ -206,7 +208,8 @@
                                                                 <x-input-field level="Daerah" id="negeri"
                                                                     name="rem8" type="text"
                                                                     placeholder="Enter negeri"
-                                                                    value="{{ $institute->rem8 }}" disabled="true" />
+                                                                    value="{{ $institute->District->prm }}"
+                                                                    disabled="true" />
                                                                 <x-input-field level="Negeri" id="negeri"
                                                                     name="state" type="text"
                                                                     placeholder="Enter negeri"
@@ -249,7 +252,7 @@
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Jawatan" id="institusi" name="pos1"
-                                                                type="select" placeholder="pilih" :valueList="$commonData['user_positions']"
+                                                                type="select" placeholder="pilih" :valueList="$parameters['user_positions']"
                                                                 :required='true' />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
