@@ -93,7 +93,7 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Emel (Rasmi)" id="poskod"
                                                                 name="mel" type="text" placeholder=""
-                                                                :required='true' value={{ $institute->mel }} />
+                                                                :required='true' :value={{ $institute->mel }} />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
