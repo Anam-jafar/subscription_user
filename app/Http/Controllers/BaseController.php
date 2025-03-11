@@ -457,7 +457,7 @@ class BaseController extends Controller
         }
         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
         $user = Auth::user();
-        return view('applicant.pending_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
+        return view('applicant.pending_subscription', compact(['user', 'currentDateTime']));
     }
 
 
