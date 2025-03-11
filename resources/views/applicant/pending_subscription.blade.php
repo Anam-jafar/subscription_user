@@ -27,7 +27,7 @@
                       <p class="font-semibold">
                           {{ $user->name }}
                           {{ optional($user)->addr ? ', ' . $user->addr : '' }}
-                          {{ optional($user)->city ? ', ' . $user->City->prm : '' }}
+                          {{ optional($user)->city ? ', ' . $user->city : '' }}
                           {{ optional($user)->state ? ', ' . $user->state : '' }}
                       </p>
                   </div>
