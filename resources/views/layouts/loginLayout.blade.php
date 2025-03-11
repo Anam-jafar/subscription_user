@@ -56,7 +56,7 @@
 
         <div
             class="min-h-screen flex items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
-            <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-7xl p-0 lg:p-2 lg:px-20 lg:pt-20 lg:pb-10 space-y-8 relative overflow-hidden lg:rounded-xl lg:border"
+            <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-5xl p-0 lg:p-2 lg:px-20 lg:pt-20 lg:pb-10 space-y-8 relative overflow-hidden lg:rounded-xl lg:border"
                 style="background-image: url('{{ asset('subscription/assets/icons/background.png') }}'); background-size: cover; background-position: center;">
 
                 <!-- White overlay with blur - only visible on large screens -->
