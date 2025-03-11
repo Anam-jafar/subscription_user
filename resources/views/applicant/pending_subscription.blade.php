@@ -34,19 +34,22 @@
               </div>
 
               @if ($user->subscription_status == 0)
-                  <h1 class="text-orange-600 text-2xl !font-bold text-center">
+                  <h1 class="text-yellow-600 text-2xl !font-bold text-center">
                       BELUM DILULUSKAN
                   </h1>
 
                   <form action="" method="POST">
                       @csrf
-                      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+                      <button type="submit"
+                          class="w-full bg-green-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-semibold flex items-center justify-center">
                           Hantar Permintaan
+                          <span class="fe fe-log-out text-2xl ml-4"></span>
                       </button>
                   </form>
               @elseif($user->subscription_status == 1)
                   <!-- Header -->
-                  <h1 class="text-orange-600 text-2xl !font-bold text-center">
+                  <h1 class="text-green-600 text-2xl !font-bold text-center">
                       BELUM DILULUSKAN </h1>
                   <p class="text-base font-semibold text-center">Setelah admin meluluskan, anda boleh membuat
                       pembayaran.</b>
