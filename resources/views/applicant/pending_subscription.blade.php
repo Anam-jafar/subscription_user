@@ -38,7 +38,7 @@
                       BELUM DILULUSKAN
                   </h1>
 
-                  <form action="{{ route('your.route.name') }}" method="POST">
+                  <form action="" method="POST">
                       @csrf
                       <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                           Hantar Permintaan
