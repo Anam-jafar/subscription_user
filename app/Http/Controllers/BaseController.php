@@ -307,6 +307,10 @@ class BaseController extends Controller
                 return back()->with('error', 'Institut belum melanggan perkhidmatan kami.');
             }
 
+            if ($client->sta != 0){
+                return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
+            }
+
 
             // Step 1: Get the Encrypted Key
             $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
@@ -413,20 +417,17 @@ class BaseController extends Controller
     {
         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
-
         $invoiceDetails = DB::table('fin_ledger')
             ->select('dt', 'tid', 'item', 'total', 'src', 'code')
             ->where('vid', $id)
             ->where('src', 'INV')
-            ->first();
-
+            ->first() ?? null; // Set to null if no record is found
 
         $user = Auth::user();
 
-        $user_id = $user->uid;
-        $coa_id = $invoiceDetails->code;
-        return view('applicant.activate_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
+        return view('applicant.activate_subscription', compact('user', 'currentDateTime', 'invoiceDetails'));
     }
+
 
     public function activatedSubscription($id) 
     {

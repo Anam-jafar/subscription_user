@@ -33,33 +33,35 @@
                   </div>
               </div>
 
-              <!-- Header -->
-              <h1 class="text-red-600 text-2xl !font-bold text-center">
-                  BAYAR BELUM DIBUAT
-              </h1>
+              @if ($invoiceDetails != null)
+                  <!-- Header -->
+                  <h1 class="text-red-600 text-2xl !font-bold text-center">
+                      BAYAR BELUM DIBUAT
+                  </h1>
 
-              <p class="text-base font-semibold text-center">Jumlah keseluruhan yang perlu dibayar
-                  <br> <b>RM {{ $invoiceDetails->total }}</b>
-              </p>
+                  <p class="text-base font-semibold text-center">Jumlah keseluruhan yang perlu dibayar
+                      <br> <b>RM {{ $invoiceDetails->total }}</b>
+                  </p>
 
-              <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm">
-                  <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}" alt="PDF Icon"
-                      class="w-10 h-10 mr-3" />
-                  <span class="flex-grow font-semibold text-gray-900">INVOIS LANGGANAN SPM 2025</span>
-                  <button class="text-blue-600 hover:text-blue-800">
-                      <span class="fe fe-download-cloud text-2xl"></span>
-                  </button>
-              </div>
-              <a href="{{ route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code]) }}">
-                  <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm cursor-pointer mt-4">
-                      <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}" alt="PDF Icon"
+                  <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm">
+                      <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}" alt="PDF Icon"
                           class="w-10 h-10 mr-3" />
-                      <img src="{{ asset('subscription/assets/icons/subscription_payment_02.svg') }}" alt="PDF Icon"
-                          class="w-10 h-10 mr-3" />
-                      <span class="flex-grow font-semibold text-gray-900">BAYAR YURAN LANGGANAN</span>
+                      <span class="flex-grow font-semibold text-gray-900">INVOIS LANGGANAN SPM 2025</span>
+                      <button class="text-blue-600 hover:text-blue-800">
+                          <span class="fe fe-download-cloud text-2xl"></span>
+                      </button>
                   </div>
-              </a>
-
+                  <a href="{{ route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code]) }}">
+                      <div
+                          class="flex items-center p-4 bg-gray-100 rounded-lg shadow-md w-full max-w-sm cursor-pointer mt-4">
+                          <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}" alt="PDF Icon"
+                              class="w-10 h-10 mr-3" />
+                          <img src="{{ asset('subscription/assets/icons/subscription_payment_02.svg') }}" alt="PDF Icon"
+                              class="w-10 h-10 mr-3" />
+                          <span class="flex-grow font-semibold text-gray-900">BAYAR YURAN LANGGANAN</span>
+                      </div>
+                  </a>
+              @endif
 
 
 

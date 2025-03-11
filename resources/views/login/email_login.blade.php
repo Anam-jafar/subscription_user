@@ -29,10 +29,10 @@
                         class="w-full h-[3.5rem] py-3 px-4 bg-gray-200 !rounded-full pl-12 pr-10 shadow-lg bg-white"
                         autocomplete="off">
                 </div>
-                <a href="{{ route('subscriptionLoginPhone') }}"
+                {{-- <a href="{{ route('subscriptionLoginPhone') }}"
                     class="text-center text-sm font-normal text-black mt-4 mb-8 block hover:underline">
                     Log Masuk Menggunakan No Telefon
-                </a>
+                </a> --}}
                 <div class="!mt-12">
                     {{-- onclick="window.location.href='{{ route('subscriptionLoginOtp') }}'" --}}
                     <button id="submitBtn" disabled type="submit"
