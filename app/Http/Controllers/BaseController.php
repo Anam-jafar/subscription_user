@@ -303,11 +303,10 @@ class BaseController extends Controller
             $email = $request->email;
 
             $client = DB::table('client')->where('mel', $email)->first();
-            if (in_array($client->subscription_status, [0, 1])) {
-                return back()->with('error', 'Institut belum melanggan perkhidmatan kami.');
-            }
+
 
             if ($client->sta != 0){
+
                 return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
             }
 
@@ -405,6 +404,9 @@ class BaseController extends Controller
                     return redirect()->route('activateSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
                 } elseif ($user->subscription_status == 3) {
                     return redirect()->route('activatedSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
+                } elseif (in_array($user->subscription_status, [0, 1])) {
+                    return redirect()->route('pendingSubscription', ['id' => $user->uid])
+                        ->with('success', 'Log Masuk Berjaya');
                 }
             } else {
                 return back()->with('error', 'Failed to verify OTP. Please try again.');
@@ -444,6 +446,20 @@ class BaseController extends Controller
         $user = Auth::user();
         return view('applicant.activated_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
     }
+
+    public function pendingSubscription(Request $request, $id) 
+    {
+        if($request->isMethod('post')) {
+            DB::table('client')
+                ->where('uid', $id)
+                ->update(['subscription_status' => 1]);
+            return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!') ; 
+        }
+        $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
+        $user = Auth::user();
+        return view('applicant.pending_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
+    }
+
 
     public function logout()
     {

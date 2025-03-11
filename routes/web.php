@@ -58,6 +58,10 @@ use Illuminate\Http\Request;
         Route::get('/activated-subscription/{id}', [BaseController::class, 'activatedSubscription'])
             ->name('activatedSubscription')
             ->middleware('customAuth'); // Apply the custom middleware
+        Route::match(['get', 'post'], '/pending-subscription/{id}', [BaseController::class, 'pendingSubscription'])
+            ->name('pendingSubscription')
+            ->middleware('customAuth'); // Apply the custom middleware
+        
         Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
         
 
