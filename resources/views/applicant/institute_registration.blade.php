@@ -21,12 +21,14 @@
 
 
                         <!-- Title -->
-                        <h2 class="text-green-600 text-lg font-semibold mb-2 text-start">Penghantaran Berjaya !</h2>
+                        <h2 class="text-green-600 text-lg font-semibold mb-2 text-start">Permohonan Pendaftaran Berjaya
+                            Dihantar !</h2>
                         <hr class="">
 
                         <!-- Message -->
-                        <p class="text-black text-xs mt-4 mb-8">Email bersama OTP akan dihantar setelah permohonan
-                            diluluskan
+                        <p class="text-black text-xs mt-4 mb-8">Terima kasih kerana mendaftar dengan kami.
+                            Pihak kami sedang menyemak permohonan. Sila semak emel anda dalam masa tiga(03) hari bekerja
+                            untuk status kelulusan.
                         </p>
                         <hr>
 
