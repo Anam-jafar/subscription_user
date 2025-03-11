@@ -199,7 +199,8 @@ class BaseController extends Controller
     {
         if($request->isMethod('post')){
 
-            $institute = DB::table('client')->where('uid', $id)->first();
+            $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
+
 
             $email = $institute->mel;
             // Step 1: Get the Encrypted Key
@@ -231,7 +232,7 @@ class BaseController extends Controller
             }
         }
         try {
-            $institute = DB::table('client')->where('uid', $id)->first();
+            $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
 
             if ($institute) {
                 return view('applicant.institute_details', ['institute' => $institute]);

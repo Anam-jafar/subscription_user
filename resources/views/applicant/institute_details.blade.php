@@ -35,7 +35,7 @@
                     class="w-7 h-7" />
                 <p class="font-semibold">
                     {{ $institute->addr }}
-                    {{ optional($institute)->city ? ', ' . $institute->city : '' }}
+                    {{ optional($institute)->city ? ', ' . $institute->City->prm : '' }}
                     {{ optional($institute)->state ? ', ' . $institute->state : '' }}
                 </p>
             </div>
@@ -65,7 +65,7 @@
             <div class="flex items-center gap-4">
                 <img src="{{ asset('subscription/assets/icons/subscription_details_document.svg') }}" alt="MAIS Logo"
                     class="w-6 h-6" />
-                <span class="font-semibold">{{ $institute->pos1 }}</span>
+                <span class="font-semibold">{{ $institute->UserPosition->prm }}</span>
             </div>
         </div>
         {{-- 
