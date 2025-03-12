@@ -35,7 +35,7 @@
 
               @if ($user->subscription_status == 0)
                   <h1 class="text-yellow-600 text-2xl !font-bold text-center">
-                      BELUM DILULUSKAN
+                      BELUM LANGGAN
                   </h1>
 
                   <form action="" method="POST">
@@ -52,6 +52,7 @@
                       BELUM DILULUSKAN </h1>
                   <p class="text-base font-semibold text-center">Setelah admin meluluskan, anda boleh membuat
                       pembayaran.</b>
+
                   </p>
               @endif
 

@@ -35,7 +35,7 @@
                     class="w-7 h-7" />
                 <p class="font-semibold">
                     {{ $institute->addr }}
-                    {{ optional($institute)->city ? ', ' . $institute->City->prm : '' }}
+                    {{ optional($institute)->city ? ', ' . $institute->city : '' }}
                     {{ optional($institute)->state ? ', ' . $institute->state : '' }}
                 </p>
             </div>
