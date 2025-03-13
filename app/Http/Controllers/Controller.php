@@ -111,6 +111,9 @@ class Controller extends BaseController
             'user_statuses' => Parameter::where('grp', 'clientstatus')
                 ->pluck('prm', 'val')
                 ->toArray(),
+            'statements' => Parameter::where('grp', 'statement')
+                ->pluck('prm', 'code')
+                ->toArray(),
 
         ];
     }

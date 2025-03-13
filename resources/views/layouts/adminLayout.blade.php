@@ -17,25 +17,26 @@
     <title> Mais </title>
 
     <!-- FAVICON -->
-    <link rel="icon" href="{{ asset('assets/icons/sd_logo_half.svg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('subscription/assets/icons/sd_logo_half.svg') }}" type="image/x-icon">
 
     <!-- ICONS CSS -->
-    <link href="{{ asset('build/assets/icon-fonts/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('subscription/build/assets/icon-fonts/icons.css') }}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- APP SCSS -->
-    @vite(['resources/sass/app.scss'])
+    @vite(['resources/sass/app.scss'], 'subscription/build')
+
 
 
     <!-- APP CSS -->
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css'], 'subscription/build')
+
 
 
     @include('layouts.components.styles')
 
     <!-- MAIN JS -->
-    <script src="{{ asset('build/assets/main.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
+    <script src="{{ asset('subscription/build/assets/main.js') }}"></script>
 
     @yield('styles')
 
@@ -43,37 +44,30 @@
 
 <body>
 
-    <!-- SWITCHER -->
-    @include('layouts.components.switcher')
-
-    <!-- END SWITCHER -->
 
     <!-- LOADER -->
     <div id="loader">
-        <img src="{{ asset('build/assets/images/media/loader.svg') }}" alt="">
+        <img src="{{ asset('subscription/build/assets/images/media/loader.svg') }}" alt="">
     </div>
     <!-- LOADER -->
 
-    <div class="page !justify-start">
+    <div class="page">
 
-        <!-- HEADER -->
-        @include('layouts.components._header')
 
-        <!-- END HEADER -->
+        <div
+            class="min-h-screen flex items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
+            <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-7xl  space-y-8 relative overflow-hidden">
 
-        <!-- SIDEBAR -->
-        @include('layouts.components.admin_sidebar')
+                <!-- White overlay with blur - only visible on large screens -->
+                {{-- <div class="absolute inset-0 backdrop-blur-md bg-white/60 lg:block lg:rounded-2xl"></div> --}}
 
-        <!-- END SIDEBAR -->
+                <!-- Content container -->
+                @yield('content')
+            </div>
+        </div>
 
-        <!-- MAIN-CONTENT -->
-        @yield('content')
-        <!-- MAIN-CONTENT -->
 
-        <!-- FOOTER -->
-        @include('layouts.components.footer')
 
-        <!-- END FOOTER -->
 
     </div>
 
@@ -83,14 +77,11 @@
     @yield('scripts')
 
     <!-- STICKY JS -->
-    <script src="{{ asset('build/assets/sticky.js') }}"></script>
+    <script src="{{ asset('subscription/build/assets/sticky.js') }}"></script>
 
     <!-- APP JS -->
-    @vite('resources/js/app.js')
+    @vite(['resources/js/app.js'], 'subscription/build')
 
-
-    <!-- CUSTOM-SWITCHER JS -->
-    @vite('resources/assets/js/custom-switcher.js')
 
 
 

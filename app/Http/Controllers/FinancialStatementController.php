@@ -1,0 +1,138 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use App\Models\FinancialStatement;
+use App\Models\Institute;
+
+class FinancialStatementController extends Controller
+{
+    private function validateFinancialStatement(Request $request): array
+    {
+        $rules = [
+            'inst_refno' => 'nullable',
+            'fin_year' => 'nullable',
+            'fin_category' => 'nullable',
+            'latest_contruction_progress' => 'nullable',
+            'ori_contruction_cost' => 'nullable',
+            'variation_order' => 'nullable',
+            'current_collection' => 'nullable',
+            'total_collection' => 'nullable',
+            'total_statement' => 'nullable',
+            'transfer_pws' => 'nullable',
+            'contruction_expenses' => 'nullable',
+            'inst_surplus' => 'nullable',
+            'pws_surplus' => 'nullable',
+            'pws_expenses' => 'nullable',
+            'balance_forward' => 'nullable',
+            'total_expenses' => 'nullable',
+            'total_income' => 'nullable',
+            'total_surplus' => 'nullable',
+            'bank_cash_balance' => 'nullable',
+            // 'ccc'                 => 'nullable|file|mimes:pdf',
+            // 'bank_statement'      => 'nullable|file|mimes:pdf',
+            // 'bank_reconciliation' => 'nullable|file|mimes:pdf',
+            // 'fin_statement'       => 'nullable|file|mimes:pdf',
+    ];
+    
+
+        return Validator::make($request->all(), $rules)->validate();
+    }
+
+    private function generateUniqueUid()
+    {
+        $lastUid = DB::table('client')->orderBy('uid', 'desc')->value('uid');
+
+        $numericPart = intval(substr($lastUid, 1)) ?? 0;
+
+        do {
+            $numericPart++;
+            $newUid = 'C' . str_pad($numericPart, 5, '0', STR_PAD_LEFT);
+            $exists = DB::table('client')->where('uid', $newUid)->exists();
+
+        } while ($exists); 
+
+        return $newUid;
+    }
+
+    private function applyFilters($query, Request $request)
+    {
+        foreach ($request->all() as $field => $value) {
+            if (!empty($value) && \Schema::hasColumn('splk_submission', $field)) {
+                $query->where($field, $value);
+            }
+        }
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->input('search');
+            $query->where('name', 'like', "%{$searchTerm}%");
+        }
+
+        return $query;
+    }
+
+
+    public function create(Request $request, $inst_refno)
+    {
+        if($request->isMethod('post')){
+            $validatedData = $this->validateFinancialStatement($request);
+            // dd($request->all());
+            // dd($validatedData);
+            if($request['draft'] == "true"){
+                $validatedData['status'] = 0;
+            
+            }else{
+                $validatedData['status'] = 1;
+                $validatedData['submission_date'] = date('Y-m-d H:i:s');
+            }
+            $financialStatement = FinancialStatement::create($validatedData);
+
+            if($financialStatement){
+                return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
+            }
+
+
+        }
+        $institute = Institute::where('uid', $inst_refno)->first();
+        $instituteType = $institute->lvl;
+        $instituteType = 1;
+        $currentYear = date('Y');
+        $years = array_combine(range($currentYear - 3, $currentYear + 3), range($currentYear - 3, $currentYear + 3));
+
+        $parameters = $this->getCommon();
+        return view('financial_statement.create', compact(['institute', 'instituteType', 'years', 'parameters']));
+    }
+
+    public function list(Request $request)
+    {
+        $perPage = $request->input('per_page', 10);
+
+        $query = $this->applyFilters(FinancialStatement::query(), $request);
+
+        $financialStatements = $query
+            ->orderBy('id', 'desc')
+            ->paginate($perPage)->withQueryString();
+
+        
+            $financialStatements->getCollection()->transform(function ($financialStatement) {
+            $financialStatement->CATEGORY = $financialStatement->Category->prm ?? null;
+            $financialStatement->INSTITUTE = $financialStatement->Institute->name ?? null;
+            // $financialStatement->CITY = $institute->City->prm ?? null;
+            // $financialStatement->SUBDISTRICT = $institute->Subdistrict->prm ?? null;
+            // $financialStatement->DISTRICT = $institute->District->prm ?? null;
+            return $financialStatement;
+        });
+
+        $currentYear = date('Y');
+        $years = array_combine(range($currentYear - 3, $currentYear + 3), range($currentYear - 3, $currentYear + 3));
+
+        return view('financial_statement.list', [
+            'parameters' => $this->getCommon(),
+            'financialStatements' => $financialStatements,
+            'years' => $years,
+        ]);
+    }
+}

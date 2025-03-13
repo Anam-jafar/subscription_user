@@ -9,15 +9,29 @@ class FinancialStatement extends Model
 {
     use HasFactory;
     
-    protected $table = 'financial_statements';
+    protected $table = 'splk_submission';
+    public $timestamps = false;
 
-    protected $fillable = ['inst_refno', 'fin_year', 'fin_category', 'latest_construction_progress', 'ori_construction_cost',
-                            'variation_order', 'current_collection', 'total_collection', 'transfer_pws', 'construction_expenses',
+
+    protected $fillable = ['inst_refno', 'fin_year', 'fin_category', 'latest_contruction_progress', 'ori_contruction_cost',
+                            'variation_order', 'current_collection', 'total_collection', 'transfer_pws', 'contruction_expenses',
                             'inst_surplus', 'pws_surplus', 'pws_expenses', 'balance_forward', 'total_expenses', 'total_income', 
-                            'total_surplus', 'bank_cash_balance', 'submission_status', 'audit_status', 'submission_date', 'submission_refno',
-                            'cancellation_date', 'cancel_reason_byuser', 'cancel_reason_byadmin', 'correction_proposal_byadmin', 
-                            'created_by', 'updated_by', 'reviewed_by', 'reviewed_at', 'audited_by', 'audited_at'
+                            'total_surplus', 'bank_cash_balance', 'status', 'submission_date', 'submission_refno',
+                            'cancellation_date', 'cancel_reason_byuser', 'cancel_reason_adm', 'suggestion_adm', 
+                            'created_by', 'created_at', 'verified_by', 'verified_at', 'attachment', 'attachment1_info', 'attachment2', 'attachment3'
                     ];
+
+    
+    public function Category()
+    {
+        return $this->belongsTo(Parameter::class, 'fin_category', 'code');
+    }
+    public function Institute()
+    {
+        return $this->belongsTo(Institute::class, 'inst_refno', 'uid');
+    }
+
+    
 
     public function finCategory()
     {

@@ -112,7 +112,7 @@
                   <!-- Right side -->
                   <div class="space-y-3 lg:min-w-[400px]">
                       <!-- Record Button -->
-                      <a href="#"
+                      <a href="{{ route('statementList') }}"
                           class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors">
                           <img src="{{ asset('subscription/assets/icons/subscription_statement_list.svg') }}"
                               alt="PDF Icon" class="w-10 h-10 mr-3" />
@@ -120,7 +120,7 @@
                       </a>
 
                       <!-- Send New Button -->
-                      <a href="#"
+                      <a href="{{ route('createStatement', ['id' => $user->uid]) }}"
                           class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors">
                           <img src="{{ asset('subscription/assets/icons/subscription_new_statement.svg') }}" alt="PDF Icon"
                               class="w-10 h-10 mr-3" />
