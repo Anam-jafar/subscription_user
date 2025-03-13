@@ -293,7 +293,55 @@ class BaseController extends Controller
         return view('applicant.fill_otp', ['email' => $email]);
     }
 
-    public function showLoginByEmail(Request $request)
+    // public function showLoginByEmail(Request $request)
+    // {
+    //     if ($request->isMethod('post')) {
+    //         $request->validate([
+    //             'email' => 'required|email'
+    //         ]);
+
+    //         $email = $request->email;
+
+    //         $client = DB::table('client')->where('mel', $email)->first();
+
+
+    //         if ($client->sta != 0){
+
+    //             return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
+    //         }
+
+
+    //         // Step 1: Get the Encrypted Key
+    //         $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
+    //             'appcode' => 'MAISADMINEBOSS'
+    //         ]);
+
+    //         if (!$keyResponse->successful()) {
+    //             return back()->with('error', 'Failed to retrieve encryption key.');
+    //         }
+    //         $encryptedKey = $keyResponse->json('data.encrypted_key');
+    //         if (!$encryptedKey) {
+    //             return back()->with('error', 'Invalid encryption key response.');
+    //         }
+
+    //         // Step 2: Send OTP Request
+    //         $otpResponse = Http::withHeaders([
+    //             'x-encrypted-key' => $encryptedKey
+    //         ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
+    //             'input' => $email,
+    //             'role' => 'general'
+    //         ]);
+
+    //         if ($otpResponse->successful()) {
+    //             return redirect()->route('subscriptionLoginOtp',['email' => $email]);
+    //         } else {
+    //             return back()->with('error', 'Failed to send OTP. Please try again.');
+    //         }
+    //     }
+
+    //     return view('login.email_login');
+    // }
+        public function showLoginByEmail(Request $request)
     {
         if ($request->isMethod('post')) {
             $request->validate([
@@ -311,32 +359,26 @@ class BaseController extends Controller
             }
 
 
-            // Step 1: Get the Encrypted Key
-            $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-                'appcode' => 'MAISADMINEBOSS'
-            ]);
+                $user = User::where('mel', $email )->first();
 
-            if (!$keyResponse->successful()) {
-                return back()->with('error', 'Failed to retrieve encryption key.');
-            }
-            $encryptedKey = $keyResponse->json('data.encrypted_key');
-            if (!$encryptedKey) {
-                return back()->with('error', 'Invalid encryption key response.');
-            }
 
-            // Step 2: Send OTP Request
-            $otpResponse = Http::withHeaders([
-                'x-encrypted-key' => $encryptedKey
-            ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
-                'input' => $email,
-                'role' => 'general'
-            ]);
+                // if (!$user) {
+                //     return back()->with('error', 'User not found.');
+                // }
 
-            if ($otpResponse->successful()) {
-                return redirect()->route('subscriptionLoginOtp',['email' => $email]);
-            } else {
-                return back()->with('error', 'Failed to send OTP. Please try again.');
-            }
+                Auth::login($user); // Log in the user
+
+                // session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
+
+
+                if ($user->subscription_status == 2) {
+                    return redirect()->route('activateSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
+                } elseif ($user->subscription_status == 3) {
+                    return redirect()->route('activatedSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
+                } elseif (in_array($user->subscription_status, [0, 1])) {
+                    return redirect()->route('pendingSubscription', ['id' => $user->uid])
+                        ->with('success', 'Log Masuk Berjaya');
+                }
         }
 
         return view('login.email_login');

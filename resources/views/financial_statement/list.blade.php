@@ -5,11 +5,24 @@
         <div class="container-fluid">
 
 
-            <div class="py-8 px-4 rounded-lg shadow bg-white">
-                <x-page-header :title="'Senarai Laporan Kewangan Institusi'" :breadcrumbs="[
-                    ['label' => 'Laporan Kewangan', 'url' => 'javascript:void(0);'],
+            <div class="py-8 px-8 rounded-lg shadow bg-white">
+                <!-- Logo -->
+                <div class="flex justify-center mt-4">
+                    <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+                </div>
+                <!-- Title -->
+                <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 mb-8 font-mont">Senarai Laporan Kewangan
+                    Institusi</h1>
+
+                <x-page-header :title="''" :breadcrumbs="[
+                    [
+                        'label' => 'Laman Utama',
+                        'url' => route('pendingSubscription', ['id' => Auth::user()->uid]),
+                    ],
                     ['label' => 'Senarai Penyata'],
                 ]" />
+
+
                 <x-alert />
 
                 <x-filter-card :filters="[
@@ -20,11 +33,11 @@
                         'type' => 'select',
                         'options' => $parameters['statements'],
                     ],
-                ]" />
+                ]" button-label="Daftar Baru" :button-route="route('createStatement', ['id' => Auth::user()->uid])" />
 
 
-                <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['submission_date', 'fin_year', 'CATEGORY', 'status']" :rows="$financialStatements" route="editStatement" secondaryRoute=""
-                    docIcon="true" />
+                <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['submission_date', 'fin_year', 'CATEGORY', 'status']" :rows="$financialStatements" route="editStatement"
+                    secondaryRoute="viewStatement" docIcon="true" />
 
                 <x-pagination :items="$financialStatements" label="Penyata Kewangan" />
             </div>

@@ -32,6 +32,7 @@ class FinancialStatementController extends Controller
             'total_income' => 'nullable',
             'total_surplus' => 'nullable',
             'bank_cash_balance' => 'nullable',
+            'attachment1_info' => 'nullable',
             // 'ccc'                 => 'nullable|file|mimes:pdf',
             // 'bank_statement'      => 'nullable|file|mimes:pdf',
             // 'bank_reconciliation' => 'nullable|file|mimes:pdf',
@@ -109,7 +110,7 @@ class FinancialStatementController extends Controller
         if ($request->isMethod('post')) {
             $validatedData = $this->validateFinancialStatement($request);
 
-            $financialStatement = FinancialStatement::find($id);
+            $financialStatement = FinancialStatement::with('AuditType')->find($id);
 
             if (!$financialStatement) {
                 return redirect()->route('statementList')->with('error', 'Financial Statement not found');
@@ -131,10 +132,43 @@ class FinancialStatementController extends Controller
         $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
         $instituteType = $institute->Category->lvl;
         $currentYear = date('Y');
-        $years = array_combine(range($currentYear - 3, $currentYear + 3), range($currentYear - 3, $currentYear + 3));
+        $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
 
         $parameters = $this->getCommon();
         return view('financial_statement.edit', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
+    }
+
+    public function view(Request $request, $id)
+    {
+        // if ($request->isMethod('post')) {
+        //     $validatedData = $this->validateFinancialStatement($request);
+
+        //     $financialStatement = FinancialStatement::find($id);
+
+        //     if (!$financialStatement) {
+        //         return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+        //     }
+
+        //     if ($request['draft'] == "true") {
+        //         $validatedData['status'] = 0;
+        //     } else {
+        //         $validatedData['status'] = 1;
+        //         $validatedData['submission_date'] = now();
+        //     }
+
+        //     $financialStatement->update($validatedData);
+
+        //     return redirect()->route('statementList')->with('success', 'Financial Statement updated successfully');
+        // }
+
+        $financialStatement = FinancialStatement::find($id);
+        $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
+        $instituteType = $institute->Category->lvl;
+        $currentYear = date('Y');
+        $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+
+        $parameters = $this->getCommon();
+        return view('financial_statement.view', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
     }
 
     public function list(Request $request)
@@ -151,9 +185,6 @@ class FinancialStatementController extends Controller
             $financialStatements->getCollection()->transform(function ($financialStatement) {
             $financialStatement->CATEGORY = $financialStatement->Category->prm ?? null;
             $financialStatement->INSTITUTE = $financialStatement->Institute->name ?? null;
-            // $financialStatement->CITY = $institute->City->prm ?? null;
-            // $financialStatement->SUBDISTRICT = $institute->Subdistrict->prm ?? null;
-            // $financialStatement->DISTRICT = $institute->District->prm ?? null;
             return $financialStatement;
         });
 

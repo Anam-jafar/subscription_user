@@ -42,7 +42,7 @@
                     <td class="px-2 py-2 whitespace-nowrap text-xs text-black break-words text-center">
                         @php
                             $finalRoute =
-                                isset($row->submission_status) && $row->submission_status === 'SS05'
+                                isset($row->status) && ($row->status == 1 || $row->status === 2 || $row->status === 3)
                                     ? $secondaryRoute
                                     : $route;
                         @endphp

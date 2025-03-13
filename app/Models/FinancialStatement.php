@@ -30,6 +30,10 @@ class FinancialStatement extends Model
     {
         return $this->belongsTo(Institute::class, 'inst_refno', 'uid');
     }
+    public function AuditType()
+    {
+        return $this->belongsTo(Parameter::class, 'attachment1_info', 'code');
+    }
 
     
 

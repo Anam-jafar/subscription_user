@@ -114,6 +114,9 @@ class Controller extends BaseController
             'statements' => Parameter::where('grp', 'statement')
                 ->pluck('prm', 'code')
                 ->toArray(),
+            'audit_types' => Parameter::where('grp', 'audit_type')
+                ->pluck('prm', 'code')
+                ->toArray(),
 
         ];
     }

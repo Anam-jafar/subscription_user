@@ -210,63 +210,124 @@
                                         <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
-                                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+                                                    @if ($instituteType == 2)
+                                                        <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
 
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <div class="flex flex-col mt-4">
-                                                                <label for="input3" class="text-gray-800 mb-2">Penyata
-                                                                    Kewangan
-                                                                    <span class="text-red-500 ">*</span></label>
-                                                                <input type="file" name="fin_statement"
-                                                                    class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800 mb-2">Penyata
+                                                                        Kewangan
+                                                                        <span class="text-red-500 ">*</span></label>
+                                                                    <input type="file" name="fin_statement"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
                                                                             file:text-sm file:font-semibold
                                                                             file:bg-primary file:text-white file:h-[3rem]
                                                                             hover:file:bg-primary focus-visible:outline-none
                                                                     ">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <x-input-field level="Maklumat" id="institusi" name="rem12"
-                                                                type="text" placeholder="" :valueList="$parameters['statements']" />
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <div class="flex flex-col mt-4">
-                                                                <label for="input3" class="text-gray-800  mb-2">Penyata
-                                                                    Bank
-                                                                    <span class="text-red-500 ">*</span></label>
-                                                                <input type="file" name="bank_statement"
-                                                                    class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800  mb-2">Penyata
+                                                                        Bank
+                                                                        <span class="text-red-500 ">*</span></label>
+                                                                    <input type="file" name="bank_statement"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
                                                                             file:text-sm file:font-semibold
                                                                             file:bg-primary file:text-white file:h-[3rem]
                                                                             hover:file:bg-primary focus-visible:outline-none
                                                                     ">
-                                                            </div>
+                                                                </div>
 
-                                                        </div>
-                                                        <div class="xl:col-span-6 col-span-12">
-                                                            <div class="flex flex-col mt-4">
-                                                                <label for="input3"
-                                                                    class="text-gray-800 mb-2">Certificate
-                                                                    Completion &
-                                                                    Compliance (CCC) <span
-                                                                        class="text-red-500 ">*</span></label>
-                                                                <input type="file" name="ccc"
-                                                                    class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800 mb-2">Certificate
+                                                                        Completion &
+                                                                        Compliance (CCC) <span
+                                                                            class="text-red-500 ">*</span></label>
+                                                                    <input type="file" name="ccc"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                     file:me-4 file:py-2 file:px-4
                                                                     file:rounded-s-sm file:border-0
                                                                     file:text-sm file:font-semibold
                                                                     file:bg-primary file:text-white file:h-[3rem]
                                                                     hover:file:bg-primary focus-visible:outline-none
                                                                 ">
+                                                                </div>
                                                             </div>
+
+
                                                         </div>
+                                                    @else
+                                                        <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800 mb-2">Penyata Kewangan Dan
+                                                                        Nota Kewangan
+                                                                        <span class="text-red-500 ">*</span></label>
+                                                                    <input type="file" name="fin_statement"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                                            file:me-4 file:py-2 file:px-4
+                                                                            file:rounded-s-sm file:border-0
+                                                                            file:text-sm file:font-semibold
+                                                                            file:bg-primary file:text-white file:h-[3rem]
+                                                                            hover:file:bg-primary focus-visible:outline-none
+                                                                    ">
+                                                                </div>
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <x-input-field level="Maklumat" id="institusi"
+                                                                    name="attachment1_info" type="select" placeholder=""
+                                                                    :valueList="$parameters['audit_types']" />
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800  mb-2">Penyata
+                                                                        Bank
+                                                                        <span class="text-red-500 ">*</span></label>
+                                                                    <input type="file" name="bank_statement"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                                            file:me-4 file:py-2 file:px-4
+                                                                            file:rounded-s-sm file:border-0
+                                                                            file:text-sm file:font-semibold
+                                                                            file:bg-primary file:text-white file:h-[3rem]
+                                                                            hover:file:bg-primary focus-visible:outline-none
+                                                                    ">
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800 mb-2">Penyata Penyesuaian Bank
+                                                                        <span class="text-red-500 ">*</span></label>
+                                                                    <input type="file" name="ccc"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                                    file:me-4 file:py-2 file:px-4
+                                                                    file:rounded-s-sm file:border-0
+                                                                    file:text-sm file:font-semibold
+                                                                    file:bg-primary file:text-white file:h-[3rem]
+                                                                    hover:file:bg-primary focus-visible:outline-none
+                                                                ">
+                                                                </div>
+                                                            </div>
 
 
-                                                    </div>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -315,10 +376,12 @@
                                                     <div
                                                         class="flex flex-col md:flex-row justify-between mt-8 space-y-3 md:space-y-0">
                                                         <!-- Back button -->
-                                                        <button
-                                                            class="bg-[#6E829F] ti-btn ti-btn-dark btn-wave waves-effect waves-light w-full md:w-auto text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2">
-                                                            Kembali
-                                                        </button>
+                                                        <a href="{{ route('statementList') }}"
+                                                            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center">
+                                                            <span
+                                                                class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
+                                                            Senarai Penghantaran
+                                                        </a>
 
                                                         <!-- Action buttons container -->
                                                         <div
