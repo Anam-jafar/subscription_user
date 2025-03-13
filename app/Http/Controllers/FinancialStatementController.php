@@ -79,8 +79,7 @@ class FinancialStatementController extends Controller
     {
         if($request->isMethod('post')){
             $validatedData = $this->validateFinancialStatement($request);
-            // dd($request->all());
-            // dd($validatedData);
+
             if($request['draft'] == "true"){
                 $validatedData['status'] = 0;
             
@@ -97,13 +96,45 @@ class FinancialStatementController extends Controller
 
         }
         $institute = Institute::where('uid', $inst_refno)->first();
-        $instituteType = $institute->lvl;
-        $instituteType = 1;
+        $instituteType = $institute->Category->lvl;
+        $currentYear = date('Y');
+        $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+
+        $parameters = $this->getCommon();
+        return view('financial_statement.create', compact(['institute', 'instituteType', 'years', 'parameters']));
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if ($request->isMethod('post')) {
+            $validatedData = $this->validateFinancialStatement($request);
+
+            $financialStatement = FinancialStatement::find($id);
+
+            if (!$financialStatement) {
+                return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+            }
+
+            if ($request['draft'] == "true") {
+                $validatedData['status'] = 0;
+            } else {
+                $validatedData['status'] = 1;
+                $validatedData['submission_date'] = now();
+            }
+
+            $financialStatement->update($validatedData);
+
+            return redirect()->route('statementList')->with('success', 'Financial Statement updated successfully');
+        }
+
+        $financialStatement = FinancialStatement::find($id);
+        $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
+        $instituteType = $institute->Category->lvl;
         $currentYear = date('Y');
         $years = array_combine(range($currentYear - 3, $currentYear + 3), range($currentYear - 3, $currentYear + 3));
 
         $parameters = $this->getCommon();
-        return view('financial_statement.create', compact(['institute', 'instituteType', 'years', 'parameters']));
+        return view('financial_statement.edit', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
     }
 
     public function list(Request $request)

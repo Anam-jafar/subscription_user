@@ -84,9 +84,10 @@ use Illuminate\Http\Request;
         Route::match(['get', 'post'], '/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
         Route::match(['get', 'post'], '/fill-otp/{email}', [BaseController::class, 'fillOtp'])->name('fillOtp');
 
-
-        Route::match(['get', 'post'], '/statement/create/{id}', [FinancialStatementController::class, 'create'])->name('createStatement');
         Route::get('/statement/list', [FinancialStatementController::class, 'list'])->name('statementList');
+        Route::match(['get', 'post'], '/statement/create/{id}', [FinancialStatementController::class, 'create'])->name('createStatement');
+        Route::match(['get', 'post'], '/statement/edit/{id}', [FinancialStatementController::class, 'edit'])->name('editStatement');
+
 
 
 

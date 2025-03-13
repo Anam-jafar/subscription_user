@@ -31,7 +31,7 @@
                                         <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
-                                                    @if ($instituteType == 1)
+                                                    @if ($instituteType == 2)
                                                         <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
                                                             <div class="xl:col-span-6 col-span-12">
                                                                 <div class="grid grid-cols-2 gap-6">
@@ -113,6 +113,14 @@
                                                                     :required="true" />
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
+                                                                <x-input-field level="(iii) Belanja Pembinaan PWS (RM)"
+                                                                    id="i6" name="pws_expenses" type="text"
+                                                                    placeholder="00.00" :rightAlign="true"
+                                                                    :required="true" />
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
+                                                            </div>
+                                                            <div class="xl:col-span-6 col-span-12">
                                                                 <p class="text-gray-800 font-medium">D. Jumlah Lebihan</p>
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
@@ -124,17 +132,13 @@
                                                                     :required="true" />
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
-                                                                <x-input-field level="(ii) Lebihan PWS (RM)" id="i5"
-                                                                    name="pws_surplus" type="text" placeholder="00.00"
-                                                                    :rightAlign="true" :required="true" />
-                                                            </div>
-
-                                                            <div class="xl:col-span-6 col-span-12">
-                                                                <x-input-field level="(iii) Belanja Pembinaan PWS (RM)"
-                                                                    id="i6" name="pws_expenses" type="text"
+                                                                <x-input-field level="(ii) Lebihan PWS (RM)"
+                                                                    id="i5" name="pws_surplus" type="text"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                             </div>
+
+
                                                         </div>
                                                     @else
                                                         <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
@@ -376,6 +380,32 @@
                     submitButton.classList.add('opacity-50', 'cursor-not-allowed');
                 }
             });
+            @if ($instituteType != 2)
+                function calculateIncome() {
+                    let balanceForward = parseFloat(document.getElementById("balance_forward").value) || 0;
+                    let totalCollection = parseFloat(document.getElementById("total_collection").value) || 0;
+                    let totalIncome = balanceForward + totalCollection;
+
+                    document.getElementById("total_income").value = totalIncome.toFixed(2);
+                }
+
+                function calculateSurplus() {
+                    let balanceForward = parseFloat(document.getElementById("balance_forward").value) || 0;
+                    let totalCollection = parseFloat(document.getElementById("total_collection").value) || 0;
+                    let totalExpense = parseFloat(document.getElementById("total_expenses").value) || 0;
+                    let totalSurplus = balanceForward + totalCollection - totalExpense;
+
+                    document.getElementById("total_surplus").value = totalSurplus.toFixed(2);
+                }
+
+                // Attach event listeners only when instituteType is 'SD'
+                document.getElementById("balance_forward").addEventListener("input", calculateIncome);
+                document.getElementById("total_collection").addEventListener("input", calculateIncome);
+
+                document.getElementById("balance_forward").addEventListener("input", calculateSurplus);
+                document.getElementById("total_collection").addEventListener("input", calculateSurplus);
+                document.getElementById("total_expenses").addEventListener("input", calculateSurplus);
+            @endif
         });
     </script>
 @endsection

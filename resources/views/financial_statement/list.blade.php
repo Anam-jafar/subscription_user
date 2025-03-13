@@ -23,7 +23,7 @@
                 ]" />
 
 
-                <x-table :headers="['Tahun Penyata', 'Kategori Penyata', 'Tarikh Hantar', 'Status']" :columns="['fin_year', 'CATEGORY', 'submission_date', 'status']" :rows="$financialStatements" route="" secondaryRoute=""
+                <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['submission_date', 'fin_year', 'CATEGORY', 'status']" :rows="$financialStatements" route="editStatement" secondaryRoute=""
                     docIcon="true" />
 
                 <x-pagination :items="$financialStatements" label="Penyata Kewangan" />
