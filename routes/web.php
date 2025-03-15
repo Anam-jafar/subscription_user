@@ -76,7 +76,7 @@ use Illuminate\Http\Request;
         Route::match(['get', 'post'], '/institute-registration/{id}', [BaseController::class, 'instituteRegistration'])->name('instituteRegistration');
 
         Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
-
+        Route::get('/request-subscription/{id}', [BaseController::class, 'requestSubscription'])->name('requestSubscription');
 
 
 

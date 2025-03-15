@@ -499,7 +499,15 @@ class BaseController extends Controller
         }
         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
         $user = Auth::user();
-        return view('applicant.pending_subscription', compact(['user', 'currentDateTime']));
+        return view('applicant.home', compact(['user', 'currentDateTime']));
+    }
+
+    public function requestSubscription($id) 
+    {
+        DB::table('client')
+            ->where('uid', $id)
+            ->update(['subscription_status' => 1]);
+        return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!') ; 
     }
 
 
