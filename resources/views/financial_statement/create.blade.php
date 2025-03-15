@@ -390,16 +390,17 @@
 
                                                         <!-- Action buttons container -->
                                                         <div
-                                                            class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
+                                                            class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                                                             <button type="button" id="save_draft"
-                                                                class="bg-[#6E829F] ti-btn ti-btn-dark btn-wave waves-effect waves-light w-full md:w-auto text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2">
+                                                                class="bg-gray-700 text-white py-2 px-4 rounded-full hover:bg-gray-800 transition-colors text-sm font-medium flex items-center justify-center">
                                                                 Simpan Sebagai Draft
                                                             </button>
                                                             <button type="submit" id="submit"
-                                                                class="bg-[#5C67F7] ti-btn ti-btn-primary btn-wave waves-effect waves-light w-full md:w-auto text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2 cursor-not-allowed">
+                                                                class="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors text-sm font-medium flex items-center justify-center">
                                                                 Hantar
                                                             </button>
                                                         </div>
+
                                                     </div>
 
                                                 </div>

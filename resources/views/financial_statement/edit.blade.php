@@ -233,7 +233,13 @@
                                                                         class="text-gray-800 mb-2">Penyata
                                                                         Kewangan
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="fin_statement"
+                                                                    @if (!empty($financialStatement->attachment1))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment1) }}
+                                                                        </span>
+                                                                    @endif
+                                                                    <input type="file" name="attachment1" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -251,7 +257,13 @@
                                                                         class="text-gray-800  mb-2">Penyata
                                                                         Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="bank_statement"
+                                                                    @if (!empty($financialStatement->attachment2))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment2) }}
+                                                                        </span>
+                                                                    @endif
+                                                                    <input type="file" name="attachment2" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -269,7 +281,13 @@
                                                                         Completion &
                                                                         Compliance (CCC) <span
                                                                             class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="ccc"
+                                                                    @if (!empty($financialStatement->attachment3))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment3) }}
+                                                                        </span>
+                                                                    @endif
+                                                                    <input type="file" name="attachment3" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                     file:me-4 file:py-2 file:px-4
                                                                     file:rounded-s-sm file:border-0
@@ -291,7 +309,13 @@
                                                                         class="text-gray-800 mb-2">Penyata Kewangan Dan
                                                                         Nota Kewangan
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="fin_statement"
+                                                                    @if (!empty($financialStatement->attachment1))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment1) }}
+                                                                        </span>
+                                                                    @endif
+                                                                    <input type="file" name="attachment1" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -304,8 +328,8 @@
                                                             <div class="xl:col-span-6 col-span-12">
                                                                 <x-input-field level="Maklumat" id="institusi"
                                                                     name="attachment1_info" type="select" placeholder=""
-                                                                    :valueList="$parameters['audit_type']"
-                                                                    value={{ $financialStatement->AuditType->prm }} />
+                                                                    :valueList="$parameters['audit_types']"
+                                                                    value="{{ $financialStatement->AuditType->prm }}" />
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
                                                                 <div class="flex flex-col mt-4">
@@ -313,7 +337,13 @@
                                                                         class="text-gray-800  mb-2">Penyata
                                                                         Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="bank_statement"
+                                                                    @if (!empty($financialStatement->attachment2))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment2) }}
+                                                                        </span>
+                                                                    @endif
+                                                                    <input type="file" name="attachment2" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -329,7 +359,13 @@
                                                                     <label for="input3"
                                                                         class="text-gray-800 mb-2">Penyata Penyesuaian Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="ccc"
+                                                                    @if (!empty($financialStatement->attachment3))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment3) }}
+                                                                        </span>
+                                                                    @endif
+                                                                    <input type="file" name="attachment3" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                     file:me-4 file:py-2 file:px-4
                                                                     file:rounded-s-sm file:border-0
@@ -400,13 +436,13 @@
 
                                                         <!-- Action buttons container -->
                                                         <div
-                                                            class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
+                                                            class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                                                             <button type="button" id="save_draft"
-                                                                class="bg-[#6E829F] ti-btn ti-btn-dark btn-wave waves-effect waves-light w-full md:w-auto text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2">
+                                                                class="bg-gray-700 text-white py-2 px-4 rounded-full hover:bg-gray-800 transition-colors text-sm font-medium flex items-center justify-center">
                                                                 Simpan Sebagai Draft
                                                             </button>
                                                             <button type="submit" id="submit"
-                                                                class="bg-[#5C67F7] ti-btn ti-btn-primary btn-wave waves-effect waves-light w-full md:w-auto text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2 cursor-not-allowed">
+                                                                class="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors text-sm font-medium flex items-center justify-center">
                                                                 Hantar
                                                             </button>
                                                         </div>
