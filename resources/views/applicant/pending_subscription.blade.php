@@ -29,7 +29,7 @@
                           {{ optional($user)->state ? ', ' . $user->state : '' }}
                       </p>
 
-                      <a href="#"><span class="fe fe-edit text-blue-500"></span></a>
+                      <a href="{{ route('instituteEdit') }}"><span class="fe fe-edit text-blue-500"></span></a>
                   </div>
 
               </div>

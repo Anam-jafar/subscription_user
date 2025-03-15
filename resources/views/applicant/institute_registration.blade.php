@@ -95,7 +95,7 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Emel (Rasmi)" id="poskod"
                                                                 name="mel" type="text" placeholder=""
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->mel }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
@@ -103,9 +103,10 @@
                                                                     type="text" placeholder="" /> --}}
                                                                 <x-input-field level="Nombor Telefon (Rasmi)" id="poskod"
                                                                     name="hp" type="text" placeholder=""
-                                                                    :required='true' />
+                                                                    :required='true' value="{{ $institute->hp }}" />
                                                                 <x-input-field level="Nombor Fax" id="poskod"
-                                                                    name="fax" type="text" placeholder="" />
+                                                                    name="fax" type="text" placeholder=""
+                                                                    value="{{ $institute->Category->fax }}" />
 
                                                             </div>
                                                         </div>
@@ -125,11 +126,12 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Tarikh Kelulusan Jawatankuasa (JATUMS)"
                                                                 id="institusi" name="rem15" type="date" placeholder=""
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->rem15 }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Website" id="social" name="web"
-                                                                type="text" placeholder="" />
+                                                                type="text" placeholder=""
+                                                                value="{{ $institute->web }}" />
 
                                                         </div>
                                                     </div>
@@ -147,25 +149,29 @@
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Dun" id="institusi" name="rem11"
-                                                                type="text" placeholder="" />
+                                                                type="text" placeholder=""
+                                                                value="{{ $institute->rem11 }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Parlimen" id="institusi" name="rem12"
-                                                                type="text" placeholder="" />
+                                                                type="text" placeholder=""
+                                                                value="{{ $institute->rem12 }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Keluasan Institusi" id="institusi"
-                                                                    name="rem13" type="text" placeholder="" />
+                                                                    name="rem13" type="text" placeholder=""
+                                                                    value="{{ $institute->rem13 }}" />
                                                                 <x-input-field level="Kapasiti Institusi Jemaah"
                                                                     id="institusi" name="rem14" type="text"
-                                                                    placeholder="" />
+                                                                    placeholder="" value="{{ $institute->rem14 }}" />
                                                             </div>
 
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Media Sosial" id="social"
-                                                                name="rem10" type="text" placeholder="" />
+                                                                name="rem10" type="text" placeholder=""
+                                                                value="{{ $institute->rem10 }}" />
 
                                                         </div>
 
@@ -185,17 +191,19 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Alamat (Baris 1)" id="institusi"
                                                                 name="addr" type="text" placeholder=""
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->addr }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Alamat (Baris 2)" id="institusi"
-                                                                name="addr1" type="text" placeholder="" />
+                                                                name="addr1" type="text" placeholder=""
+                                                                value="{{ $institute->addr1 }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Bandar" id="institusi"
                                                                     name="city" type="select" :valueList="$parameters['cities']"
-                                                                    placeholder="Pilih" :required='true' />
+                                                                    placeholder="Pilih" :required='true'
+                                                                    value="{{ $institute->rem11 }}" />
 
                                                                 <x-input-field level="Mukim" id="institusi"
                                                                     name="rem9" type="text" placeholder="Institusi"
@@ -221,13 +229,14 @@
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Poskod" id="poskod" name="pcode"
-                                                                type="text" placeholder="" :required='true' />
+                                                                type="text" placeholder="" :required='true'
+                                                                value="{{ $institute->pcode }}" />
                                                         </div>
 
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Koordinat Institusi" id="institusi"
                                                                 name="location" type="text" placeholder=""
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->location }}" />
                                                         </div>
 
 
@@ -245,22 +254,23 @@
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Nama Pegawai/Wakil Institusi"
                                                                 id="institusi" name="con1" type="text"
-                                                                placeholder="" :required='true' />
+                                                                placeholder="" :required='true'
+                                                                value="{{ $institute->con }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="No. Kad Pengenalan" id="institusi"
                                                                 name="ic" type="text" placeholder=""
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->ic }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Jawatan" id="institusi" name="pos1"
                                                                 type="select" placeholder="pilih" :valueList="$parameters['user_positions']"
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->pos1 }}" />
                                                         </div>
                                                         <div class="xl:col-span-6 col-span-12">
                                                             <x-input-field level="Nombor Telefon" id="institusi"
                                                                 name="tel1" type="text" placeholder=""
-                                                                :required='true' />
+                                                                :required='true' value="{{ $institute->tel1 }}" />
                                                         </div>
 
                                                     </div>
@@ -300,7 +310,8 @@
                                                         (MAIS) BERHAK MENGAMBIL TINDAKAN UNDANG-UNDANG KE ATAS DIRI SAYA.
                                                     </p>
 
-                                                    <button class="ti-btn ti-btn-success opacity-50 cursor-not-allowed"
+                                                    <button
+                                                        class="ti-btn ti-btn-success opacity-50 py-2 px-4 rounded-full cursor-not-allowed w-24"
                                                         type="submit" disabled>
                                                         Hantar
                                                     </button>
