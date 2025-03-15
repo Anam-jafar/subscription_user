@@ -14,16 +14,22 @@
                 <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 mb-8 font-mont">Senarai Laporan Kewangan
                     Institusi</h1>
 
-                <x-page-header :title="''" :breadcrumbs="[
-                    [
-                        'label' => 'Laman Utama',
-                        'url' => route('pendingSubscription', ['id' => Auth::user()->uid]),
-                    ],
-                    ['label' => 'Senarai Penyata'],
-                ]" />
+                <!-- Start::page-header -->
+                <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
+                    <div>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item text-xl font-semibold">
+                                <a href="{{ route('pendingSubscription', ['id' => Auth::user()->uid]) }}">
+                                    Laman Utama
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active text-xl" aria-current="page">Senarai Penyata</li>
+                        </ol>
+                    </div>
 
+                </div>
+                <!-- End::page-header -->
 
-                <x-alert />
 
                 <x-filter-card :filters="[
                     ['name' => 'fin_year', 'label' => 'Tahun Penyata', 'type' => 'select', 'options' => $years],
@@ -35,6 +41,7 @@
                     ],
                 ]" button-label="Daftar Baru" :button-route="route('createStatement', ['id' => Auth::user()->uid])" />
 
+                <x-alert />
 
                 <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['submission_date', 'fin_year', 'CATEGORY', 'status']" :rows="$financialStatements" route="editStatement"
                     secondaryRoute="viewStatement" docIcon="true" />

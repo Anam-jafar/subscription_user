@@ -21,7 +21,9 @@
                         <!-- Title -->
                         <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">PENGHANTARAN LAPORAN
                             KEWANGAN BARU</h1>
-                        <x-alert />
+                        <div class='px-4'>
+                            <x-alert />
+                        </div>
                         <div class="box-body !p-0">
                             <form class="wizard wizard-tab horizontal" id="financial_form" method="POST"
                                 action="{{ route('createStatement', ['id' => $institute->id]) }}"
@@ -240,7 +242,7 @@
                                                                         class="text-gray-800  mb-2">Penyata
                                                                         Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment2"
+                                                                    <input type="file" name="attachment2" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -258,7 +260,7 @@
                                                                         Completion &
                                                                         Compliance (CCC) <span
                                                                             class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment3"
+                                                                    <input type="file" name="attachment3" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                     file:me-4 file:py-2 file:px-4
                                                                     file:rounded-s-sm file:border-0
@@ -280,7 +282,7 @@
                                                                         class="text-gray-800 mb-2">Penyata Kewangan Dan
                                                                         Nota Kewangan
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment1"
+                                                                    <input type="file" name="attachment1" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
