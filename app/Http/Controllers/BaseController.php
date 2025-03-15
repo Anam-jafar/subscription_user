@@ -371,14 +371,9 @@ class BaseController extends Controller
                 // session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
 
 
-                if ($user->subscription_status == 2) {
-                    return redirect()->route('activateSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
-                } elseif ($user->subscription_status == 3) {
-                    return redirect()->route('activatedSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
-                } elseif (in_array($user->subscription_status, [0, 1])) {
-                    return redirect()->route('pendingSubscription', ['id' => $user->uid])
+                    return redirect()->route('home')
                         ->with('success', 'Log Masuk Berjaya');
-                }
+                
         }
 
         return view('login.email_login');
@@ -489,14 +484,8 @@ class BaseController extends Controller
         return view('applicant.activated_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
     }
 
-    public function pendingSubscription(Request $request, $id) 
+    public function home() 
     {
-        if($request->isMethod('post')) {
-            DB::table('client')
-                ->where('uid', $id)
-                ->update(['subscription_status' => 1]);
-            return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!') ; 
-        }
         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
         $user = Auth::user();
         return view('applicant.home', compact(['user', 'currentDateTime']));

@@ -19,7 +19,7 @@
                     <div>
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item text-xl font-semibold">
-                                <a href="{{ route('pendingSubscription', ['id' => Auth::user()->uid]) }}">
+                                <a href="{{ route('home') }}">
                                     Laman Utama
                                 </a>
                             </li>
