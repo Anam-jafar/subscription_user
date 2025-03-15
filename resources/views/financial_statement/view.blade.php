@@ -355,20 +355,9 @@
                                                         <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
 
                                                             <div class="xl:col-span-6 col-span-12">
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800 mb-2">Penyata Kewangan Dan
-                                                                        Nota Kewangan
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment1"
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
-                                                                </div>
+                                                                <x-pdf-download title="Penyata Kewangan Dan Nota Kewangan"
+                                                                    pdfFile="{{ $financialStatement->attachment1 ?? '' }}" />
+
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
                                                                 <x-input-field level="Maklumat" id="institusi"
@@ -377,36 +366,14 @@
                                                                     disabled='true' />
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800  mb-2">Penyata
-                                                                        Bank
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment2"
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
-                                                                </div>
+                                                                <x-pdf-download title="Penyata Bank"
+                                                                    pdfFile="{{ $financialStatement->attachment2 ?? '' }}" />
+
 
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800 mb-2">Penyata Penyesuaian Bank
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment3"
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                    file:me-4 file:py-2 file:px-4
-                                                                    file:rounded-s-sm file:border-0
-                                                                    file:text-sm file:font-semibold
-                                                                    file:bg-primary file:text-white file:h-[3rem]
-                                                                    hover:file:bg-primary focus-visible:outline-none
-                                                                ">
-                                                                </div>
+                                                                <x-pdf-download title="Penyata Penyesuaian Bank"
+                                                                    pdfFile="{{ $financialStatement->attachment3 ?? '' }}" />
                                                             </div>
 
                                                         </div>

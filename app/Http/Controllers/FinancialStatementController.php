@@ -33,10 +33,9 @@ class FinancialStatementController extends Controller
             'total_surplus' => 'nullable',
             'bank_cash_balance' => 'nullable',
             'attachment1_info' => 'nullable',
-            // 'ccc'                 => 'nullable|file|mimes:pdf',
-            // 'bank_statement'      => 'nullable|file|mimes:pdf',
-            // 'bank_reconciliation' => 'nullable|file|mimes:pdf',
-            // 'fin_statement'       => 'nullable|file|mimes:pdf',
+            'attachment1' => 'required|file|mimes:pdf|max:2048',
+            'attachment2' => 'nullable|file|mimes:pdf|max:2048',
+            'attachment3' => 'nullable|file|mimes:pdf|max:2048',
     ];
     
 
@@ -78,24 +77,50 @@ class FinancialStatementController extends Controller
 
     public function create(Request $request, $inst_refno)
     {
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
             $validatedData = $this->validateFinancialStatement($request);
 
-            if($request['draft'] == "true"){
+            if ($request['draft'] == "true") {
                 $validatedData['status'] = 0;
-            
-            }else{
+            } else {
                 $validatedData['status'] = 1;
                 $validatedData['submission_date'] = date('Y-m-d H:i:s');
             }
-            $financialStatement = FinancialStatement::create($validatedData);
 
-            if($financialStatement){
-                return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
+            $fileFields = ['attachment1', 'attachment2', 'attachment3'];
+            $attachmentData = [];
+
+            // Define the absolute storage path outside the Laravel app directory
+            $storagePath = base_path('../static_files/fin_statement_attachments');
+
+            // Ensure the directory exists
+            if (!file_exists($storagePath)) {
+                mkdir($storagePath, 0777, true);
             }
 
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    $file = $request->file($field);
 
+                    // Create unique filename
+                    $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
+
+                    // Move the file to the external directory
+                    $file->move($storagePath, $filename);
+
+                    // Save the file path (relative to project root)
+                    $attachmentData[$field] = '../static_files/fin_statement_attachments/' . $filename;
+                }
+            }
+
+            $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
+
+            if ($financialStatement) {
+                return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
+            }
         }
+
+
         $institute = Institute::where('uid', $inst_refno)->first();
         $instituteType = $institute->Category->lvl;
         $currentYear = date('Y');
