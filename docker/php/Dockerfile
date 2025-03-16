@@ -60,5 +60,10 @@ RUN npm run build
 # Set final permissions
 RUN chown -R www-data:www-data /var/www/html
 
+RUN mkdir -p /var/www/static_files/fin_statement_attachments \
+    && chown -R www-data:www-data /var/www/static_files
+
+
+
 # Start PHP-FPM instead of Vite dev server (for production)
 CMD ["php-fpm"]

@@ -91,7 +91,7 @@ class FinancialStatementController extends Controller
             $attachmentData = [];
 
             // Define the absolute storage path outside the Laravel app directory
-            $storagePath = base_path('../static_files/fin_statement_attachments');
+            $storagePath = '/var/www/static_files/fin_statement_attachments';
 
             // Ensure the directory exists
             if (!file_exists($storagePath)) {
@@ -109,7 +109,7 @@ class FinancialStatementController extends Controller
                     $file->move($storagePath, $filename);
 
                     // Save the file path (relative to project root)
-                    $attachmentData[$field] = '../static_files/fin_statement_attachments/' . $filename;
+                    $attachmentData[$field] = '/var/www/static_files/fin_statement_attachments/' . $filename;
                 }
             }
 

@@ -1,6 +1,6 @@
 @php
     // Define the absolute file path
-    $storageFilePath = $pdfFile ? base_path('../static_files/fin_statement_attachments/' . basename($pdfFile)) : '';
+    $storageFilePath = $pdfFile ? '/var/www/static_files/fin_statement_attachments/' . basename($pdfFile) : '';
 
     // Check if the file exists
     $fileExists = $storageFilePath && file_exists($storageFilePath);

@@ -8,6 +8,8 @@ services:
         container_name: mais_subscription_app
         volumes:
             - .:/var/www/html
+            - /home/static_files:/var/www/static_files
+
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
 
