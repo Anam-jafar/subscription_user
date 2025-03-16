@@ -101,14 +101,14 @@ class FinancialStatementController extends Controller
             foreach ($fileFields as $field) {
                 if ($request->hasFile($field)) {
                     $file = $request->file($field);
-
+                    
                     // Create unique filename
                     $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
-
+                    
                     // Move the file to the external directory
                     $file->move($storagePath, $filename);
-
-                    // Save the file path (relative to project root)
+                    
+                    // Save the file path (absolute path)
                     $attachmentData[$field] = '/var/www/static_files/fin_statement_attachments/' . $filename;
                 }
             }

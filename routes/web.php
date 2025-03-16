@@ -141,14 +141,12 @@ use Illuminate\Http\Request;
     // });
 
 
-    Route::get('/download/{filename}', function ($filename) {
-        $path = "fin_statement_attachments/" . $filename;
-
-        if (Storage::disk('public')->exists($path)) {
-            return response()->download(storage_path("app/public/" . $path));
+    Route::get('/download/attachment/{filename}', function ($filename) {
+        $path = '/var/www/static_files/fin_statement_attachments/' . $filename;
+        if (file_exists($path)) {
+            return response()->file($path);
         }
-
-        return abort(404);
+        abort(404);
     })->name('download.attachment');
 
 

@@ -60,8 +60,10 @@ RUN npm run build
 # Set final permissions
 RUN chown -R www-data:www-data /var/www/html
 
+# Add this near the end of your Dockerfile, before the CMD
 RUN mkdir -p /var/www/static_files/fin_statement_attachments \
-    && chown -R www-data:www-data /var/www/static_files
+    && chown -R www-data:www-data /var/www/static_files \
+    && chmod -R 775 /var/www/static_files
 
 
 
