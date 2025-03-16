@@ -57,7 +57,7 @@
         <div
             class="min-h-screen flex items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
             <div
-                class="w-full min-h-screen md:min-h-[70vh] lg:max-w-5xl  space-y-8 relative overflow-hidden lg:rounded-xl">
+                class="w-5xl min-h-screen md:min-h-[70vh] lg:max-w-5xl  space-y-8 relative overflow-hidden lg:rounded-xl">
 
 
                 <!-- Content container -->

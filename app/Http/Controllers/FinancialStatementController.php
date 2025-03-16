@@ -200,7 +200,9 @@ class FinancialStatementController extends Controller
     {
         $perPage = $request->input('per_page', 10);
 
-        $query = $this->applyFilters(FinancialStatement::query(), $request);
+        $query = FinancialStatement::where('inst_refno', Auth::user()->uid);
+
+        $query = $this->applyFilters($query, $request);
 
         $financialStatements = $query
             ->orderBy('id', 'desc')
