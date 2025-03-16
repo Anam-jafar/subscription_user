@@ -56,7 +56,7 @@
 
         <div
             class="min-h-screen flex items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
-            <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-7xl  space-y-8 relative overflow-hidden">
+            <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-5xl  space-y-8 relative overflow-hidden">
 
                 <!-- White overlay with blur - only visible on large screens -->
                 {{-- <div class="absolute inset-0 backdrop-blur-md bg-white/60 lg:block lg:rounded-2xl"></div> --}}
