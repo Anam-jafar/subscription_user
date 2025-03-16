@@ -94,10 +94,16 @@ use Illuminate\Http\Request;
         Route::match(['get', 'post'], '/statement/view/{id}', [FinancialStatementController::class, 'view'])->name('viewStatement');
 
 
-
-
+        Route::get('/download/attachment/{filename}', function ($filename) {
+            $path = '/var/www/static_files/fin_statement_attachments/' . $filename;
+            if (file_exists($path)) {
+                return response()->file($path);
+            }
+            abort(404);
+        })->name('download.attachment');
 
     });
+
     
 
     
@@ -141,13 +147,7 @@ use Illuminate\Http\Request;
     // });
 
 
-    Route::get('/download/attachment/{filename}', function ($filename) {
-        $path = '/var/www/static_files/fin_statement_attachments/' . $filename;
-        if (file_exists($path)) {
-            return response()->file($path);
-        }
-        abort(404);
-    })->name('download.attachment');
+
 
 
 
