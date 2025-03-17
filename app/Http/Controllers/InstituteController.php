@@ -48,6 +48,7 @@ class InstituteController extends Controller
 
     public function edit(Request $request)
     {
+        $id = Auth::user()->id;
         $institute = Institute::with('type', 'category', 'City', 'subdistrict', 'district')->find($id);
 
         if ($request->isMethod('post')) {

@@ -188,7 +188,7 @@ class FinancialStatementController extends Controller
         // }
 
         $financialStatement = FinancialStatement::find($id);
-        $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
+        $institute = Institute::with('UserPosition')->where('uid', $financialStatement->inst_refno)->first();
         $instituteType = $institute->Category->lvl;
         $currentYear = date('Y');
         $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));

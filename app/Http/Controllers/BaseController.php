@@ -488,6 +488,12 @@ class BaseController extends Controller
     {
         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
         $user = Auth::user();
+        $user->CITY= DB::table('type')
+            ->where('code', $user->city)
+            ->value('prm');
+        $user->STATE= DB::table('type')
+            ->where('code', $user->state)
+            ->value('prm');
         return view('applicant.home', compact(['user', 'currentDateTime']));
     }
 
