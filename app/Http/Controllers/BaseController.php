@@ -284,7 +284,7 @@ class BaseController extends Controller
                 DB::table('client')
                     ->where('mel', $email)
                     ->update(['subscription_status' => 1,
-                        'rem8' => now()->format('Y-m-d')
+                        'rem6' => now()->format('Y-m-d')
                 ]);  
 
                 return redirect()->route('fillOtp', ['email' => $email])->with('success', 'OTP verified successfully.');
@@ -505,7 +505,7 @@ class BaseController extends Controller
             ->where('uid', $id)
             ->update([
                 'subscription_status' => 1,
-                'rem8' => now()->format('Y-m-d') // Updates rem8 with today's date
+                'rem6' => now()->format('Y-m-d') 
             ]);
 
         return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!');
