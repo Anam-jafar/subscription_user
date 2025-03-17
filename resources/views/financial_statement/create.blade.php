@@ -36,7 +36,7 @@
                                         <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
-                                                    @if ($instituteType == 2)
+                                                    @if ($instituteType == 1)
                                                         <div class="sm:gap-x-6 gap-y-4">
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
@@ -56,11 +56,11 @@
 
 
 
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                                 <p class="text-gray-800 font-medium">A. Maklumat Pembinaan
                                                                 </p>
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                             </div>
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
@@ -75,10 +75,10 @@
                                                                     :required="true" />
                                                             </div>
 
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                                 <p class="text-gray-800 font-medium">B. Jumlah Kutipan</p>
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Kutipan Semasa (RM)"
@@ -91,11 +91,11 @@
                                                                     :required="true" />
                                                             </div>
 
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                                 <p class="text-gray-800 font-medium">C. Jumlah Perbelanjaan
                                                                 </p>
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Pindahan Kepada PWS (RM)"
@@ -117,10 +117,10 @@
                                                             </div>
                                                             <div class="xl:col-span-6 col-span-12">
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                                 <p class="text-gray-800 font-medium">D. Jumlah Lebihan</p>
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="xl:col-span-6 col-span-12 mt-4">
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Lebihan Masjid/Surau (RM)"
@@ -314,8 +314,8 @@
                                                     </div>
                                                     <div class="grid grid-cols-1 gap-x-16 gap-y-2 max-w-3xl mt-8">
 
-                                                        <x-show-key-value :key="'Nama Pengawal / Wakil Institusi'" :value="$institute->name" />
-                                                        <x-show-key-value :key="'Jawatan'" :value="$institute->pos1" />
+                                                        <x-show-key-value :key="'Nama Pengawal / Wakil Institusi'" :value="$institute->con1" />
+                                                        <x-show-key-value :key="'Jawatan'" :value="$institute->UserPosition->prm" />
                                                         <x-show-key-value :key="'No. H/P'" :value="$institute->hp" />
                                                         <x-show-key-value :key="'Emel'" :value="$institute->mel" />
 
