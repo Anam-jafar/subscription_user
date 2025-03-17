@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\FinancialStatement;
+use App\Models\Parameter;
 use App\Models\Institute;
 
 class FinancialStatementController extends Controller
@@ -43,21 +44,16 @@ class FinancialStatementController extends Controller
         return Validator::make($request->all(), $rules)->validate();
     }
 
-    private function generateUniqueUid()
+    private function generateUniqueSubmissionRefno($year, $month, $day, $instituteType)
     {
-        $lastUid = DB::table('client')->orderBy('uid', 'desc')->value('uid');
+        $instituteType = strtoupper($instituteType);
+        $count = DB::table('splk_submission')->count() + 1;
+        $uniqueNumber = str_pad($count, 6, '0', STR_PAD_LEFT);
+        $newRefNo = "i-STATEMENT/{$instituteType}/{$year}/{$month}/{$day}/{$uniqueNumber}";
 
-        $numericPart = intval(substr($lastUid, 1)) ?? 0;
-
-        do {
-            $numericPart++;
-            $newUid = 'C' . str_pad($numericPart, 5, '0', STR_PAD_LEFT);
-            $exists = DB::table('client')->where('uid', $newUid)->exists();
-
-        } while ($exists); 
-
-        return $newUid;
+        return $newRefNo;
     }
+
 
     private function applyFilters($query, Request $request)
     {
@@ -86,15 +82,15 @@ class FinancialStatementController extends Controller
             } else {
                 $validatedData['status'] = 1;
                 $validatedData['submission_date'] = date('Y-m-d H:i:s');
+                $institute = Institute::with('Type')->where('uid', $validatedData['inst_refno'])->first();
+                $validatedData['submission_refno'] = $this->generateUniqueSubmissionRefno(date('Y'), date('m'), date('d'), $institute->Type->prm);
             }
 
             $fileFields = ['attachment1', 'attachment2', 'attachment3'];
             $attachmentData = [];
 
-            // Define the absolute storage path outside the Laravel app directory
             $storagePath = '/var/www/static_files/fin_statement_attachments';
 
-            // Ensure the directory exists
             if (!file_exists($storagePath)) {
                 mkdir($storagePath, 0777, true);
             }
@@ -102,14 +98,8 @@ class FinancialStatementController extends Controller
             foreach ($fileFields as $field) {
                 if ($request->hasFile($field)) {
                     $file = $request->file($field);
-                    
-                    // Create unique filename
                     $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
-                    
-                    // Move the file to the external directory
                     $file->move($storagePath, $filename);
-                    
-                    // Save the file path (absolute path)
                     $attachmentData[$field] = '/var/www/static_files/fin_statement_attachments/' . $filename;
                 }
             }
@@ -188,13 +178,16 @@ class FinancialStatementController extends Controller
         // }
 
         $financialStatement = FinancialStatement::find($id);
+        $verifiedBy = DB::table('usr')->where('uid', $financialStatement->verified_by)->first();
+        $verifiedBy = $verifiedBy->name ?? null;
         $institute = Institute::with('UserPosition')->where('uid', $financialStatement->inst_refno)->first();
         $instituteType = $institute->Category->lvl;
         $currentYear = date('Y');
         $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
 
+
         $parameters = $this->getCommon();
-        return view('financial_statement.view', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
+        return view('financial_statement.view', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement', 'verifiedBy']));
     }
 
     public function list(Request $request)
