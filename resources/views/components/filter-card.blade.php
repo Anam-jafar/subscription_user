@@ -19,9 +19,9 @@
                 </div>
             @elseif ($filter['type'] === 'select')
                 <!-- Select Input -->
-                <div class="w-full lg:max-w-[14rem]">
+                <div class="w-full lg:w-auto">
                     <select id="{{ $filter['name'] }}" name="{{ $filter['name'] }}"
-                        class="ti-form-select rounded-sm py-2 px-3 w-full" onchange="this.form.submit()">
+                        class="ti-form-select rounded-sm py-2 pr-3 w-full" onchange="this.form.submit()">
                         <option value="" {{ request($filter['name']) == '' ? 'selected' : '' }}>
                             {{ $filter['label'] }}
                         </option>

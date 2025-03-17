@@ -24,9 +24,9 @@
 
                       <p class="font-semibold">
                           {{ $user->name }} <br>
-                          {{ optional($user)->addr ? ', ' . $user->addr : '' }}
-                          {{ optional($user)->city ? ', ' . $user->city : '' }}
-                          {{ optional($user)->state ? ', ' . $user->state : '' }}
+                          {{ optional($user)->addr ? $user->addr : '' }}
+                          {{ optional($user)->city ? ', ' . $user->CITY : '' }}
+                          {{ optional($user)->state ? ', ' . $user->STATE : '' }}
                       </p>
 
                       <a href="{{ route('instituteEdit') }}"><span class="fe fe-edit text-blue-500"></span></a>
@@ -45,10 +45,10 @@
                   </div>
 
                   <!-- Right side -->
-                  <div class="space-y-3 w-full md:w-[400px]">
+                  <div class="space-y-3 w-full md:w-1/2">
                       <!-- Record Button -->
                       <a href="{{ route('statementList') }}"
-                          class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors w-full md:w-auto">
+                          class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors w-full md:w-auto mb-4">
                           <img src="{{ asset('subscription/assets/icons/subscription_statement_list.svg') }}" alt="PDF Icon"
                               class="w-10 h-10 mr-3" />
                           <span class="font-semibold">REKOD PENGHANTARAN</span>
@@ -82,7 +82,7 @@
                   </div>
 
                   <!-- Right side -->
-                  <div class="space-y-3 w-full md:w-[400px]">
+                  <div class="space-y-3 w-full md:w-1/2">
                       @if ($user->subscription_status == 0)
                           <a href="{{ route('requestSubscription', ['id' => $user->uid]) }}"
                               class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto">
@@ -146,17 +146,17 @@
 
 
 
-              <div class="flex justify-center">
-
+              <div class="w-full flex justify-center">
                   <form id="logout-form" action="{{ route('subscriptionLogout') }}" method="POST">
                       @csrf
                       <button type="submit"
-                          class="w-[24rem] bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-semibold flex items-center justify-center">
+                          class="w-1/2 bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-semibold flex items-center justify-center">
                           Keluar
                           <span class="fe fe-log-out text-2xl ml-4"></span>
                       </button>
                   </form>
               </div>
+
 
 
           </div>

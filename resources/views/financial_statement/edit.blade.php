@@ -148,7 +148,7 @@
                                                         </div>
                                                     @else
                                                         <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
                                                                         name="fin_year" type="select" placeholder="Year"
@@ -159,11 +159,7 @@
                                                                         name="fin_category" type="select"
                                                                         placeholder="Pilih" :valueList="$parameters['statements']"
                                                                         value="{{ $financialStatement->fin_category }}" />
-
                                                                 </div>
-
-                                                            </div>
-                                                            <div class="xl:col-span-6 col-span-12">
                                                                 <x-input-field level="(a) Baki Bawa Ke Hadapan (RM)"
                                                                     id="balance_forward" name="balance_forward"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
@@ -171,24 +167,21 @@
                                                                     value="{{ $financialStatement->balance_forward }}" />
 
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(b) Jumlah Kutipan (RM)"
                                                                     id="total_collection" name="total_collection"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
                                                                     :required="true"
                                                                     value="{{ $financialStatement->total_collection }}" />
-
-                                                            </div>
-                                                            <div class="xl:col-span-6 col-span-12">
-
                                                                 <x-input-field level="(c) Jumlah Perbelanjaan (RM)"
                                                                     id="total_expenses" name="total_expenses"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
                                                                     :required="true"
                                                                     value="{{ $financialStatement->total_expenses }}" />
-
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <x-input-field
                                                                     level="Jumlah Pendapatan (Auto Calculate, RM)"
                                                                     id="total_income" name="total_income" type="number"
@@ -196,16 +189,15 @@
                                                                     :required="true" :readonly="true"
                                                                     value="{{ $financialStatement->total_income }}" />
 
-                                                            </div>
-                                                            <div class="xl:col-span-6 col-span-12">
-
                                                                 <x-input-field level="Jumlah Lebihan (Auto Calculate, RM)"
                                                                     id="total_surplus" name="total_surplus"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
                                                                     :required="true" :readonly="true"
                                                                     value="{{ $financialStatement->total_surplus }}" />
+
                                                             </div>
-                                                            <div class="xl:col-span-6 col-span-12">
+
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                                                                 <x-input-field level="Maklumat Baki Bank Dan Tunai (RM)"
                                                                     id="i6" name="bank_cash_balance"
@@ -301,21 +293,45 @@
 
                                                         </div>
                                                     @else
-                                                        <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+                                                        <div class="sm:gap-x-6 gap-y-4">
 
-                                                            <div class="xl:col-span-6 col-span-12">
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
                                                                     <label for="input3"
                                                                         class="text-gray-800 mb-2">Penyata Kewangan Dan
                                                                         Nota Kewangan
                                                                         <span class="text-red-500 ">*</span></label>
+
+                                                                    <input type="file" name="attachment1"
+                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
+                                                                            file:me-4 file:py-2 file:px-4
+                                                                            file:rounded-s-sm file:border-0
+                                                                            file:text-sm file:font-semibold
+                                                                            file:bg-primary file:text-white file:h-[3rem]
+                                                                            hover:file:bg-primary focus-visible:outline-none
+                                                                    ">
                                                                     @if (!empty($financialStatement->attachment1))
                                                                         <span class="text-xs text-gray-600 mb-1 italic">
                                                                             Current file:
                                                                             {{ basename($financialStatement->attachment1) }}
                                                                         </span>
                                                                     @endif
-                                                                    <input type="file" name="attachment1" required
+                                                                </div>
+                                                                <x-input-field level="Maklumat" id="institusi"
+                                                                    name="attachment1_info" type="select" placeholder=""
+                                                                    :valueList="$parameters['audit_types']"
+                                                                    value="{{ $financialStatement->AuditType->prm }}" />
+
+                                                            </div>
+
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="input3"
+                                                                        class="text-gray-800  mb-2">Penyata
+                                                                        Bank
+                                                                        <span class="text-red-500 ">*</span></label>
+
+                                                                    <input type="file" name="attachment2"
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -323,49 +339,19 @@
                                                                             file:bg-primary file:text-white file:h-[3rem]
                                                                             hover:file:bg-primary focus-visible:outline-none
                                                                     ">
-                                                                </div>
-                                                            </div>
-                                                            <div class="xl:col-span-6 col-span-12">
-                                                                <x-input-field level="Maklumat" id="institusi"
-                                                                    name="attachment1_info" type="select" placeholder=""
-                                                                    :valueList="$parameters['audit_types']"
-                                                                    value="{{ $financialStatement->AuditType->prm }}" />
-                                                            </div>
-                                                            <div class="xl:col-span-6 col-span-12">
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800  mb-2">Penyata
-                                                                        Bank
-                                                                        <span class="text-red-500 ">*</span></label>
                                                                     @if (!empty($financialStatement->attachment2))
                                                                         <span class="text-xs text-gray-600 mb-1 italic">
                                                                             Current file:
                                                                             {{ basename($financialStatement->attachment2) }}
                                                                         </span>
                                                                     @endif
-                                                                    <input type="file" name="attachment2" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
                                                                 </div>
-
-                                                            </div>
-                                                            <div class="xl:col-span-6 col-span-12">
                                                                 <div class="flex flex-col mt-4">
                                                                     <label for="input3"
                                                                         class="text-gray-800 mb-2">Penyata Penyesuaian Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    @if (!empty($financialStatement->attachment3))
-                                                                        <span class="text-xs text-gray-600 mb-1 italic">
-                                                                            Current file:
-                                                                            {{ basename($financialStatement->attachment3) }}
-                                                                        </span>
-                                                                    @endif
-                                                                    <input type="file" name="attachment3" required
+
+                                                                    <input type="file" name="attachment3"
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                     file:me-4 file:py-2 file:px-4
                                                                     file:rounded-s-sm file:border-0
@@ -373,10 +359,15 @@
                                                                     file:bg-primary file:text-white file:h-[3rem]
                                                                     hover:file:bg-primary focus-visible:outline-none
                                                                 ">
+                                                                    @if (!empty($financialStatement->attachment3))
+                                                                        <span class="text-xs text-gray-600 mb-1 italic">
+                                                                            Current file:
+                                                                            {{ basename($financialStatement->attachment3) }}
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
+
                                                             </div>
-
-
                                                         </div>
                                                     @endif
                                                 </div>
@@ -406,7 +397,7 @@
                                                     <input type="hidden" name="inst_refno"
                                                         value="{{ $institute->uid }}">
 
-                                                    <label class="flex items-center mt-8">
+                                                    <label class="flex items-start md:items-center mt-8">
                                                         <input type="checkbox" id="myCheckbox"
                                                             class="mr-5 w-3 h-3 border-2 border-black rounded-xs outline outline-1 outline-black focus:outline-4">
                                                         <span
@@ -417,7 +408,7 @@
                                                     </label>
 
 
-                                                    <p class="font-semibold pl-8 mt-4 mb-4 text-left text-[0.875rem]">
+                                                    <p class="font-semibold md:pl-8 mt-4 mb-4 text-left text-[0.875rem]">
                                                         SEGALA MAKLUMAT DAN LAMPIRAN YANG DIBERIKAN ADALAH BENAR DAN SAYA
                                                         BERTANGGUNGJAWAB DI ATAS MAKLUMAT YANG
                                                         DIBERIKAN INI. JIKA TERDAPAT MAKLUMAT PALSU YANG DIBERIKAN OLEH
@@ -428,7 +419,7 @@
                                                         class="flex flex-col md:flex-row justify-between mt-8 space-y-3 md:space-y-0">
                                                         <!-- Back button -->
                                                         <a href="{{ route('statementList') }}"
-                                                            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center">
+                                                            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center mb-4 md:mb-0">
                                                             <span
                                                                 class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
                                                             Senarai Penghantaran
@@ -438,14 +429,15 @@
                                                         <div
                                                             class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                                                             <button type="button" id="save_draft"
-                                                                class="bg-gray-700 text-white py-2 px-4 rounded-full hover:bg-gray-800 transition-colors text-sm font-medium flex items-center justify-center">
-                                                                Simpan Sebagai Draft
+                                                                class="w-full md:w-40 bg-gray-700 text-white py-2 px-4 rounded-full hover:bg-gray-800 transition-colors text-sm font-medium flex items-center justify-center mr-3">
+                                                                Simpan Draft
                                                             </button>
                                                             <button type="submit" id="submit"
-                                                                class="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors text-sm font-medium flex items-center justify-center">
+                                                                class="w-full md:w-40 bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors text-sm font-medium flex items-center justify-center">
                                                                 Hantar
                                                             </button>
                                                         </div>
+
                                                     </div>
 
                                                 </div>

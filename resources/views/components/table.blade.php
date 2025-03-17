@@ -1,4 +1,4 @@
-<div class="overflow-auto sm:p-2">
+<div class="overflow-auto sm:p-2 min-h-[55vh]">
     <table class="min-w-full divide-y divide-gray-200 mt-4 border-separate border-spacing-y-4"
         style="table-layout: fixed;">
         <thead>

@@ -30,6 +30,25 @@
 
     <!-- APP CSS -->
     @vite(['resources/css/app.css'], 'subscription/build')
+    <style>
+        @media (min-width: 1024px) {
+            .custom-width-container {
+                width: 70% !important;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        .custom-height-container {
+            min-height: 100vh !important;
+        }
+
+        @media (min-width: 768px) {
+            .custom-height-container {
+                min-height: 70vh !important;
+            }
+        }
+    </style>
 
 
 
@@ -56,11 +75,7 @@
 
         <div
             class="min-h-screen flex items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
-            <div class="w-full min-h-screen md:min-h-[70vh] lg:max-w-5xl  space-y-8 relative overflow-hidden">
-
-                <!-- White overlay with blur - only visible on large screens -->
-                {{-- <div class="absolute inset-0 backdrop-blur-md bg-white/60 lg:block lg:rounded-2xl"></div> --}}
-
+            <div class="w-full custom-height-container custom-width-container space-y-8 relative overflow-hidden">
                 <!-- Content container -->
                 @yield('content')
             </div>

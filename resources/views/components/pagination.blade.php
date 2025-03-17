@@ -1,14 +1,10 @@
 <div class="grid justify-center sm:flex sm:justify-between sm:items-center gap-4 flex-wrap mt-6">
     <div class="p-2 sm:p-2">
-        <p class="text-sm text-gray-700">
-            Menunjukkan
-            <span class="font-medium">{{ $items->firstItem() }}</span>
-            hingga
-            <span class="font-medium">{{ $items->lastItem() }}</span>
-            daripada
-            <span class="font-medium">{{ $items->total() }}</span>
-            {{ Str::plural($label, $items->total()) }}
-        </p>
+        <a href="{{ route('home') }}"
+            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center mb-4 md:mb-0">
+            <span class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
+            Laman Utama
+        </a>
     </div>
     <div class="flex items-center space-x-4">
         <nav class="flex items-center gap-x-1">
