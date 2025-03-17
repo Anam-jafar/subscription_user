@@ -84,7 +84,8 @@
                   <!-- Right side -->
                   <div class="space-y-3 w-full md:w-1/2">
                       @if ($user->subscription_status == 0)
-                          <a href="{{ route('requestSubscription', ['id' => $user->uid]) }}"
+                          <a href="javascript:void(0);"
+                              onclick="document.getElementById('successModal').style.display='flex'"
                               class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto">
                               <img src="{{ asset('subscription/assets/icons/subscription_icon.svg') }}" alt="PDF Icon"
                                   class="w-10 h-10 mr-3" />
@@ -92,6 +93,39 @@
                                   <span class="font-semibold text-sm">LANGAAN SEKARANG</span>
                               </div>
                           </a>
+
+                          <!-- Success Modal -->
+                          <div id="successModal"
+                              class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-40 z-50">
+                              <div class="bg-white rounded-xl shadow-lg p-6 max-w-3xl w-full text-center relative">
+                                  <!-- Close Button -->
+                                  <button onclick="document.getElementById('successModal').style.display='none'"
+                                      class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 text-3xl p-3">
+                                      &times;
+                                  </button>
+
+                                  <!-- Modal Title -->
+                                  <h2 class="text-green-600 text-lg font-semibold mb-2 text-start">
+                                      Permintaan Untuk Langganan!
+                                  </h2>
+                                  <hr>
+
+                                  <!-- Modal Content -->
+                                  <p class="text-black text-xs mt-4 mb-8">
+                                      Adakah anda pasti mahu memohon langganan?
+                                  </p>
+                                  <hr>
+
+                                  <!-- Action Buttons -->
+                                  <div class="flex justify-end">
+                                      <button
+                                          onclick="window.location.href='{{ route('requestSubscription', ['id' => $user->uid]) }}'"
+                                          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mt-2">
+                                          Ya, Mohon Langganan
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
                       @elseif ($user->subscription_status == 1)
                           <p class="text-left text-md font-semibold mt-1">Setelah Admin meluluskan permintaan langganan
                               anda. Anda akan dimaklumkan.</p>
