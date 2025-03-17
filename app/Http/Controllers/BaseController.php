@@ -283,7 +283,9 @@ class BaseController extends Controller
                 Mail::to($email)->send(new ApplicationConfirmation());
                 DB::table('client')
                     ->where('mel', $email)
-                    ->update(['subscription_status' => 1]);  
+                    ->update(['subscription_status' => 1,
+                        'rem8' => now()->format('Y-m-d')
+                ]);  
 
                 return redirect()->route('fillOtp', ['email' => $email])->with('success', 'OTP verified successfully.');
             } else {
@@ -501,9 +503,14 @@ class BaseController extends Controller
     {
         DB::table('client')
             ->where('uid', $id)
-            ->update(['subscription_status' => 1]);
-        return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!') ; 
+            ->update([
+                'subscription_status' => 1,
+                'rem8' => now()->format('Y-m-d') // Updates rem8 with today's date
+            ]);
+
+        return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!');
     }
+
 
 
     public function logout()
