@@ -67,7 +67,7 @@
                                                                 <x-show-key-value :key="'Sebab Pembatalan'" :value="$financialStatement->suggestion_adm" />
                                                             @endif
                                                         @endif
-                                                        <x-show-key-value :key="'Disahkan Oleh'" :value="$financialStatement->verified_by" />
+                                                        <x-show-key-value :key="'Disahkan Oleh'" :value="$verifiedBy" />
                                                         <x-show-key-value :key="'Disahkan Di'" :value="$financialStatement->verified_at" />
                                                     </div>
 
