@@ -6,7 +6,7 @@
         <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID</h1>
 
 
     <div class="max-w-md mx-auto space-y-6">
@@ -18,7 +18,7 @@
         <!-- Subtitle -->
         <div class="text-center space-y-1">
             <h2 class="text-black text-lg">Cari / Pilih Institusi Anda</h2>
-            <p class="text-black font-normal">Carian Manual</p>
+            <p class="text-black font-normal">Carian Kata Kunci</p>
         </div>
 
         <form action="{{ route('instituteCheck') }}" method="POST" class="space-y-8 p-4 lg:p-0">
@@ -84,7 +84,7 @@
 
             <!-- Submit Button -->
             <button
-                class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4 shadow-lg">
+                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-full hover:bg-indigo-700 transition-colors text-lg font-medium mt-4 shadow-lg">
                 Semak
             </button>
         </form>
@@ -177,22 +177,25 @@
                     .then(response => response.json())
                     .then(data => {
                         cityResults.innerHTML = "";
-                        if (data.length === 0) {
+                        if (Object.keys(data).length === 0) {
                             cityResults.appendChild(createNoRecordItem());
                             cityResults.classList.remove("hidden");
                             return;
                         }
 
-                        data.forEach(city => {
-                            if (query === "" || city.toLowerCase().includes(query.toLowerCase())) {
+                        Object.entries(data).forEach(([code,
+                            prm
+                        ]) => { // 🔹 Using prm for display, code as value
+                            if (query === "" || prm.toLowerCase().includes(query.toLowerCase())) {
                                 const item = document.createElement("div");
                                 item.classList.add("p-2", "hover:bg-gray-200", "cursor-pointer",
                                     "text-gray-800");
-                                item.textContent = city;
+                                item.textContent = prm;
+                                item.dataset.code = code; // 🔹 Store the code value
 
                                 item.addEventListener("click", function() {
-                                    cityInput.value = city;
-                                    selectedCity = city;
+                                    cityInput.value = prm; // Display prm
+                                    selectedCity = code; // Store code for API request
                                     cityResults.innerHTML = "";
                                     cityResults.classList.add("hidden");
                                     fetchAndShowInstitutesByCity();
@@ -207,6 +210,7 @@
                     .catch(error => console.error("Error fetching cities:", error));
             }
 
+
             // ✅ Fetch Institutes Based on City and Search Query (Trigger on Focus and Input)
             instituteInput.addEventListener("focus", fetchAndShowInstitutesByCity);
             instituteInput.addEventListener("input", fetchAndShowInstitutesByCity);
@@ -216,7 +220,7 @@
 
                 const query = instituteInput.value.trim();
 
-                fetch(`get-institutes?city=${selectedCity}&search=${query}`)
+                fetch(`get-institutes?city=${selectedCity}&search=${query}`) // 🔹 Use selectedCity (code)
                     .then(response => response.json())
                     .then(data => {
                         instituteResults.innerHTML = "";
@@ -248,6 +252,7 @@
                     })
                     .catch(error => console.error("Error fetching institutes:", error));
             }
+
 
             // ✅ Close dropdowns when clicking outside
             document.addEventListener("click", function(event) {

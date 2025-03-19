@@ -2,15 +2,12 @@
 
 @section('content')
     <!-- Logo -->
+    <!-- Logo -->
     <div class="flex justify-center">
-        <img src="{{ asset('subscription/assets/icons/subscription_logo.svg') }}" alt="MAIS Logo" class="w-24 h-24" />
+        <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
-
     <!-- Title -->
-    <h1 class="text-center text-3xl font-semibold text-[#2624D0] flex items-center justify-center gap-2">
-        <img src="{{ asset('subscription/assets/icons/subscription_login_blue.svg') }}" alt="MAIS Logo" class="w-10 h-10" />
-        Log Masuk
-    </h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID</h1>
     <x-alert />
 
     <div class="max-w-md mx-auto space-y-6">

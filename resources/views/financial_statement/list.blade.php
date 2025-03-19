@@ -26,7 +26,7 @@
                         'type' => 'select',
                         'options' => $parameters['statements'],
                     ],
-                ]" button-label="Daftar Baru" :button-route="route('createStatement', ['id' => Auth::user()->uid])" />
+                ]" button-label="Hantar Baru" :button-route="route('createStatement', ['id' => Auth::user()->uid])" />
 
 
                 <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['submission_date', 'fin_year', 'CATEGORY', 'status']" :rows="$financialStatements" route="editStatement"

@@ -293,7 +293,7 @@
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <x-pdf-download title="Penyata Kewangan Dan Nota Kewangan"
                                                                     pdfFile="{{ $financialStatement->attachment1 ?? '' }}" />
-                                                                <x-input-field level="Maklumat" id="institusi"
+                                                                <x-input-field level="Jenis Pengauditan" id="institusi"
                                                                     name="attachment1_info" type="text" placeholder=""
                                                                     value="{{ $financialStatement->AuditType->prm }}"
                                                                     disabled='true' />

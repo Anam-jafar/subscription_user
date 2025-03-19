@@ -127,12 +127,13 @@ class BaseController extends Controller
 
         return response()->json($clients);
     }
+
     public function getCities()
     {
         try {
-            $cities = DB::table('client')
-                ->distinct()
-                ->pluck('city');
+            $cities = DB::table('type')
+                ->where('grp', 'district')
+                ->pluck('prm', 'code'); // Fetch prm as display text and code as the key
 
             return response()->json($cities);
         } catch (\Exception $e) {
@@ -141,26 +142,27 @@ class BaseController extends Controller
     }
 
     public function getInstitutesByCity(Request $request)
-    {
-        try {
-            $request->validate([
-                'city' => 'required|string|min:1',
-                'search' => 'nullable|string|min:1'
-            ]);
+{
+    try {
+        $request->validate([
+            'city' => 'required|string|min:1',
+            'search' => 'nullable|string|min:1'
+        ]);
 
-            $query = DB::table('client')->where('city', $request->city);
+        $query = DB::table('client')->where('rem8', $request->city); // 🔹 Changed 'city' to 'rem8'
 
-            if ($request->filled('search')) {
-                $query->where('name', 'LIKE', '%' . $request->search . '%');
-            }
-
-            $institutes = $query->pluck('name', 'uid');
-
-            return response()->json($institutes);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        if ($request->filled('search')) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%');
         }
+
+        $institutes = $query->pluck('name', 'uid');
+
+        return response()->json($institutes);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
 
 
     public function instituteCheck(Request $request)
@@ -171,7 +173,8 @@ class BaseController extends Controller
                 'institute_name' => 'required|string|min:1',
                 'institute_refno' => 'required|string|min:1',
             ]);
-            $institute = DB::table('client')
+
+            $institute = Institute::with(['city', 'state'])
                 ->where('name', $request->institute_name)
                 ->where('uid', $request->institute_refno)
                 ->first();
@@ -179,13 +182,20 @@ class BaseController extends Controller
             $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
             if($institute->sta == 0){
-                if ($institute->subscription_status != 0) {
-                    return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
-                } else {
-                    return view('applicant.institute_not_subscribed', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
-                }
+                return view('applicant.institute_registered', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
+
+                // if ($institute->subscription_status != 0) {
+                //     return view('applicant.institute_subscribed', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
+                // } else {
+                //     return view('applicant.institute_not_subscribed', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
+                // }
+
             }elseif($institute->sta == 1){
-                return view('applicant.institute_not_found', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
+                if($institute->registration_request_date != null){
+                    return view('applicant.institute_not_approved_yet', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
+                }else{
+                    return view('applicant.institute_not_found', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
+                }
             }
 
 
@@ -284,7 +294,7 @@ class BaseController extends Controller
                 DB::table('client')
                     ->where('mel', $email)
                     ->update(['subscription_status' => 1,
-                        'rem6' => now()->format('Y-m-d')
+                        'subcription_request_date' => now()->format('Y-m-d')
                 ]);  
 
                 return redirect()->route('fillOtp', ['email' => $email])->with('success', 'OTP verified successfully.');
@@ -293,6 +303,58 @@ class BaseController extends Controller
             }
         }
         return view('applicant.fill_otp', ['email' => $email]);
+    }
+
+    public function showLoginByEmail(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'email' => 'required|email'
+            ]);
+
+        $email = $request->email;
+
+        // Check if a user exists with the given email
+        $client = DB::table('client')->where('mel', $email)->first();
+
+        if (!$client) {
+            return back()->with('error', 'Tiada pengguna ditemui.');
+        }
+
+        if ($client->sta != 0) {
+            return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
+        }
+
+
+            // Step 1: Get the Encrypted Key
+            $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
+                'appcode' => 'MAISADMINEBOSS'
+            ]);
+
+            if (!$keyResponse->successful()) {
+                return back()->with('error', 'Failed to retrieve encryption key.');
+            }
+            $encryptedKey = $keyResponse->json('data.encrypted_key');
+            if (!$encryptedKey) {
+                return back()->with('error', 'Invalid encryption key response.');
+            }
+
+            // Step 2: Send OTP Request
+            $otpResponse = Http::withHeaders([
+                'x-encrypted-key' => $encryptedKey
+            ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
+                'input' => $email,
+                'role' => 'general'
+            ]);
+
+            if ($otpResponse->successful()) {
+                return redirect()->route('subscriptionLoginOtp',['email' => $email]);
+            } else {
+                return back()->with('error', 'Failed to send OTP. Please try again.');
+            }
+        }
+
+        return view('login.email_login');
     }
 
     // public function showLoginByEmail(Request $request)
@@ -313,73 +375,25 @@ class BaseController extends Controller
     //         }
 
 
-    //         // Step 1: Get the Encrypted Key
-    //         $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-    //             'appcode' => 'MAISADMINEBOSS'
-    //         ]);
+    //             $user = User::where('mel', $email )->first();
 
-    //         if (!$keyResponse->successful()) {
-    //             return back()->with('error', 'Failed to retrieve encryption key.');
-    //         }
-    //         $encryptedKey = $keyResponse->json('data.encrypted_key');
-    //         if (!$encryptedKey) {
-    //             return back()->with('error', 'Invalid encryption key response.');
-    //         }
 
-    //         // Step 2: Send OTP Request
-    //         $otpResponse = Http::withHeaders([
-    //             'x-encrypted-key' => $encryptedKey
-    //         ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
-    //             'input' => $email,
-    //             'role' => 'general'
-    //         ]);
+    //             // if (!$user) {
+    //             //     return back()->with('error', 'User not found.');
+    //             // }
 
-    //         if ($otpResponse->successful()) {
-    //             return redirect()->route('subscriptionLoginOtp',['email' => $email]);
-    //         } else {
-    //             return back()->with('error', 'Failed to send OTP. Please try again.');
-    //         }
+    //             Auth::login($user); // Log in the user
+
+    //             // session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
+
+
+    //                 return redirect()->route('home')
+    //                     ->with('success', 'Log Masuk Berjaya');
+                
     //     }
 
     //     return view('login.email_login');
     // }
-        public function showLoginByEmail(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'email' => 'required|email'
-            ]);
-
-            $email = $request->email;
-
-            $client = DB::table('client')->where('mel', $email)->first();
-
-
-            if ($client->sta != 0){
-
-                return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
-            }
-
-
-                $user = User::where('mel', $email )->first();
-
-
-                // if (!$user) {
-                //     return back()->with('error', 'User not found.');
-                // }
-
-                Auth::login($user); // Log in the user
-
-                // session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
-
-
-                    return redirect()->route('home')
-                        ->with('success', 'Log Masuk Berjaya');
-                
-        }
-
-        return view('login.email_login');
-    }
 
 
     public function showLoginByMobile()
@@ -431,7 +445,7 @@ class BaseController extends Controller
                 $user = User::where('uid', $otpResponse->json('data.user_id'))->first();
 
                 if (!$user) {
-                    return back()->with('error', 'User not found.');
+                    return back()->with('error', 'Otp yang salah disediakan');
                 }
 
                 Auth::login($user); // Log in the user
@@ -439,16 +453,10 @@ class BaseController extends Controller
                 session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
 
 
-                if ($user->subscription_status == 2) {
-                    return redirect()->route('activateSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
-                } elseif ($user->subscription_status == 3) {
-                    return redirect()->route('activatedSubscription', ['id' => $user->uid])->with('success', 'Log Masuk Berjaya');
-                } elseif (in_array($user->subscription_status, [0, 1])) {
-                    return redirect()->route('pendingSubscription', ['id' => $user->uid])
-                        ->with('success', 'Log Masuk Berjaya');
-                }
+                return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
+
             } else {
-                return back()->with('error', 'Failed to verify OTP. Please try again.');
+                return back()->with('error', 'Gagal mengesahkan OTP. Sila cuba lagi.');
             }
         }
         return view('login.fill_otp', ['email' => $email]);
@@ -496,7 +504,21 @@ class BaseController extends Controller
         $user->STATE= DB::table('type')
             ->where('code', $user->state)
             ->value('prm');
-        return view('applicant.home', compact(['user', 'currentDateTime']));
+
+        
+        
+        $invoiceDetails = null; // Default to null
+
+        if ($user->subscription_status == 2) {
+            $invoiceDetails = DB::table('fin_ledger')
+                ->select('dt', 'tid', 'item', 'total', 'src', 'code')
+                ->where('vid', $user->uid)
+                ->where('src', 'INV')
+                ->orderByDesc('id') 
+                ->first();
+        }
+
+        return view('applicant.home', compact(['user', 'currentDateTime', 'invoiceDetails']));
     }
 
     public function requestSubscription($id) 
@@ -505,7 +527,7 @@ class BaseController extends Controller
             ->where('uid', $id)
             ->update([
                 'subscription_status' => 1,
-                'rem6' => now()->format('Y-m-d') 
+                'subcription_request_date' => now()->format('Y-m-d') 
             ]);
 
         return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!');

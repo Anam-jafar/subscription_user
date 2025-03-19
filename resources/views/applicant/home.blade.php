@@ -6,7 +6,8 @@
               <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
           </div>
           <!-- Title -->
-          <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
+          <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID
+          </h1>
 
 
 
@@ -19,17 +20,22 @@
 
 
                   <div class="flex items-start gap-3 text-gray-800 text-lg">
-                      <img src="{{ asset('subscription/assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
-                          class="w-5 h-5 mt-1" />
+                      {{-- <img src="{{ asset('subscription/assets/icons/subscription_mosque.svg') }}" alt="MAIS Logo"
+                          class="w-5 h-5 mt-1" /> --}}
 
                       <p class="font-semibold">
-                          {{ $user->name }} <br>
-                          {{ optional($user)->addr ? $user->addr : '' }}
-                          {{ optional($user)->city ? ', ' . $user->CITY : '' }}
-                          {{ optional($user)->state ? ', ' . $user->STATE : '' }}
+                          {{ $user->name }}
                       </p>
 
                       <a href="{{ route('instituteEdit') }}"><span class="fe fe-edit text-blue-500"></span></a>
+                  </div>
+                  <div class="flex items-start gap-3 text-gray-800 text-lg">
+
+                      <p class="font-semibold">
+                          {{ $user->addr }}
+                          {{ optional($user)->city ? ', ' . $user->CITY : '' }}
+                          {{ optional($user)->state ? ', ' . $user->STATE : '' }}
+                      </p>
                   </div>
 
               </div>
@@ -73,9 +79,14 @@
                       @if ($user->subscription_status == 0)
                           <p class="text-left text-xl font-bold text-gray-600 mt-1">TIDA AKTIF</p>
                       @elseif ($user->subscription_status == 1)
-                          <p class="text-left text-xl font-bold text-yellow-600 mt-1">BELUM DISETUJUI</p>
+                          <p class="text-left text-xl font-bold text-yellow-600 mt-1">DALAM SEMAKAN</p>
                       @elseif($user->subscription_status == 2)
-                          <p class="text-left text-xl font-bold text-pink-600 mt-1">BAYARAN BELUM DIBUAT</p>
+                          <p class="text-left text-xl font-bold text-pink-600 mt-1">
+                              BAYARAN BELUM DIBUAT<br>
+                              @if ($invoiceDetails != null)
+                                  <span class="text-md font-semibold"><b>RM {{ $invoiceDetails->total }}</b></span>
+                              @endif
+                          </p>
                       @elseif($user->subscription_status == 3)
                           <p class="text-left text-xl font-bold text-green-600 mt-1">AKTIF</p>
                       @endif
@@ -127,12 +138,12 @@
                               </div>
                           </div>
                       @elseif ($user->subscription_status == 1)
-                          <p class="text-left text-md font-semibold mt-1">Setelah Admin meluluskan permintaan langganan
-                              anda. Anda akan dimaklumkan.</p>
+                          <p class="text-left text-md font-semibold mt-1">Permohonan Langganan anda dalam proses semakan.
+                              Sila semak kembali status langganan dalam tempoh tiga (03) hari bekerja.</p>
                       @elseif($user->subscription_status == 2)
                           <!-- Record Button -->
                           <a href="#"
-                              class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto">
+                              class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto mb-4">
                               <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}" alt="PDF Icon"
                                   class="w-10 h-10 mr-3" />
                               <div class="mr-3">
@@ -142,18 +153,19 @@
                                   <span class="fe fe-download-cloud text-2xl"></span>
                               </button>
                           </a>
-
-                          <!-- Send New Button -->
-                          <a href="#"
-                              class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors w-full md:w-auto">
-                              <div class="flex items-center">
-                                  <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}"
-                                      alt="PDF Icon" class="w-10 h-10 mr-3" />
-                                  <img src="{{ asset('subscription/assets/icons/subscription_payment_02.svg') }}"
-                                      alt="PDF Icon" class="w-10 h-10 mr-3" />
-                              </div>
-                              <div class="font-semibold">BAYAR YURAN LANGGANAN</div>
-                          </a>
+                          @if ($invoiceDetails != null)
+                              <!-- Send New Button -->
+                              <a href="{{ route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code]) }}"
+                                  class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors w-full md:w-auto">
+                                  <div class="flex items-center">
+                                      <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}"
+                                          alt="PDF Icon" class="w-10 h-10 mr-3" />
+                                      <img src="{{ asset('subscription/assets/icons/subscription_payment_02.svg') }}"
+                                          alt="PDF Icon" class="w-10 h-10 mr-3" />
+                                  </div>
+                                  <div class="font-semibold">BAYAR YURAN LANGGANAN</div>
+                              </a>
+                          @endif
                       @elseif($user->subscription_status == 3)
                           <a href="#"
                               class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto">

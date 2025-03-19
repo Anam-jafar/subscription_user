@@ -14,9 +14,8 @@ class CustomAuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('subscriptionLogin'); // Redirect to subscriptionLogin if not authenticated
+            return redirect()->route('subscriptionLogin')->with('warning', 'Anda perlu log masuk untuk mengakses halaman ini.');
         }
-
         return $next($request);
     }
 }

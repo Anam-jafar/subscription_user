@@ -303,7 +303,7 @@
                                                                         </span>
                                                                     @endif
                                                                 </div>
-                                                                <x-input-field level="Maklumat" id="institusi"
+                                                                <x-input-field level="Jenis Pengauditan" id="institusi"
                                                                     name="attachment1_info" type="select" placeholder=""
                                                                     :valueList="$parameters['audit_types']"
                                                                     value="{{ $financialStatement->AuditType->prm }}" />

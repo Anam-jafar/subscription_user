@@ -109,6 +109,17 @@
                                                                 type="text" placeholder=""
                                                                 value="{{ $institute->web }}" />
                                                         </div>
+
+                                                        <div
+                                                            class="flex flex-col md:flex-row justify-between mt-8 space-y-3 md:space-y-0">
+                                                            <a href="{{ route('subscriptionLogin') }}"
+                                                                class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center">
+                                                                <span
+                                                                    class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
+                                                                Kembali
+                                                            </a>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -36,7 +36,7 @@
                                         <div class="grid grid-cols-12 sm:gap-x-6 justify-content-center">
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
-                                                    @if ($instituteType == 1)
+                                                    @if ($instituteType == 2)
                                                         <div class="sm:gap-x-6 gap-y-4">
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
@@ -185,6 +185,17 @@
                                                             </div>
                                                         </div>
                                                     @endif
+                                                    <div
+                                                        class="flex flex-col md:flex-row justify-between mt-8 space-y-3 md:space-y-0">
+                                                        <a href="{{ route('home') }}"
+                                                            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center">
+                                                            <span
+                                                                class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
+                                                            Kembali
+                                                        </a>
+
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -263,7 +274,7 @@
                                                                             hover:file:bg-primary focus-visible:outline-none
                                                                     ">
                                                                 </div>
-                                                                <x-input-field level="Maklumat" id="institusi"
+                                                                <x-input-field level="Jenis Pengauditan" id="institusi"
                                                                     name="attachment1_info" type="select" placeholder=""
                                                                     :valueList="$parameters['audit_types']" />
                                                             </div>

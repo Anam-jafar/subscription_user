@@ -50,11 +50,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9l-6 6m0-6l6 6" />
                 </svg>
                 <span>
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p><br>
+                    @endforeach
                 </span>
             </div>
         </div>
@@ -62,7 +60,7 @@
 
     <style>
         .animate-fade-out {
-            animation: fadeOut 4s ease-in-out;
+            animation: fadeOut 5s ease-in-out;
             opacity: 1;
         }
 
@@ -82,7 +80,7 @@
         document.querySelectorAll('.alert').forEach(alert => {
             setTimeout(() => {
                 alert.remove();
-            }, 4000); // 10 seconds
+            }, 5000); // 10 seconds
         });
     </script>
 </div>

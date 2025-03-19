@@ -38,7 +38,7 @@
         <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID</h1>
 
     @if (session('error'))
         <div class="alert alert-danger bg-red-600 text-white rounded-md p-4 mb-4 animate-fade-out">

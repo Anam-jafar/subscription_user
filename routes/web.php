@@ -25,25 +25,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::prefix('financial')->group(function () {
-    // Authentication Routes
-    // Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    // Route::get('/register-institute', [AuthController::class, 'showInstituteProfileRegisterForm'])->name('registerInstitute');
-    // Route::get('/registration-details', [AuthController::class, 'showInstituteProfileRegistrationDetailsForm'])->name('showInstituteProfileRegistrationDetailsForm');
-    // Route::post('/register-institute-profile', [AuthController::class, 'instituteProfileRegister'])->name('instituteProfileRegister');
-
-    // Route::post('/login', [AuthController::class, 'login'])->name('submit.login');
-    // Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    // Route::match(['get', 'post'],'/reset-password', [AuthController::class, 'resetPassword'])->name('resetPassword');
-    // Route::match(['get', 'post'], '/forget-password', [AuthController::class, 'forgetPassword'])->name('forgetPassword');
-
-    // Route::get('/get-institute-types/{instituteCode}', [InstituteController::class,'getInstituteTypes']);
-    // Route::get('/get-sub-districts/{districtCode}', [InstituteController::class, 'getSubDistricts']);
-    // //Route::get('/search-institutes', [InstituteController::class, 'searchInstitutes']);
-
-
-
-    // Route::get('/', [ClientController::class, 'index'])->name('index');
 
 
 
@@ -52,21 +33,37 @@ use Illuminate\Http\Request;
         Route::match(['get', 'post'], '/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
         Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
         Route::match(['get', 'post'],'/login-otp/{email}', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
-        Route::get('/activate-subscription/{id}', [BaseController::class, 'activateSubscription'])
-            ->name('activateSubscription')
-            ->middleware('customAuth'); // Apply the custom middleware
-        Route::get('/activated-subscription/{id}', [BaseController::class, 'activatedSubscription'])
-            ->name('activatedSubscription')
-            ->middleware('customAuth'); // Apply the custom middleware
-        Route::match(['get', 'post'], '/pending-subscription/{id}', [BaseController::class, 'pendingSubscription'])
-            ->name('pendingSubscription')
-            ->middleware('customAuth'); // Apply the custom middleware
-        Route::get('/home', [BaseController::class, 'home'])->name('home')->middleware('customAuth'); 
-        
-        Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
-        
 
+        
+        Route::middleware(['customAuth'])->group(function () {
+            Route::get('/activate-subscription/{id}', [BaseController::class, 'activateSubscription'])
+                ->name('activateSubscription');
+
+            Route::get('/activated-subscription/{id}', [BaseController::class, 'activatedSubscription'])
+                ->name('activatedSubscription');
+
+            Route::match(['get', 'post'], '/pending-subscription/{id}', [BaseController::class, 'pendingSubscription'])
+                ->name('pendingSubscription');
+
+            Route::get('/home', [BaseController::class, 'home'])->name('home');
+
+            Route::get('/statement/list', [FinancialStatementController::class, 'list'])->name('statementList');
+            Route::match(['get', 'post'], '/statement/create/{id}', [FinancialStatementController::class, 'create'])->name('createStatement');
+            Route::match(['get', 'post'], '/statement/edit/{id}', [FinancialStatementController::class, 'edit'])->name('editStatement');
+            Route::match(['get', 'post'], '/statement/view/{id}', [FinancialStatementController::class, 'view'])->name('viewStatement');
+
+            Route::get('/request-subscription/{id}', [BaseController::class, 'requestSubscription'])->name('requestSubscription');
+            Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
+        });
+
+        // Routes that don't require authentication
+        Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
         Route::post('/logout', [BaseController::class, 'logout'])->name('subscriptionLogout');
+
+
+
+
+
 
 
 
@@ -76,8 +73,6 @@ use Illuminate\Http\Request;
         Route::get('/institute-subscribed', [BaseController::class, 'instituteSubscribed'])->name('instituteSubscribed');
         Route::match(['get', 'post'], '/institute-registration/{id}', [BaseController::class, 'instituteRegistration'])->name('instituteRegistration');
 
-        Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
-        Route::get('/request-subscription/{id}', [BaseController::class, 'requestSubscription'])->name('requestSubscription');
 
 
 
@@ -88,10 +83,7 @@ use Illuminate\Http\Request;
         Route::match(['get', 'post'], '/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
         Route::match(['get', 'post'], '/fill-otp/{email}', [BaseController::class, 'fillOtp'])->name('fillOtp');
 
-        Route::get('/statement/list', [FinancialStatementController::class, 'list'])->name('statementList');
-        Route::match(['get', 'post'], '/statement/create/{id}', [FinancialStatementController::class, 'create'])->name('createStatement');
-        Route::match(['get', 'post'], '/statement/edit/{id}', [FinancialStatementController::class, 'edit'])->name('editStatement');
-        Route::match(['get', 'post'], '/statement/view/{id}', [FinancialStatementController::class, 'view'])->name('viewStatement');
+
 
 
         Route::get('/download/attachment/{filename}', function ($filename) {
@@ -105,73 +97,5 @@ use Illuminate\Http\Request;
     });
 
     
-
-    
-    // Route::prefix('admin')->group(function () {
-
-    //     Route::get('/login', [AuthController::class, 'showLoginFormAdmin'])->name('loginAdmin');
-        
-    //     Route::middleware(['adminAccess'])->group(function () {
-            
-    //         Route::get('/', [ClientController::class, 'adminIndex'])->name('adminIndex');
-    //         // Route::match(['get', 'post'], '/register-user', [AuthController::class, 'registerUser'])->name('registerUser');
-
-    //         Route::get('/institute', [InstituteController::class, 'instituteList'])->name('instituteList');
-    //         Route::match(['get', 'post'], '/institute/create', [InstituteController::class, 'instituteCreate'])->name('instituteCreate');
-    //         Route::match(['get', 'post'], '/institute/{id}/edit', [InstituteController::class, 'instituteUpdate'])->name('instituteUpdate');
-            
-    //         Route::get('/institute-profile', [InstituteProfileController::class, 'instituteProfileList'])->name('instituteProfileList');
-    //         Route::get('/institute-profile-request', [InstituteProfileController::class, 'instituteProfileRequestList'])->name('instituteProfileRequestList');
-    //         Route::match(['get', 'post'], '/institute-profile/{id}/edit', [InstituteProfileController::class, 'update'])->name('instituteProfileUpdate');
-
-    //         Route::get('/user', [UserController::class, 'list'])->name('userList');
-    //         Route::match(['get', 'post'], '/user/create', [UserController::class, 'create'])->name('registerUser');
-    //         Route::match(['get', 'post'], '/user/{id}/edit', [UserController::class, 'update'])->name('userUpdate');
-
-    //         Route::get('/financial-statement-list', [FinancialStatementReviewController::class, 'list'])->name('financialStatementReviewlist');
-    //         Route::get('/financial-statement-list/reviewed', [FinancialStatementReviewController::class, 'reviewedList'])->name('financialStatementReviewlistReviewed');
-
-    //         Route::get('/financial-statement-cancelation-request-list', [FinancialStatementReviewController::class, 'cancelRequestList'])->name('cancelRequestList');
-    //         Route::get('/financial-statement-review/{id}/view', [FinancialStatementReviewController::class, 'view'])->name('financialStatementReview');
-    //         Route::get('/financial-statement-processed/{id}/view', [FinancialStatementReviewController::class, 'reviewedView'])->name('financialStatementReviewedView');
-    //         Route::get('/financial-statement-cancel-request/{id}/view', [FinancialStatementReviewController::class, 'cancelRequestView'])->name('financialStatementCancelRequestView');
-    //         Route::post('/financial-statement-cancelation/{id}/by-admin', [FinancialStatementReviewController::class, 'statementCancellation'])->name('financialStatementCancellation');
-
-
-
-            
-    //         Route::post('/financial-statement-review/{id}/approve', [FinancialStatementReviewController::class, 'adminReview'])->name('financialStatementApprove');
-
-    //     });
-
-    // });
-
-
-
-
-
-
-
-    //********************************************************Testing Routes**************************************************************************** */
-    //=====================================================================================================================================================
-
-    // Route::get('/test', [InstituteProfileController::class, 'sendDummyEmail']);
-
-    // // Profile Management Routes
-    // Route::controller(AuthController::class)->group(function () {
-    //     Route::get('/profile', 'profile')->name('profile');
-    //     Route::put('/profile/update', 'updateProfile')->name('updateProfile');
-    //     Route::put('/profile/password', 'updatePassword')->name('updatePassword');
-    //     Route::get('/activity-logs', 'activityLogs')->name('activityLogs');
-
-    // });
-
-    // Route::get('/report/create', [ClientController::class, 'reportCreate'])->name('reportCreate');
-    // Route::get('/report/create_', [ClientController::class, 'reportCreate_'])->name('reportCreate_');
-    // Route::get('/report/view', [ClientController::class, 'reportView'])->name('reportView');
-    // Route::get('/report/view_', [ClientController::class, 'reportView_'])->name('reportView_');
-    // Route::get('/report/_view_', [ClientController::class, '_reportView_'])->name('_reportView_');
-// });
-
 
 

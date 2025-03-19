@@ -6,7 +6,7 @@
               <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
           </div>
           <!-- Title -->
-          <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
+          <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID</h1>
 
           <x-alert />
 
@@ -30,8 +30,8 @@
                       <p class="font-semibold">
                           {{ $institute->name }}
                           {{ optional($institute)->addr ? ', ' . $institute->addr : '' }}
-                          {{ optional($institute)->city ? ', ' . $institute->city : '' }}
-                          {{ optional($institute)->state ? ', ' . $institute->state : '' }}
+                          {{ optional($institute)->city ? ', ' . $institute->City->prm : '' }}
+                          {{ optional($institute)->state ? ', ' . $institute->State->prm : '' }}
                       </p>
                   </div>
 
@@ -39,24 +39,21 @@
 
               <!-- Success Message -->
               <div class="flex justify-center">
-                  <img src="{{ asset('subscription/assets/icons/institute_not_registered.svg') }}" alt="MAIS Logo"
-                      class="w-48 h-48" />
+                  <img src="{{ asset('subscription/assets/icons/not_registered_yet.svg') }}" alt="MAIS Logo"
+                      class="w-56 h-56" />
               </div>
 
-              <!-- Login Button instituteDetails-->
-              <a href="{{ route('instituteRegistration', ['id' => $institute->uid]) }}">
-                  <button
-                      class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4 shadow-lg">
-                      Daftar <span class="text-xl fe fe-edit-3 ml-3"></span>
-                  </button>
-              </a>
 
+              <button onclick="window.location.href='{{ route('instituteRegistration', ['id' => $institute->uid]) }}'"
+                  class="w-full bg-indigo-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-indigo-700 transition-colors">
+                  <span class="text-lg font-normal">Daftar Sekarang</span>
+                  <i class="fe fe-arrow-right-circle text-white text-xl"></i>
 
-
-              <!-- Back Link -->
-              <div class="text-center">
-                  <a href="#" class="text-blue-600 hover:underline">Semak Lain</a>
+              </button>
+              <div class="text-center !mt-2 !mb-4">
+                  <a href="{{ route('findInstitute') }}" class="text-base text-blue-600 hover:underline">Semak Lain</a>
               </div>
+
           </div>
 
 

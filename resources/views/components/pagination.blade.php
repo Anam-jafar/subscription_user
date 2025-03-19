@@ -3,7 +3,7 @@
         <a href="{{ route('home') }}"
             class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center mb-4 md:mb-0">
             <span class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
-            Laman Utama
+            Kembali
         </a>
     </div>
     <div class="flex items-center space-x-4">

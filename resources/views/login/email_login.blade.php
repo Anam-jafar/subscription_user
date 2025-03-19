@@ -6,7 +6,8 @@
         <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID
+    </h1>
 
     <h1 class="text-center text-3xl font-semibold text-[#2624D0] flex items-center justify-center gap-2 mt-4">
         <img src="{{ asset('subscription/assets/icons/subscription_login_blue.svg') }}" alt="MAIS Logo" class="w-10 h-10" />
@@ -14,8 +15,7 @@
     </h1>
 
     <div class="max-w-sm mx-auto w-full space-y-8">
-        <p class="text-center text-sm font-normal text-black mt-4 mb-4">Sila isi emel atau o telefon rasmi institusi anda
-            dibawah:</p>
+        <p class="text-center text-sm font-normal text-black mt-4 mb-4">Sila masukkan emel rasmi institusi anda</p>
         <x-alert />
 
         <form action="" method="POST">
@@ -39,6 +39,11 @@
                         class="w-full bg-gray-700 text-white text-base font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 !mt-8 !mb-8">
                         Teruskan
                     </button>
+                    <div class="text-center !mt-4 !mb-4">
+                        <a href="{{ route('subscriptionLogin') }}" class="text-base text-blue-600 hover:underline">Kembali
+                            ke Halaman
+                            Utama</a>
+                    </div>
                 </div>
             </div>
         </form>

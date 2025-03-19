@@ -30,8 +30,8 @@
                       <p class="font-semibold">
                           {{ $institute->name }}
                           {{ optional($institute)->addr ? ', ' . $institute->addr : '' }}
-                          {{ optional($institute)->city ? ', ' . $institute->city : '' }}
-                          {{ optional($institute)->state ? ', ' . $institute->state : '' }}
+                          {{ optional($institute)->city ? ', ' . $institute->City->prm : '' }}
+                          {{ optional($institute)->state ? ', ' . $institute->State->prm : '' }}
                       </p>
                   </div>
 
@@ -39,21 +39,16 @@
 
               <!-- Success Message -->
               <div class="flex justify-center">
-                  <img src="{{ asset('subscription/assets/icons/institute_not_subscribed.svg') }}" alt="MAIS Logo"
-                      class="w-48 h-48" />
+                  <img src="{{ asset('subscription/assets/icons/pending.svg') }}" alt="MAIS Logo" class="w-56 h-56" />
               </div>
 
-              <!-- Login Button instituteDetails-->
-              <a href="{{ route('instituteDetails', ['id' => $institute->uid]) }}">
-                  <button
-                      class="w-full bg-[#2624D0] text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-medium mt-4 shadow-lg">
-                      Langgan Sekarang
-                  </button>
-              </a>
+              <div class="text-center !mt-2 !mb-4">
+                  <a href="{{ route('findInstitute') }}" class="text-base text-blue-600 hover:underline">Semak Lain</a>
+              </div>
+
+
           </div>
-          <div class="text-center !mt-2 !mb-4">
-              <a href="{{ route('findInstitute') }}" class="text-base text-blue-600 hover:underline">Semak Lain</a>
-          </div>
+
 
 
 

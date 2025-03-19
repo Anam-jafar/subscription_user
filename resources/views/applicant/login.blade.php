@@ -6,10 +6,7 @@
         <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
     </div>
     <!-- Title -->
-    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM MAIS</h1>
-
-    <x-alert />
-
+    <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID</h1>
 
     <div class="max-w-sm mx-auto w-full space-y-8">
         <h1 class="text-center text-2xl !font-extrabold text-[#2624D0] mt-4">LOGIN</h1>
