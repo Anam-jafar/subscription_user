@@ -42,16 +42,17 @@
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
                                                                         name="fin_year" type="select" placeholder="Year"
-                                                                        :valueList="$years" />
+                                                                        :valueList="$years" :required="true" />
 
                                                                     <x-input-field level="Kategori Penyata" id="statment"
                                                                         name="fin_category" type="select"
-                                                                        placeholder="Pilih" :valueList="$parameters['statements']" />
+                                                                        placeholder="Pilih" :valueList="$parameters['statements']"
+                                                                        :required="true" />
                                                                 </div>
                                                                 <x-input-field
                                                                     level="Peratus Kemajuan Pembinaan Terkini (%)"
                                                                     id="p1" name="latest_contruction_progress"
-                                                                    type="text" placeholder="00" />
+                                                                    type="text" placeholder="00" :required="true" />
                                                             </div>
 
 
@@ -139,11 +140,12 @@
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
                                                                         name="fin_year" type="select" placeholder="Year"
-                                                                        :valueList="$years" />
+                                                                        :valueList="$years" :required="true" />
 
                                                                     <x-input-field level="Kategori Penyata" id="statment"
                                                                         name="fin_category" type="select"
-                                                                        placeholder="Pilih" :valueList="$parameters['statements']" />
+                                                                        placeholder="Pilih" :valueList="$parameters['statements']"
+                                                                        :required="true" />
                                                                 </div>
                                                                 <x-input-field level="(a) Baki Bawa Ke Hadapan (RM)"
                                                                     id="balance_forward" name="balance_forward"
@@ -214,7 +216,7 @@
                                                                         class="text-gray-800 mb-2">Penyata
                                                                         Kewangan
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment1"
+                                                                    <input type="file" name="attachment1" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -276,7 +278,7 @@
                                                                 </div>
                                                                 <x-input-field level="Jenis Pengauditan" id="institusi"
                                                                     name="attachment1_info" type="select" placeholder=""
-                                                                    :valueList="$parameters['audit_types']" />
+                                                                    :valueList="$parameters['audit_types']" :required="true" />
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
@@ -284,7 +286,7 @@
                                                                         class="text-gray-800  mb-2">Penyata
                                                                         Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment2"
+                                                                    <input type="file" name="attachment2" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                             file:me-4 file:py-2 file:px-4
                                                                             file:rounded-s-sm file:border-0
@@ -297,7 +299,7 @@
                                                                     <label for="input3"
                                                                         class="text-gray-800 mb-2">Penyata Penyesuaian Bank
                                                                         <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment3"
+                                                                    <input type="file" name="attachment3" required
                                                                         class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
                                                                     file:me-4 file:py-2 file:px-4
                                                                     file:rounded-s-sm file:border-0

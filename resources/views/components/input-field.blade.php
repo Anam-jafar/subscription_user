@@ -33,4 +33,9 @@
         <!-- Conditionally required -->
 
     @endif
+
+    <!-- Show error message if validation fails -->
+    @if ($errors->has($name))
+        <span class="text-red-500 text-sm mt-1">{{ $errors->first($name) }}</span>
+    @endif
 </div>

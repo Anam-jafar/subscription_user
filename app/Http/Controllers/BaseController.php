@@ -596,17 +596,18 @@ class BaseController extends Controller
 
         // Make the API request
         $response = Http::withHeaders($headers)->post($url, $payload);
-
+        // dd($payload);
 
         // Decode the response
         $responseData = $response->json();
-        
-        // Check if request was successful
-        if ($responseData['success'] && isset($responseData['data']['payment_full_link'])) {
+
+        // Check if the response contains 'success' and it's true, and also ensure 'payment_full_link' exists
+        if (isset($responseData['success']) && $responseData['success'] && isset($responseData['data']['payment_full_link'])) {
             return redirect()->away($responseData['data']['payment_full_link']);
-        } else {
-            return back()->with('error', 'Payment failed. Please try again.');
         }
+
+        // If 'success' is missing or false, or 'data' key is missing, return an error in Malay
+        return back()->with('error', 'Tidak dapat mendapatkan pautan pembayaran.');
     }
 
     public function instituteRegistration(Request $request, $id)

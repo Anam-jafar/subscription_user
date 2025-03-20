@@ -38,18 +38,21 @@
                                                                     <x-input-field level="Bagi Tahun" id="ye"
                                                                         name="fin_year" type="select" placeholder="Year"
                                                                         :valueList="$years"
-                                                                        value="{{ $financialStatement->fin_year }}" />
+                                                                        value="{{ $financialStatement->fin_year }}"
+                                                                        :required="true" />
 
                                                                     <x-input-field level="Kategori Penyata" id="statment"
                                                                         name="fin_category" type="select"
                                                                         placeholder="Pilih" :valueList="$parameters['statements']"
-                                                                        value="{{ $financialStatement->fin_category }}" />
+                                                                        value="{{ $financialStatement->fin_category }}"
+                                                                        :required="true" />
                                                                 </div>
                                                                 <x-input-field
                                                                     level="Peratus Kemajuan Pembinaan Terkini (%)"
                                                                     id="p1" name="latest_contruction_progress"
                                                                     type="text" placeholder="00"
-                                                                    value="{{ $financialStatement->latest_contruction_progress }}" />
+                                                                    value="{{ $financialStatement->latest_contruction_progress }}"
+                                                                    :required="true" />
 
                                                             </div>
 
@@ -84,7 +87,8 @@
                                                                     value="{{ $financialStatement->current_collection }}" />
                                                                 <x-input-field level="(ii) Kutipan Terkumpul (RM)"
                                                                     id="i04" name="total_expenses" type="text"
-                                                                    placeholder="00.00" :rightAlign="true" :required="true"
+                                                                    placeholder="00.00" :rightAlign="true"
+                                                                    :required="true"
                                                                     value="{{ $financialStatement->total_expenses }}" />
                                                             </div>
 

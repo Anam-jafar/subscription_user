@@ -205,9 +205,43 @@
                                                             <x-input-field level="Poskod" id="poskod" name="pcode"
                                                                 type="text" placeholder="" :required='true'
                                                                 value="{{ $institute->pcode }}" />
-                                                            <x-input-field level="Koordinat Institusi" id="institusi"
-                                                                name="location" type="text" placeholder=""
-                                                                :required='true' value="{{ $institute->location }}" />
+
+                                                            <div class="flex flex-col mt-4">
+                                                                <label for="location"
+                                                                    class="text-gray-800 font-normal mb-2">
+                                                                    Koordinat Institusi <span class="text-red-500">*</span>
+                                                                </label>
+                                                                <div class="relative">
+                                                                    <!-- Input Field -->
+                                                                    <input type="text" id="location" name="location"
+                                                                        class="p-2 w-full border !border-[#6E829F] rounded-lg !text-gray-800 h-[3rem] pr-12"
+                                                                        placeholder="Pilih lokasi" required
+                                                                        value="{{ $institute->location }}">
+
+                                                                    <!-- Location Icon (Fixed Alignment) -->
+                                                                    <span id="openMapModal"
+                                                                        class="absolute top-1/2 right-3 transform -translate-y-1/2 flex items-center cursor-pointer text-gray-600">
+                                                                        <i class="fe fe-map-pin text-xl"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <!-- Location Picker Modal -->
+                                                            <div id="mapModal"
+                                                                class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-[9999]">
+                                                                <div
+                                                                    class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl">
+                                                                    <h2 class="text-lg font-semibold mb-2">Pilih Lokasi
+                                                                    </h2>
+                                                                    <div id="map"
+                                                                        class="h-[400px] w-full rounded-md"></div>
+                                                                    <div class="flex justify-end mt-4">
+                                                                        <button id="closeMapModal"
+                                                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Tutup</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -320,6 +354,44 @@
                     submitButton.classList.add('opacity-50', 'cursor-not-allowed');
                 }
             });
+
+            let modal = document.getElementById("mapModal");
+            let openButton = document.getElementById("openMapModal");
+            let closeButton = document.getElementById("closeMapModal");
+            let locationInput = document.getElementById("location");
+            let map, marker;
+
+            openButton.addEventListener("click", function() {
+                modal.classList.remove("hidden");
+
+                if (!map) {
+                    map = L.map('map').setView([3.0738, 101.5183], 10); // Selangor, Malaysia
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(map);
+
+                    marker = L.marker([3.0738, 101.5183], {
+                        draggable: true
+                    }).addTo(map);
+
+                    marker.on("dragend", function(e) {
+                        let latlng = marker.getLatLng();
+                        locationInput.value = latlng.lat + ", " + latlng.lng;
+                    });
+
+                    // Click to select location
+                    map.on("click", function(e) {
+                        marker.setLatLng(e.latlng);
+                        locationInput.value = e.latlng.lat + ", " + e.latlng.lng;
+                    });
+                }
+            });
+
+            closeButton.addEventListener("click", function() {
+                modal.classList.add("hidden");
+            });
+
         });
     </script>
 @endsection

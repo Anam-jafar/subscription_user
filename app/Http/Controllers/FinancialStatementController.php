@@ -35,9 +35,9 @@ class FinancialStatementController extends Controller
             'total_surplus' => 'nullable',
             'bank_cash_balance' => 'nullable',
             'attachment1_info' => 'nullable',
-            'attachment1' => 'required|file|mimes:pdf|max:2048',
-            'attachment2' => 'nullable|file|mimes:pdf|max:2048',
-            'attachment3' => 'nullable|file|mimes:pdf|max:2048',
+            'attachment1' => 'nullable|file|mimes:pdf|max:10240',
+            'attachment2' => 'nullable|file|mimes:pdf|max:10240',
+            'attachment3' => 'nullable|file|mimes:pdf|max:10240',
     ];
     
 
