@@ -31,7 +31,7 @@
                         <hr>
 
                         <div class="flex justify-end">
-                            <button onclick="window.location.href='{{ route('subscriptionLogin') }}'"
+                            <button onclick="window.location.href='{{ route('subscriptionLogin') }}'" type="button"
                                 class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 mt-2">
                                 Tutup
                             </button>
@@ -231,17 +231,26 @@
                                                             <div id="mapModal"
                                                                 class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-[9999]">
                                                                 <div
-                                                                    class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl">
+                                                                    class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl relative">
+                                                                    <!-- Close Button (Cross Icon) -->
+                                                                    <button id="closeMapModal" type="button"
+                                                                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold">
+                                                                        &times;
+                                                                    </button>
+
                                                                     <h2 class="text-lg font-semibold mb-2">Pilih Lokasi
                                                                     </h2>
                                                                     <div id="map"
                                                                         class="h-[400px] w-full rounded-md"></div>
                                                                     <div class="flex justify-end mt-4">
-                                                                        <button id="closeMapModal"
-                                                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Tutup</button>
+                                                                        <button id="closeMapModalFooter"
+                                                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                                                            Tutup
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -375,12 +384,23 @@
                         draggable: true
                     }).addTo(map);
 
+                    // Add Geocoder Search
+                    L.Control.geocoder({
+                        defaultMarkGeocode: false
+                    }).on('markgeocode', function(e) {
+                        let latlng = e.geocode.center;
+                        map.setView(latlng, 15); // Zoom to selected location
+                        marker.setLatLng(latlng);
+                        locationInput.value = latlng.lat + ", " + latlng.lng;
+                    }).addTo(map);
+
+                    // Drag event to update location
                     marker.on("dragend", function(e) {
                         let latlng = marker.getLatLng();
                         locationInput.value = latlng.lat + ", " + latlng.lng;
                     });
 
-                    // Click to select location
+                    // Click event to move marker
                     map.on("click", function(e) {
                         marker.setLatLng(e.latlng);
                         locationInput.value = e.latlng.lat + ", " + e.latlng.lng;
@@ -388,9 +408,14 @@
                 }
             });
 
-            closeButton.addEventListener("click", function() {
-                modal.classList.add("hidden");
+            document.getElementById("closeMapModal").addEventListener("click", function() {
+                document.getElementById("mapModal").classList.add("hidden");
             });
+
+            document.getElementById("closeMapModalFooter").addEventListener("click", function() {
+                document.getElementById("mapModal").classList.add("hidden");
+            });
+
 
         });
     </script>

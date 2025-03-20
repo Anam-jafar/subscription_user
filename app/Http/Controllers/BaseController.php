@@ -324,34 +324,39 @@ class BaseController extends Controller
         if ($client->sta != 0) {
             return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
         }
+                        $user = User::where('mel', $email )->first();
+
+                        Auth::login($user); // Log in the user
 
 
-            // Step 1: Get the Encrypted Key
-            $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-                'appcode' => 'MAISADMINEBOSS'
-            ]);
+            // // Step 1: Get the Encrypted Key
+            // $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
+            //     'appcode' => 'MAISADMINEBOSS'
+            // ]);
 
-            if (!$keyResponse->successful()) {
-                return back()->with('error', 'Failed to retrieve encryption key.');
-            }
-            $encryptedKey = $keyResponse->json('data.encrypted_key');
-            if (!$encryptedKey) {
-                return back()->with('error', 'Invalid encryption key response.');
-            }
+            // if (!$keyResponse->successful()) {
+            //     return back()->with('error', 'Failed to retrieve encryption key.');
+            // }
+            // $encryptedKey = $keyResponse->json('data.encrypted_key');
+            // if (!$encryptedKey) {
+            //     return back()->with('error', 'Invalid encryption key response.');
+            // }
 
-            // Step 2: Send OTP Request
-            $otpResponse = Http::withHeaders([
-                'x-encrypted-key' => $encryptedKey
-            ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
-                'input' => $email,
-                'role' => 'general'
-            ]);
+            // // Step 2: Send OTP Request
+            // $otpResponse = Http::withHeaders([
+            //     'x-encrypted-key' => $encryptedKey
+            // ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/otp/send?via=email', [
+            //     'input' => $email,
+            //     'role' => 'general'
+            // ]);
 
-            if ($otpResponse->successful()) {
-                return redirect()->route('subscriptionLoginOtp',['email' => $email]);
-            } else {
-                return back()->with('error', 'Failed to send OTP. Please try again.');
-            }
+            // if ($otpResponse->successful()) {
+            //     return redirect()->route('subscriptionLoginOtp',['email' => $email]);
+            // } else {
+            //     return back()->with('error', 'Failed to send OTP. Please try again.');
+            // }
+                                return redirect()->route('home')
+                        ->with('success', 'Log Masuk Berjaya');
         }
 
         return view('login.email_login');

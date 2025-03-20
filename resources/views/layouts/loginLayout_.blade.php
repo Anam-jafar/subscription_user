@@ -23,6 +23,10 @@
     <link href="{{ asset('subscription/build/assets/icon-fonts/icons.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
+    <!-- Leaflet Geocoder Plugin -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- APP SCSS -->
@@ -76,6 +80,8 @@
     <!-- SCRIPTS -->
     @include('layouts.components.scripts')
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 
 
     @yield('scripts')

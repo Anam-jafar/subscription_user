@@ -143,7 +143,7 @@
                                                                 <x-input-field level="Bandar" id="institusi"
                                                                     name="city" type="select" :valueList="$parameters['cities']"
                                                                     placeholder="Pilih" :required='true'
-                                                                    value="{{ $institute->rem11 }}" />
+                                                                    value="{{ $institute->city }}" />
 
                                                                 <x-input-field level="Mukim" id="institusi"
                                                                     name="rem9" type="text" placeholder="Institusi"
@@ -193,14 +193,22 @@
                                                             <div id="mapModal"
                                                                 class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-[9999]">
                                                                 <div
-                                                                    class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl">
+                                                                    class="bg-white p-4 rounded-lg shadow-lg w-full max-w-3xl relative">
+                                                                    <!-- Close Button (Cross Icon) -->
+                                                                    <button id="closeMapModal" type="button"
+                                                                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold">
+                                                                        &times;
+                                                                    </button>
+
                                                                     <h2 class="text-lg font-semibold mb-2">Pilih Lokasi
                                                                     </h2>
                                                                     <div id="map"
                                                                         class="h-[400px] w-full rounded-md"></div>
                                                                     <div class="flex justify-end mt-4">
-                                                                        <button id="closeMapModal"
-                                                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Tutup</button>
+                                                                        <button id="closeMapModalFooter"
+                                                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                                                            Tutup
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -300,59 +308,76 @@
     <script>
         // Add this to your scripts section or create a new script tag with this code
         document.addEventListener('DOMContentLoaded', function() {
-            const checkbox = document.getElementById('myCheckbox');
-            const submitButton = document.querySelector('.ti-btn-success');
+        const checkbox = document.getElementById('myCheckbox');
+        const submitButton = document.querySelector('.ti-btn-success');
 
-            // Set initial button state
-            submitButton.disabled = true;
-            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        // Set initial button state
+        submitButton.disabled = true;
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
 
-            // Add event listener to checkbox
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    submitButton.disabled = false;
-                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else {
-                    submitButton.disabled = true;
-                    submitButton.classList.add('opacity-50', 'cursor-not-allowed');
-                }
-            });
-            let modal = document.getElementById("mapModal");
-            let openButton = document.getElementById("openMapModal");
-            let closeButton = document.getElementById("closeMapModal");
-            let locationInput = document.getElementById("location");
-            let map, marker;
+        // Add event listener to checkbox
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                submitButton.disabled = false;
+                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                submitButton.disabled = true;
+                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+        let modal = document.getElementById("mapModal");
+        let openButton = document.getElementById("openMapModal");
+        let closeButton = document.getElementById("closeMapModal");
+        let locationInput = document.getElementById("location");
+        let map, marker;
 
-            openButton.addEventListener("click", function() {
-                modal.classList.remove("hidden");
+        openButton.addEventListener("click", function() {
+            modal.classList.remove("hidden");
 
-                if (!map) {
-                    map = L.map('map').setView([3.0738, 101.5183], 10); // Selangor, Malaysia
+            if (!map) {
+                map = L.map('map').setView([3.0738, 101.5183], 10); // Selangor, Malaysia
 
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }).addTo(map);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
 
-                    marker = L.marker([3.0738, 101.5183], {
-                        draggable: true
-                    }).addTo(map);
+                marker = L.marker([3.0738, 101.5183], {
+                    draggable: true
+                }).addTo(map);
 
-                    marker.on("dragend", function(e) {
-                        let latlng = marker.getLatLng();
-                        locationInput.value = latlng.lat + ", " + latlng.lng;
-                    });
+                // Add Geocoder Search
+                L.Control.geocoder({
+                    defaultMarkGeocode: false
+                }).on('markgeocode', function(e) {
+                    let latlng = e.geocode.center;
+                    map.setView(latlng, 15); // Zoom to selected location
+                    marker.setLatLng(latlng);
+                    locationInput.value = latlng.lat + ", " + latlng.lng;
+                }).addTo(map);
 
-                    // Click to select location
-                    map.on("click", function(e) {
-                        marker.setLatLng(e.latlng);
-                        locationInput.value = e.latlng.lat + ", " + e.latlng.lng;
-                    });
-                }
-            });
+                // Drag event to update location
+                marker.on("dragend", function(e) {
+                    let latlng = marker.getLatLng();
+                    locationInput.value = latlng.lat + ", " + latlng.lng;
+                });
 
-            closeButton.addEventListener("click", function() {
-                modal.classList.add("hidden");
-            });
+                // Click event to move marker
+                map.on("click", function(e) {
+                    marker.setLatLng(e.latlng);
+                    locationInput.value = e.latlng.lat + ", " + e.latlng.lng;
+                });
+            }
+        });
+
+
+        document.getElementById("closeMapModal").addEventListener("click", function() {
+            document.getElementById("mapModal").classList.add("hidden");
+        });
+
+        document.getElementById("closeMapModalFooter").addEventListener("click", function() {
+            document.getElementById("mapModal").classList.add("hidden");
+        });
+        });
         });
     </script>
 @endsection
