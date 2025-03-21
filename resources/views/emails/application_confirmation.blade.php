@@ -74,20 +74,19 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <img src="{{ $message->embed(public_path('subscription/assets/icons/subscription_logo.png')) }}"
-                alt="MAIS Logo" />
+            <img src="{{ $message->embed(public_path('subscription/assets/icons/logo_.png')) }}" alt="Logo" />
         </div>
 
         <!-- Title -->
         <div class="title">SISTEM LANGGANAN MAIS</div>
 
         <div class="arabic_text">
-            <img src="{{ $message->embed(public_path('subscription/assets/icons/arabic_text.png')) }}" alt="MAIS Logo" />
+            <img src="{{ $message->embed(public_path('subscription/assets/icons/arabic_text.png')) }}" alt="Logo" />
         </div>
 
         <!-- Greeting -->
         <div class="content">
-            <p>Terima kasih kerana berminat untuk melanggan sistem ini</p>
+            <p>Terima kasih kerana berminat untuk mendaftar ke sistem ini.</p>
             <p>Pihak kami sedang menyemak permohonan anda. Sila semak semula emel anda dalam masa 3 hari bekerja.</p>
         </div>
     </div>

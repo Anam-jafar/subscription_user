@@ -69,6 +69,8 @@
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
                                                     <div class="gap-y-4">
+                                                        <x-required-warning-text />
+
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Institusi" id="institusi"
@@ -167,6 +169,8 @@
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
                                                     <div class="gap-y-4">
+                                                        <x-required-warning-text />
+
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <x-input-field level="Alamat (Baris 1)" id="institusi"
                                                                 name="addr" type="text" placeholder=""
@@ -263,6 +267,8 @@
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
                                                     <div class="gap-y-4">
+                                                        <x-required-warning-text />
+
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <x-input-field level="Nama Pegawai/Wakil Institusi"
                                                                 id="institusi" name="con1" type="text"

@@ -324,12 +324,15 @@ class BaseController extends Controller
         if ($client->sta != 0) {
             return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
         }
-                        $user = User::where('mel', $email )->first();
 
-                        Auth::login($user); // Log in the user
+        $user = User::where('mel', $email )->first();
+
+        Auth::login($user); // Log in the user
+        return redirect()->route('home')
+            ->with('success', 'Log Masuk Berjaya');
 
 
-            // // Step 1: Get the Encrypted Key
+            // Step 1: Get the Encrypted Key
             // $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
             //     'appcode' => 'MAISADMINEBOSS'
             // ]);
@@ -355,8 +358,7 @@ class BaseController extends Controller
             // } else {
             //     return back()->with('error', 'Failed to send OTP. Please try again.');
             // }
-                                return redirect()->route('home')
-                        ->with('success', 'Log Masuk Berjaya');
+
         }
 
         return view('login.email_login');
@@ -625,7 +627,10 @@ class BaseController extends Controller
                 ['registration_request_date' => now()->toDateString()] // 'YYYY-MM-DD'
 
             ));
-
+        $email = DB::table('client')
+            ->where('id', $id)
+            ->value('mel');
+        Mail::to($email)->send(new ApplicationConfirmation());
         return redirect()->back()
             ->with('success', 'Your application has been submitted.');
 

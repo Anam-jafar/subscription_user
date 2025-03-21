@@ -32,6 +32,8 @@
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
                                                     <div class="gap-y-4">
+                                                        <x-required-warning-text />
+
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Institusi" id="institusi"
@@ -130,6 +132,8 @@
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
                                                     <div class="gap-y-4">
+                                                        <x-required-warning-text />
+
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <x-input-field level="Alamat (Baris 1)" id="institusi"
                                                                 name="addr" type="text" placeholder=""
@@ -225,6 +229,8 @@
                                             <div class="xl:col-span-12 col-span-12">
                                                 <div class="register-page">
                                                     <div class="gap-y-4">
+                                                        <x-required-warning-text />
+
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <x-input-field level="Nama Pegawai/Wakil Institusi"
                                                                 id="institusi" name="con1" type="text"
@@ -308,76 +314,77 @@
     <script>
         // Add this to your scripts section or create a new script tag with this code
         document.addEventListener('DOMContentLoaded', function() {
-        const checkbox = document.getElementById('myCheckbox');
-        const submitButton = document.querySelector('.ti-btn-success');
+            const checkbox = document.getElementById('myCheckbox');
+            const submitButton = document.querySelector('.ti-btn-success');
 
-        // Set initial button state
-        submitButton.disabled = true;
-        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            // Set initial button state
+            submitButton.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
 
-        // Add event listener to checkbox
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                submitButton.disabled = false;
-                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                submitButton.disabled = true;
-                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-        });
-        let modal = document.getElementById("mapModal");
-        let openButton = document.getElementById("openMapModal");
-        let closeButton = document.getElementById("closeMapModal");
-        let locationInput = document.getElementById("location");
-        let map, marker;
+            // Add event listener to checkbox
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    submitButton.disabled = true;
+                    submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            });
 
-        openButton.addEventListener("click", function() {
-            modal.classList.remove("hidden");
+            let modal = document.getElementById("mapModal");
+            let openButton = document.getElementById("openMapModal");
+            let closeButton = document.getElementById("closeMapModal");
+            let locationInput = document.getElementById("location");
+            let map, marker;
 
-            if (!map) {
-                map = L.map('map').setView([3.0738, 101.5183], 10); // Selangor, Malaysia
+            openButton.addEventListener("click", function() {
+                modal.classList.remove("hidden");
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(map);
+                if (!map) {
+                    map = L.map('map').setView([3.0738, 101.5183], 10); // Selangor, Malaysia
 
-                marker = L.marker([3.0738, 101.5183], {
-                    draggable: true
-                }).addTo(map);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(map);
 
-                // Add Geocoder Search
-                L.Control.geocoder({
-                    defaultMarkGeocode: false
-                }).on('markgeocode', function(e) {
-                    let latlng = e.geocode.center;
-                    map.setView(latlng, 15); // Zoom to selected location
-                    marker.setLatLng(latlng);
-                    locationInput.value = latlng.lat + ", " + latlng.lng;
-                }).addTo(map);
+                    marker = L.marker([3.0738, 101.5183], {
+                        draggable: true
+                    }).addTo(map);
 
-                // Drag event to update location
-                marker.on("dragend", function(e) {
-                    let latlng = marker.getLatLng();
-                    locationInput.value = latlng.lat + ", " + latlng.lng;
-                });
+                    // Add Geocoder Search
+                    L.Control.geocoder({
+                        defaultMarkGeocode: false
+                    }).on('markgeocode', function(e) {
+                        let latlng = e.geocode.center;
+                        map.setView(latlng, 15); // Zoom to selected location
+                        marker.setLatLng(latlng);
+                        locationInput.value = latlng.lat + ", " + latlng.lng;
+                    }).addTo(map);
 
-                // Click event to move marker
-                map.on("click", function(e) {
-                    marker.setLatLng(e.latlng);
-                    locationInput.value = e.latlng.lat + ", " + e.latlng.lng;
-                });
-            }
-        });
+                    // Drag event to update location
+                    marker.on("dragend", function(e) {
+                        let latlng = marker.getLatLng();
+                        locationInput.value = latlng.lat + ", " + latlng.lng;
+                    });
+
+                    // Click event to move marker
+                    map.on("click", function(e) {
+                        marker.setLatLng(e.latlng);
+                        locationInput.value = e.latlng.lat + ", " + e.latlng.lng;
+                    });
+                }
+            });
+
+            document.getElementById("closeMapModal").addEventListener("click", function() {
+                document.getElementById("mapModal").classList.add("hidden");
+            });
+
+            document.getElementById("closeMapModalFooter").addEventListener("click", function() {
+                document.getElementById("mapModal").classList.add("hidden");
+            });
 
 
-        document.getElementById("closeMapModal").addEventListener("click", function() {
-            document.getElementById("mapModal").classList.add("hidden");
-        });
-
-        document.getElementById("closeMapModalFooter").addEventListener("click", function() {
-            document.getElementById("mapModal").classList.add("hidden");
-        });
-        });
         });
     </script>
 @endsection

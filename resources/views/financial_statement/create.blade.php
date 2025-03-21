@@ -38,6 +38,8 @@
                                                 <div class="register-page">
                                                     @if ($instituteType == 2)
                                                         <div class="sm:gap-x-6 gap-y-4">
+                                                            <x-required-warning-text />
+
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
@@ -136,6 +138,8 @@
                                                         </div>
                                                     @else
                                                         <div class="sm:gap-x-6 gap-y-4">
+                                                            <x-required-warning-text />
+
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
@@ -209,6 +213,8 @@
                                                 <div class="register-page">
                                                     @if ($instituteType == 2)
                                                         <div class="sm:gap-x-6 gap-y-4">
+                                                            <x-required-warning-text />
+
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
@@ -260,6 +266,7 @@
                                                         </div>
                                                     @else
                                                         <div class="sm:gap-x-6 gap-y-4">
+                                                            <x-required-warning-text />
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
@@ -364,7 +371,7 @@
                                                             class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center mb-4 md:mb-0">
                                                             <span
                                                                 class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
-                                                            Senarai Penghantaran
+                                                            Kembali
                                                         </a>
 
                                                         <!-- Action buttons container -->

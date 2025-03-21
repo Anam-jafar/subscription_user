@@ -2,7 +2,7 @@
     <label for="{{ $id }}" class="text-gray-800 font-normal mb-2">
         {{ $level }}
         @if ($required && $required === true)
-            <span class="text-red-500">*</span> <!-- Red asterisk for required field -->
+            <span class="text-md text-red-500">*</span> <!-- Red asterisk for required field -->
         @endif
     </label>
 
