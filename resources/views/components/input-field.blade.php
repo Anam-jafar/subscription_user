@@ -25,11 +25,12 @@
     @else
         <!-- Render input field -->
         <input type="{{ $type }}" id="{{ $id }}" name="{{ $name }}"
-            class="p-2 border !border-[#6E829F] rounded-lg !text-gray-800 h-[3rem]
-                {{ $disabled || $readonly ? 'bg-[#EBEBEB]' : '' }} 
-                {{ $rightAlign && $rightAlign === true ? 'text-right' : 'text-left' }}"
+            class="w-full p-2 border !border-[#6E829F] rounded-lg !text-gray-800 h-[3rem]
+        {{ $disabled || $readonly ? 'bg-[#EBEBEB]' : '' }} 
+        {{ $rightAlign && $rightAlign === true ? 'text-right' : 'text-left' }}"
             placeholder="{{ $placeholder }}" value="{{ old($name, $value) }}" {{ $readonly ? 'readonly' : '' }}
             {{ $disabled ? 'disabled' : '' }} {{ $required && $required === true ? 'required' : '' }}>
+
         <!-- Conditionally required -->
     @endif
 

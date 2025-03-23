@@ -54,7 +54,7 @@
                                                     <div class="grid grid-cols-1 gap-x-16 gap-y-2 max-w-3xl mt-4">
                                                         <div class="flex mb-2">
                                                             <div
-                                                                class="text-black font-medium sm:w-32 md:w-64 block text-start">
+                                                                class="text-black font-medium w-24 md:w-64 block text-start">
                                                                 Status</div>
                                                             <div class="text-black font-medium mr-10 block">:</div>
                                                             <div class="text-black font-medium block">
@@ -77,8 +77,9 @@
                                                             <x-show-key-value :key="'Tarikh Permohonan Kemaskini'" :value="$financialStatement->request_edit_date" />
                                                             <x-show-key-value :key="'Alasan untuk Kemaskini'" :value="$financialStatement->request_edit_reason" />
                                                             <span class="w-full text-red-500 fe fe-info text-start">
-                                                                Emel makluman pengesahan dan status laporan akan bertukar
-                                                                kepada DRAF setelah permohonan diluluskan.
+                                                                Emel makluman pengesahan akan diterima dan status
+                                                                penghantaran laporan akan bertukar kepada DRAF setelah
+                                                                permohonan diluluskan.
                                                             </span>
                                                         @else
                                                             <x-show-key-value :key="'Disahkan Oleh'" :value="$verifiedBy" />
