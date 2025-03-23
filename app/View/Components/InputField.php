@@ -19,6 +19,8 @@ class InputField extends Component
     public $disabled;
     public $rightAlign;
     public $required;
+        public string $spanText;
+
 
     public function __construct(
         $level,
@@ -32,6 +34,8 @@ class InputField extends Component
         $disabled = false, 
         $rightAlign = false,
         $required = false,
+                string $spanText = ''
+
     ) {
         $this->level = $level;
         $this->id = $id;
@@ -44,6 +48,8 @@ class InputField extends Component
         $this->disabled = $disabled;
         $this->rightAlign = $rightAlign;
         $this->required = $required;
+                $this->spanText = $spanText;
+
     }
 
     /**

@@ -21,10 +21,13 @@
                         <!-- Title -->
                         <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">PENGHANTARAN LAPORAN
                             KEWANGAN BARU</h1>
+                        <div class='px-4'>
+                            <x-alert />
+                        </div>
+
 
                         <div class="box-body !p-0">
-                            <form class="wizard wizard-tab horizontal" id="financial_form" method="POST" action="">
-                                @csrf
+                            <div class="wizard wizard-tab horizontal" id="financial_form">
                                 <aside class="wizard-content container">
                                     <div class="wizard-step" data-title="Status Penghantaran"
                                         data-id="dOM0iRAyJXsLTr9b3KZfQ2jNv4pgn6Gu" data-limit="3">
@@ -55,7 +58,10 @@
                                                                 Status</div>
                                                             <div class="text-black font-medium mr-10 block">:</div>
                                                             <div class="text-black font-medium block">
-                                                                <x-status-badge :column="'status'" :value="$financialStatement->status" />
+                                                                <x-status-badge :column="'FIN_STATUS'" :value="$financialStatement->FIN_STATUS['val'] ?? ''"
+                                                                    :text="$financialStatement->FIN_STATUS['prm'] ??
+                                                                        'Unknown'" />
+
 
                                                             </div>
                                                         </div>
@@ -67,20 +73,89 @@
                                                                 <x-show-key-value :key="'Sebab Pembatalan'" :value="$financialStatement->suggestion_adm" />
                                                             @endif
                                                         @endif
-                                                        <x-show-key-value :key="'Disahkan Oleh'" :value="$verifiedBy" />
-                                                        <x-show-key-value :key="'Disahkan Di'" :value="$financialStatement->verified_at" />
+                                                        @if ($financialStatement->status == 4)
+                                                            <x-show-key-value :key="'Tarikh Permohonan Kemaskini'" :value="$financialStatement->request_edit_date" />
+                                                            <x-show-key-value :key="'Alasan untuk Kemaskini'" :value="$financialStatement->request_edit_reason" />
+                                                            <span class="w-full text-red-500 fe fe-info text-start">
+                                                                Emel makluman pengesahan dan status laporan akan bertukar
+                                                                kepada DRAF setelah permohonan diluluskan.
+                                                            </span>
+                                                        @else
+                                                            <x-show-key-value :key="'Disahkan Oleh'" :value="$verifiedBy" />
+                                                            <x-show-key-value :key="'Disahkan Di'" :value="$financialStatement->verified_at" />
+                                                        @endif
                                                     </div>
-
 
 
                                                     <div
                                                         class="flex flex-col md:flex-row justify-between mt-8 space-y-3 md:space-y-0">
+                                                        <!-- Back button -->
                                                         <a href="{{ route('statementList') }}"
-                                                            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center">
+                                                            class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center mb-4 md:mb-0">
                                                             <span
                                                                 class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
-                                                            Senarai Penghantaran
+                                                            Kembali
                                                         </a>
+
+                                                        <!-- Action buttons container -->
+                                                        <div
+                                                            class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+                                                            @if ($financialStatement->status == 1)
+                                                                <button type="button" id="save_draft"
+                                                                    href="javascript:void(0);"
+                                                                    onclick="document.getElementById('successModal').style.display='flex'"
+                                                                    class="w-full md:w-40 bg-gray-700 text-white py-2 px-4 rounded-full hover:bg-gray-800 transition-colors text-sm font-medium flex items-center justify-center mr-3">
+                                                                    Mohon Kemaskini
+                                                                </button>
+
+                                                                <!-- Success Modal -->
+                                                                <div id="successModal"
+                                                                    class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-40 z-50">
+                                                                    <div
+                                                                        class="bg-white rounded-xl shadow-lg p-6 max-w-3xl w-full text-center relative">
+                                                                        <!-- Close Button -->
+                                                                        <button
+                                                                            onclick="document.getElementById('successModal').style.display='none'"
+                                                                            class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 text-3xl p-3">
+                                                                            &times;
+                                                                        </button>
+
+                                                                        <!-- Modal Title -->
+                                                                        <h2
+                                                                            class="text-green-600 text-lg font-semibold mb-2 text-start">
+                                                                            Alasan Permohonan Kemaskini
+                                                                        </h2>
+                                                                        <hr>
+
+                                                                        <!-- Modal Content -->
+                                                                        <form id="subscriptionForm" method="POST"
+                                                                            action="{{ route('editRequestStatement', ['id' => $financialStatement->id]) }}">
+
+                                                                            @csrf
+                                                                            <div class="text-start mt-4">
+                                                                                <label for="request_edit_reason"
+                                                                                    class="text-black text-xs font-semibold">Sebab
+                                                                                    Permintaan</label>
+                                                                                <textarea id="request_edit_reason" name="request_edit_reason"
+                                                                                    class="w-full mt-2 p-2 border rounded-md focus:ring focus:ring-blue-300" rows="4"
+                                                                                    placeholder="Sila masukkan sebab permintaan anda"></textarea>
+                                                                            </div>
+                                                                            <hr class="mt-4">
+
+                                                                            <!-- Action Buttons -->
+                                                                            <div class="flex justify-end mt-4">
+                                                                                <button type="submit"
+                                                                                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                                                                    Hantar
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+
+
 
                                                     </div>
 
@@ -145,8 +220,8 @@
                                                             </div>
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Kutipan Semasa (RM)"
-                                                                    id="i3" name="current_collection" type="text"
-                                                                    placeholder="00.00" :rightAlign="true"
+                                                                    id="i3" name="current_collection"
+                                                                    type="text" placeholder="00.00" :rightAlign="true"
                                                                     value="{{ $financialStatement->current_collection }}"
                                                                     disabled='true' />
                                                                 <x-input-field level="(ii) Kutipan Terkumpul (RM)"
@@ -324,9 +399,8 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </aside>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

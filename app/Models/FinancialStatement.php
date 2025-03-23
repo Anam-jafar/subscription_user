@@ -18,7 +18,7 @@ class FinancialStatement extends Model
                             'inst_surplus', 'pws_surplus', 'pws_expenses', 'balance_forward', 'total_expenses', 'total_income', 
                             'total_surplus', 'bank_cash_balance', 'status', 'submission_date', 'submission_refno',
                             'cancellation_date', 'cancel_reason_byuser', 'cancel_reason_adm', 'suggestion_adm', 
-                            'created_by', 'created_at', 'verified_by', 'verified_at', 'attachment1', 'attachment1_info', 'attachment2', 'attachment3'
+                            'created_by', 'created_at', 'verified_by', 'verified_at', 'attachment1', 'attachment1_info', 'attachment2', 'attachment3', 'request_edit_reason', 'request_edit_date'
                     ];
 
     

@@ -63,16 +63,15 @@
                     {{-- onclick="window.location.href='{{ route('activateSubscription') }}'" --}}
                     <button id="submitBtn" disabled type="submit"
                         class="w-full bg-gray-700 text-white py-4 px-6 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
-                        Hantar Permohonan
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 2L11 13" />
-                            <path d="M22 2l-7 20-4-9-9-4 20-7z" />
-                        </svg>
+                        Log Masuk
                     </button>
                 </div>
             </form>
-
+            <div class="text-center !mt-4 !mb-4">
+                <a href="{{ route('subscriptionLogin') }}" class="text-base text-blue-600 hover:underline">Kembali ke
+                    Halaman
+                    Utama</a>
+            </div>
         </div>
 
     </div>

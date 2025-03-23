@@ -43,7 +43,7 @@
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
-                                                                        name="fin_year" type="select" placeholder="Year"
+                                                                        name="fin_year" type="select" placeholder="Pilih"
                                                                         :valueList="$years" :required="true" />
 
                                                                     <x-input-field level="Kategori Penyata" id="statment"
@@ -143,8 +143,9 @@
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
-                                                                        name="fin_year" type="select" placeholder="Year"
-                                                                        :valueList="$years" :required="true" />
+                                                                        name="fin_year" type="select"
+                                                                        placeholder="Pilih" :valueList="$years"
+                                                                        :required="true" />
 
                                                                     <x-input-field level="Kategori Penyata" id="statment"
                                                                         name="fin_category" type="select"
@@ -154,7 +155,8 @@
                                                                 <x-input-field level="(a) Baki Bawa Ke Hadapan (RM)"
                                                                     id="balance_forward" name="balance_forward"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
-                                                                    :required="true" />
+                                                                    :required="true"
+                                                                    spanText="Baki bawa kehadapan tahun sebelumnya bank dan tunai" />
 
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
@@ -162,7 +164,8 @@
                                                                 <x-input-field level="(b) Jumlah Kutipan (RM)"
                                                                     id="total_collection" name="total_collection"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
-                                                                    :required="true" />
+                                                                    :required="true"
+                                                                    spanText="Jumlah Kutipan Tahun Semasa" />
                                                                 <x-input-field level="(c) Jumlah Perbelanjaan (RM)"
                                                                     id="total_expenses" name="total_expenses"
                                                                     type="number" placeholder="00.00" :rightAlign="true"
@@ -218,113 +221,95 @@
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800 mb-2">Penyata
-                                                                        Kewangan
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment1" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
+                                                                    <label for="attachment1" class="text-gray-800 mb-2">
+                                                                        Penyata Kewangan <span
+                                                                            class="text-red-500">*</span>
+                                                                    </label>
+                                                                    <input type="file" id="attachment1"
+                                                                        name="attachment1" required accept=".pdf"
+                                                                        onchange="validateFiles()"
+                                                                        class="block w-full h-[3rem] border border-gray-200 file:bg-primary file:text-white">
+                                                                    <span id="attachment1-error"
+                                                                        class="text-red-500 text-sm mt-1"></span>
                                                                 </div>
                                                                 <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800  mb-2">Penyata
-                                                                        Bank
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment2" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
+                                                                    <label for="attachment2" class="text-gray-800 mb-2">
+                                                                        Penyata Bank <span class="text-red-500">*</span>
+                                                                    </label>
+                                                                    <input type="file" id="attachment2"
+                                                                        name="attachment2" required accept=".pdf"
+                                                                        onchange="validateFiles()"
+                                                                        class="block w-full h-[3rem] border border-gray-200 file:bg-primary file:text-white">
+                                                                    <span id="attachment2-error"
+                                                                        class="text-red-500 text-sm mt-1"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800 mb-2">Certificate
-                                                                        Completion &
-                                                                        Compliance (CCC) <span
-                                                                            class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment3" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                    file:me-4 file:py-2 file:px-4
-                                                                    file:rounded-s-sm file:border-0
-                                                                    file:text-sm file:font-semibold
-                                                                    file:bg-primary file:text-white file:h-[3rem]
-                                                                    hover:file:bg-primary focus-visible:outline-none
-                                                                ">
+                                                                    <label for="attachment3" class="text-gray-800 mb-2">
+                                                                        Certificate Completion & Compliance (CCC) <span
+                                                                            class="text-red-500">*</span>
+                                                                    </label>
+                                                                    <input type="file" id="attachment3"
+                                                                        name="attachment3" required accept=".pdf"
+                                                                        onchange="validateFiles()"
+                                                                        class="block w-full h-[3rem] border border-gray-200 file:bg-primary file:text-white">
+                                                                    <span id="attachment3-error"
+                                                                        class="text-red-500 text-sm mt-1"></span>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    @else
-                                                        <div class="sm:gap-x-6 gap-y-4">
-                                                            <x-required-warning-text />
-
-                                                            <div class="grid grid-cols1 md:grid-cols-2 gap-6">
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800 mb-2">Penyata Kewangan Dan
-                                                                        Nota Kewangan
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment1" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
-                                                                </div>
-                                                                <x-input-field level="Jenis Pengauditan" id="institusi"
-                                                                    name="attachment1_info" type="select" placeholder=""
-                                                                    :valueList="$parameters['audit_types']" :required="true" />
-                                                            </div>
-                                                            <div class="grid grid-cols1 md:grid-cols-2 gap-6">
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800  mb-2">Penyata
-                                                                        Bank
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment2" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                            file:me-4 file:py-2 file:px-4
-                                                                            file:rounded-s-sm file:border-0
-                                                                            file:text-sm file:font-semibold
-                                                                            file:bg-primary file:text-white file:h-[3rem]
-                                                                            hover:file:bg-primary focus-visible:outline-none
-                                                                    ">
-                                                                </div>
-                                                                <div class="flex flex-col mt-4">
-                                                                    <label for="input3"
-                                                                        class="text-gray-800 mb-2">Penyata Penyesuaian Bank
-                                                                        <span class="text-red-500 ">*</span></label>
-                                                                    <input type="file" name="attachment3" required
-                                                                        class="block w-full h-[3rem] border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 text-textmuted dark:text-textmuted/50
-                                                                    file:me-4 file:py-2 file:px-4
-                                                                    file:rounded-s-sm file:border-0
-                                                                    file:text-sm file:font-semibold
-                                                                    file:bg-primary file:text-white file:h-[3rem]
-                                                                    hover:file:bg-primary focus-visible:outline-none
-                                                                ">
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    @endif
                                                 </div>
+                                            @else
+                                                <div class="sm:gap-x-6 gap-y-4">
+                                                    <x-required-warning-text />
+
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                        <div class="flex flex-col mt-4">
+                                                            <label for="attachment1" class="text-gray-800 mb-2">
+                                                                Penyata Kewangan Dan Nota Kewangan <span
+                                                                    class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="file" id="attachment1" name="attachment1"
+                                                                required accept=".pdf" onchange="validateFiles()"
+                                                                class="block w-full h-[3rem] border border-gray-200 file:bg-primary file:text-white">
+                                                            <span id="attachment1-error"
+                                                                class="text-red-500 text-sm mt-1"></span>
+                                                        </div>
+                                                        <x-input-field level="Jenis Pengauditan" id="institusi"
+                                                            name="attachment1_info" type="select" placeholder=""
+                                                            :valueList="$parameters['audit_types']" :required="true" />
+                                                    </div>
+
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                        <div class="flex flex-col mt-4">
+                                                            <label for="attachment2" class="text-gray-800 mb-2">
+                                                                Penyata Bank <span class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="file" id="attachment2" name="attachment2"
+                                                                required accept=".pdf" onchange="validateFiles()"
+                                                                class="block w-full h-[3rem] border border-gray-200 file:bg-primary file:text-white">
+                                                            <span id="attachment2-error"
+                                                                class="text-red-500 text-sm mt-1"></span>
+                                                        </div>
+
+                                                        <div class="flex flex-col mt-4">
+                                                            <label for="attachment3" class="text-gray-800 mb-2">
+                                                                Penyata Penyesuaian Bank <span
+                                                                    class="text-red-500">*</span>
+                                                            </label>
+                                                            <input type="file" id="attachment3" name="attachment3"
+                                                                required accept=".pdf" onchange="validateFiles()"
+                                                                class="block w-full h-[3rem] border border-gray-200 file:bg-primary file:text-white">
+                                                            <span id="attachment3-error"
+                                                                class="text-red-500 text-sm mt-1"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
-
-
                                     <div class="wizard-step" data-title="Pengesahan"
                                         data-id="dOM0iRAyJXsLTr9b3KZfQ2jNv4pgn6Gu" data-limit="3">
                                         <div class="grid grid-cols-12 sm:gap-x-6">
@@ -400,9 +385,10 @@
                     </div>
                 </div>
             </div>
-            <!--End::row-1 -->
-
         </div>
+        <!--End::row-1 -->
+
+    </div>
     </div>
     <!-- End::app-content -->
 @endsection
@@ -463,5 +449,35 @@
                 document.getElementById("total_expenses").addEventListener("input", calculateSurplus);
             @endif
         });
+
+        function validateFiles() {
+            const fileInputs = ["attachment1", "attachment2", "attachment3"];
+            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+            const allowedTypes = ["application/pdf"];
+            let valid = true;
+
+            fileInputs.forEach(id => {
+                const fileInput = document.getElementById(id);
+                const errorSpan = document.getElementById(id + "-error");
+
+                if (fileInput && fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+
+                    if (!allowedTypes.includes(file.type)) {
+                        errorSpan.textContent = "Only PDF files are allowed.";
+                        fileInput.value = "";
+                        valid = false;
+                    } else if (file.size > maxSize) {
+                        errorSpan.textContent = "File must be less than 10MB.";
+                        fileInput.value = "";
+                        valid = false;
+                    } else {
+                        errorSpan.textContent = ""; // Clear error if valid
+                    }
+                }
+            });
+
+            return valid;
+        }
     </script>
 @endsection

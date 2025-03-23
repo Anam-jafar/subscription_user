@@ -31,8 +31,8 @@
                         <td class="px-2 py-2 whitespace-nowrap text-xs text-black break-words">
                             @if (in_array($column, ['sta', 'status', 'subscription_status', 'is_activated']))
                                 <x-status-badge :column="$column" :value="$row->$column" />
-                            @elseif($column == 'amount')
-                                RM 9000
+                            @elseif ($column == 'FIN_STATUS' && is_array($row->FIN_STATUS))
+                                <x-status-badge :column="$column" :value="$row->FIN_STATUS['val'] ?? ''" :text="$row->FIN_STATUS['prm'] ?? 'Unknown'" />
                             @else
                                 {{ $row->$column ?? '-' }}
                             @endif
@@ -42,7 +42,8 @@
                     <td class="px-2 py-2 whitespace-nowrap text-xs text-black break-words text-center">
                         @php
                             $finalRoute =
-                                isset($row->status) && ($row->status == 1 || $row->status === 2 || $row->status === 3)
+                                isset($row->status) &&
+                                ($row->status == 1 || $row->status === 2 || $row->status === 3 || $row->status === 4)
                                     ? $secondaryRoute
                                     : $route;
                         @endphp

@@ -77,11 +77,11 @@
                   <div class="flex flex-col items-start">
                       <h2 class="text-left text-xl font-bold">STATUS LANGGANAN</h2>
                       @if ($user->subscription_status == 0)
-                          <p class="text-left text-xl font-bold text-gray-600 mt-1">TIDA AKTIF</p>
+                          <p class="text-left text-xl font-bold text-red-600 mt-1">TIDAK AKTIF</p>
                       @elseif ($user->subscription_status == 1)
-                          <p class="text-left text-xl font-bold text-yellow-600 mt-1">DALAM SEMAKAN</p>
+                          <p class="text-left text-xl font-bold mt-1" style="color: orange;">DALAM SEMAKAN</p>
                       @elseif($user->subscription_status == 2)
-                          <p class="text-left text-xl font-bold text-pink-600 mt-1">
+                          <p class="text-left text-xl font-bold text-red-600 mt-1">
                               BAYARAN BELUM DIBUAT<br>
                               @if ($invoiceDetails != null)
                                   <span class="text-md font-semibold"><b>RM {{ $invoiceDetails->total }}</b></span>
@@ -101,7 +101,7 @@
                               <img src="{{ asset('subscription/assets/icons/subscription_icon.svg') }}" alt="PDF Icon"
                                   class="w-10 h-10 mr-3" />
                               <div class="mr-3">
-                                  <span class="font-semibold text-sm">LANGAAN SEKARANG</span>
+                                  <span class="font-semibold text-sm">LANGGAN SEKARANG</span>
                               </div>
                           </a>
 
@@ -142,42 +142,53 @@
                               Sila semak kembali status langganan dalam tempoh tiga (03) hari bekerja.</p>
                       @elseif($user->subscription_status == 2)
                           <!-- Record Button -->
-                          <a href="#"
-                              class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto mb-4">
-                              <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}" alt="PDF Icon"
-                                  class="w-10 h-10 mr-3" />
-                              <div class="mr-3">
-                                  <span class="font-semibold text-sm">INVOIS LANGGANAN SPM 2025</span>
-                              </div>
-                              <button class="text-blue-600 hover:text-blue-800">
-                                  <span class="fe fe-download-cloud text-2xl"></span>
-                              </button>
-                          </a>
                           @if ($invoiceDetails != null)
+                              <a href="{{ $invoiceLink }}" target="_blank"
+                                  class="flex justify-between items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto mb-4">
+
+                                  <!-- Left Section: PDF Icon + Text -->
+                                  <div class="flex items-center">
+                                      <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}"
+                                          alt="PDF Icon" class="w-10 h-10 mr-3" />
+                                      <span class="font-semibold text-sm">INVOIS LANGGANAN</span>
+                                  </div>
+
+                                  <!-- Right Section: Download Icon -->
+                                  <div class="ml-auto">
+                                      <span class="fe fe-download-cloud text-2xl mr-3 text-blue-700"></span>
+                                  </div>
+
+                              </a>
+
                               <!-- Send New Button -->
                               <a href="{{ route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code]) }}"
                                   class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors w-full md:w-auto">
                                   <div class="flex items-center">
                                       <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}"
                                           alt="PDF Icon" class="w-10 h-10 mr-3" />
-                                      <img src="{{ asset('subscription/assets/icons/subscription_payment_02.svg') }}"
-                                          alt="PDF Icon" class="w-10 h-10 mr-3" />
                                   </div>
                                   <div class="font-semibold">BAYAR YURAN LANGGANAN</div>
                               </a>
                           @endif
                       @elseif($user->subscription_status == 3)
-                          <a href="#"
-                              class="flex items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto">
-                              <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}" alt="PDF Icon"
-                                  class="w-10 h-10 mr-3" />
-                              <div class="mr-3">
-                                  <span class="font-semibold text-sm">RECIT LANGGANAN SPM 2025</span>
-                              </div>
-                              <button class="text-blue-600 hover:text-blue-800">
-                                  <span class="fe fe-download-cloud text-2xl"></span>
-                              </button>
-                          </a>
+                          @if ($receiptDetails != null)
+                              <a href="{{ $receiptLink }}" target="_blank"
+                                  class="flex justify-between items-center bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors w-full md:w-auto mb-4">
+
+                                  <!-- Left Section: PDF Icon + Text -->
+                                  <div class="flex items-center">
+                                      <img src="{{ asset('subscription/assets/icons/subscription_pdf.svg') }}"
+                                          alt="PDF Icon" class="w-10 h-10 mr-3" />
+                                      <span class="font-semibold text-sm">RESIT LANGGANAN</span>
+                                  </div>
+
+                                  <!-- Right Section: Download Icon -->
+                                  <div class="ml-auto">
+                                      <span class="fe fe-download-cloud text-2xl mr-3 text-blue-700"></span>
+                                  </div>
+
+                              </a>
+                          @endif
                       @endif
 
                   </div>

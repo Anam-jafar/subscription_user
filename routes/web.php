@@ -51,6 +51,7 @@ use Illuminate\Http\Request;
             Route::match(['get', 'post'], '/statement/create/{id}', [FinancialStatementController::class, 'create'])->name('createStatement');
             Route::match(['get', 'post'], '/statement/edit/{id}', [FinancialStatementController::class, 'edit'])->name('editStatement');
             Route::match(['get', 'post'], '/statement/view/{id}', [FinancialStatementController::class, 'view'])->name('viewStatement');
+            Route::post('/statement/edit-request/{id}', [FinancialStatementController::class, 'editRequest'])->name('editRequestStatement');
 
             Route::get('/request-subscription/{id}', [BaseController::class, 'requestSubscription'])->name('requestSubscription');
             Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');

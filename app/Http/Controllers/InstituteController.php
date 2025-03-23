@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 
 
@@ -13,6 +15,8 @@ class InstituteController extends Controller
 {
     private function validateInstitute(Request $request): array
     {
+            $id = Auth::user()->id;
+
         $rules = [
             'name' => 'nullable|string|max:255',
             'cate1' => 'nullable|string|max:50',
@@ -24,9 +28,9 @@ class InstituteController extends Controller
             'pcode' => 'nullable|string|max:8',
             'city' => 'nullable|string|max:50',
             'state' => 'nullable|string|max:50',
-            'hp' => 'nullable|string|max:50',
-            'fax' => 'nullable|string|max:50',
-            'mel' => 'nullable|string|max:255',
+            'hp' => 'nullable|regex:/^\+?[0-9]{10,15}$/',
+            'fax' => 'nullable|regex:/^\+?[0-9]{6,15}$/',
+        'mel' => ['nullable', 'email', 'max:255', Rule::unique('client', 'mel')->ignore($id)],
             'web' => 'nullable|string|max:255',
             'rem10' => 'nullable|string|max:50',
             'rem11' => 'nullable|string|max:50',

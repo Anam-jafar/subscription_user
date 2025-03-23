@@ -13,11 +13,11 @@
                 {{ $disabled || $readonly ? 'bg-gray-200' : '' }}"
             {{ $disabled ? 'disabled' : '' }} {{ $required && $required === true ? 'required' : '' }}>
             <!-- Conditionally required -->
-            <option value="" disabled {{ $value === null ? 'selected' : '' }}>
+            <option value="" disabled {{ old($name, $value) === null ? 'selected' : '' }}>
                 {{ $placeholder }}
             </option>
             @foreach ($valueList as $key => $displayValue)
-                <option value="{{ $key }}" {{ $key == $value ? 'selected' : '' }}>
+                <option value="{{ $key }}" {{ old($name, $value) == $key ? 'selected' : '' }}>
                     {{ $displayValue }}
                 </option>
             @endforeach
@@ -28,10 +28,13 @@
             class="p-2 border !border-[#6E829F] rounded-lg !text-gray-800 h-[3rem]
                 {{ $disabled || $readonly ? 'bg-[#EBEBEB]' : '' }} 
                 {{ $rightAlign && $rightAlign === true ? 'text-right' : 'text-left' }}"
-            placeholder="{{ $placeholder }}" value="{{ $value }}" {{ $readonly ? 'readonly' : '' }}
+            placeholder="{{ $placeholder }}" value="{{ old($name, $value) }}" {{ $readonly ? 'readonly' : '' }}
             {{ $disabled ? 'disabled' : '' }} {{ $required && $required === true ? 'required' : '' }}>
         <!-- Conditionally required -->
+    @endif
 
+    @if (!empty($spanText))
+        <span class="text-gray-500 font-normal mb-4">({{ $spanText }})</span>
     @endif
 
     <!-- Show error message if validation fails -->

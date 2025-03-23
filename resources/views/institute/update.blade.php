@@ -50,15 +50,16 @@
                                                                 value="{{ $institute->name }}" disabled="true" />
                                                         </div>
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                            <x-input-field level="Emel (Rasmi)" id="poskod"
-                                                                name="mel" type="text" placeholder=""
+                                                            <x-input-field level="Emel" id="poskod" spanText="Rasmi"
+                                                                name="mel" type="text" placeholder="masjid@gmail.com"
                                                                 :required='true' value="{{ $institute->mel }}" />
-                                                            <div class="grid grid-cols-2 gap-4">
-                                                                <x-input-field level="Nombor Telefon (Rasmi)" id="poskod"
-                                                                    name="hp" type="text" placeholder=""
-                                                                    :required='true' value="{{ $institute->hp }}" />
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                                <x-input-field level="Nombor Telefon" id="poskod"
+                                                                    spanText="Rasmi" name="hp" type="text"
+                                                                    placeholder="012345678901" :required='true'
+                                                                    value="{{ $institute->hp }}" />
                                                                 <x-input-field level="Nombor Fax" id="poskod"
-                                                                    name="fax" type="text" placeholder=""
+                                                                    name="fax" type="text" placeholder="031234567"
                                                                     value="{{ $institute->Category->fax }}" />
 
                                                             </div>
@@ -110,11 +111,11 @@
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Keluasan Institusi" id="institusi"
-                                                                    name="rem13" type="text" placeholder=""
+                                                                    name="rem13" type="text" placeholder="1000 sqt"
                                                                     value="{{ $institute->rem13 }}" />
-                                                                <x-input-field level="Kapasiti Institusi Jemaah"
-                                                                    id="institusi" name="rem14" type="text"
-                                                                    placeholder="" value="{{ $institute->rem14 }}" />
+                                                                <x-input-field level="Kapasiti Jemaah" id="institusi"
+                                                                    name="rem14" type="text" placeholder="1000"
+                                                                    value="{{ $institute->rem14 }}" />
                                                             </div>
                                                             <x-input-field level="Media Sosial" id="social"
                                                                 name="rem10" type="text" placeholder=""

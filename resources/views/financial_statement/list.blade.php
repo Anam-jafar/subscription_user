@@ -29,7 +29,7 @@
                 ]" button-label="Hantar Baru" :button-route="route('createStatement', ['id' => Auth::user()->uid])" />
 
 
-                <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['submission_date', 'fin_year', 'CATEGORY', 'status']" :rows="$financialStatements" route="editStatement"
+                <x-table :headers="['Tarikh Hantar', 'Tahun Penyata', 'Kategori Penyata', 'Status']" :columns="['SUBMISSION_DATE', 'fin_year', 'CATEGORY', 'FIN_STATUS']" :rows="$financialStatements" route="editStatement"
                     secondaryRoute="viewStatement" docIcon="true" />
 
                 <x-pagination :items="$financialStatements" label="Penyata Kewangan" />
