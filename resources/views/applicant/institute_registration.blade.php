@@ -279,7 +279,7 @@
                                                                     <div id="map"
                                                                         class="h-[400px] w-full rounded-md"></div>
                                                                     <div class="flex justify-end mt-4">
-                                                                        <button id="closeMapModalFooter"
+                                                                        <button id="closeMapModalFooter" type="button"
                                                                             class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
                                                                             Tutup
                                                                         </button>

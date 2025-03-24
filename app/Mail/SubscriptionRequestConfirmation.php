@@ -10,8 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-
-class ApplicationConfirmation extends Mailable
+class SubscriptionRequestConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -40,7 +39,7 @@ class ApplicationConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.application_confirmation',
+            view: 'emails.subscription_request_confirmation',
         );
     }
 

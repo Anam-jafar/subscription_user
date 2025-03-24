@@ -111,10 +111,10 @@
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Keluasan Institusi" id="institusi"
-                                                                    name="rem13" type="text" placeholder="1000 sqt"
+                                                                    name="rem13" type="number" placeholder="1000 sqt"
                                                                     value="{{ $institute->rem13 }}" />
                                                                 <x-input-field level="Kapasiti Jemaah" id="institusi"
-                                                                    name="rem14" type="text" placeholder="1000"
+                                                                    name="rem14" type="number" placeholder="1000"
                                                                     value="{{ $institute->rem14 }}" />
                                                             </div>
                                                             <x-input-field level="Media Sosial" id="social"
@@ -202,7 +202,7 @@
 
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <x-input-field level="Poskod" id="poskod" name="pcode"
-                                                                type="text" placeholder="" :required='true'
+                                                                type="number" placeholder="" :required='true'
                                                                 value="{{ $institute->pcode }}" />
                                                             <div class="flex flex-col mt-4">
                                                                 <label for="location"
@@ -241,7 +241,7 @@
                                                                     <div id="map"
                                                                         class="h-[400px] w-full rounded-md"></div>
                                                                     <div class="flex justify-end mt-4">
-                                                                        <button id="closeMapModalFooter"
+                                                                        <button id="closeMapModalFooter" type="button"
                                                                             class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
                                                                             Tutup
                                                                         </button>

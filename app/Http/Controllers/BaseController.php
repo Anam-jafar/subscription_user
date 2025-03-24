@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\ApplicationConfirmation;
+use App\Mail\SubscriptionRequestConfirmation;
+
 use Illuminate\Support\Facades\Mail;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
@@ -762,6 +764,9 @@ private function checkInvoicePaymentStatus($user)
                 'subscription_status' => 1,
                 'subcription_request_date' => now()->format('Y-m-d') 
             ]);
+            $email = DB::table('client')->where('uid', $id)->value('mel');
+            Mail::to($email)->send(new SubscriptionRequestConfirmation());
+
 
         return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!');
     }

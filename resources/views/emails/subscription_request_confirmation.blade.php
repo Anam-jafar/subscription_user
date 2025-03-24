@@ -86,9 +86,10 @@
 
         <!-- Greeting -->
         <div class="content">
-            <p>Terima Kasih kerana Membuat Pendaftaran Institusi Anda. </p>
-            <p>Permohonan Anda Dalam Proses Semakan dan Kelulusan.
-                Sila Semak Kembali Status Pendaftaran Institusi Anda Dalam Tempoh Tiga (03) Hari Bekerja.</p>
+            <p>Terima Kasih Kerana Membuat Langganan Sistem eMasjid.</p>
+            <p>Sila Log Masuk Ke dalam Sistem Untuk Muat Turun Invois dan Membuat Pembayaran.</p>
+
+            <p> Terima Kasih</p>
         </div>
     </div>
 </body>
