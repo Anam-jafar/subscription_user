@@ -145,10 +145,41 @@
                                                         </div>
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div class="grid grid-cols-2 gap-4">
-                                                                <x-input-field level="Bandar" id="institusi"
-                                                                    name="city" type="select" :valueList="$parameters['cities']"
-                                                                    placeholder="Pilih" :required='true'
-                                                                    value="{{ $institute->city }}" />
+                                                                <div class="flex flex-col mt-4">
+                                                                    <label for="citySearch"
+                                                                        class="text-gray-800 font-normal mb-2">
+                                                                        Bandar
+                                                                    </label>
+
+                                                                    <div class="relative">
+                                                                        <!-- Search Input -->
+                                                                        <input type="text" id="citySearch"
+                                                                            autocomplete="off"
+                                                                            placeholder="Cari Bandar..."
+                                                                            class="p-2 border !border-[#6E829F] rounded-lg !text-gray-800 w-full h-[3rem]"
+                                                                            value="{{ $parameters['cities'][$institute->city] ?? '' }}">
+
+                                                                        <!-- Hidden Select (To store actual value for form submission) -->
+                                                                        <select id="city" name="city"
+                                                                            class="hidden">
+                                                                            <option value="" disabled
+                                                                                {{ old('city', $institute->city) === null ? 'selected' : '' }}>
+                                                                                Pilih
+                                                                            </option>
+                                                                            @foreach ($parameters['cities'] as $key => $displayValue)
+                                                                                <option value="{{ $key }}"
+                                                                                    {{ old('city', $institute->city) == $key ? 'selected' : '' }}>
+                                                                                    {{ $displayValue }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+
+                                                                        <!-- Search Results -->
+                                                                        <ul id="cityResults"
+                                                                            class="absolute z-10 bg-white border border-gray-300 rounded-lg w-full mt-1 hidden max-h-48 overflow-auto">
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
 
                                                                 <x-input-field level="Mukim" id="institusi"
                                                                     name="rem9" type="text" placeholder="Institusi"
@@ -383,6 +414,54 @@
 
             document.getElementById("closeMapModalFooter").addEventListener("click", function() {
                 document.getElementById("mapModal").classList.add("hidden");
+            });
+
+            const citySearchInput = document.getElementById("citySearch");
+            const cityDropdown = document.getElementById("city");
+            const cityResults = document.getElementById("cityResults");
+
+            function fetchCities(searchValue = "") {
+                fetch(`/subscription/search-bandar?query=${searchValue}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        cityResults.innerHTML = "";
+                        Object.keys(data).forEach(key => {
+                            const listItem = document.createElement("li");
+                            listItem.textContent = data[key];
+                            listItem.classList.add("p-2", "cursor-pointer", "hover:bg-gray-200");
+                            listItem.dataset.value = key;
+
+                            listItem.addEventListener("click", function() {
+                                citySearchInput.value = data[key];
+                                cityDropdown.value = key;
+                                cityResults.classList.add("hidden");
+                            });
+
+                            cityResults.appendChild(listItem);
+                        });
+
+                        if (Object.keys(data).length > 0) {
+                            cityResults.classList.remove("hidden");
+                        } else {
+                            cityResults.classList.add("hidden");
+                        }
+                    })
+                    .catch(error => console.error("Error fetching bandar:", error));
+            }
+
+            citySearchInput.addEventListener("focus", function() {
+                fetchCities();
+            });
+
+            citySearchInput.addEventListener("input", function() {
+                const searchValue = this.value.trim();
+                fetchCities(searchValue);
+            });
+
+            document.addEventListener("click", function(event) {
+                if (!citySearchInput.contains(event.target) && !cityResults.contains(event.target)) {
+                    cityResults.classList.add("hidden");
+                }
             });
 
 

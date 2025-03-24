@@ -33,6 +33,8 @@ use Illuminate\Http\Request;
         Route::match(['get', 'post'], '/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
         Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
         Route::match(['get', 'post'],'/login-otp/{email}', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
+        Route::get('/search-bandar', [BaseController::class, 'getBandar'])->name('search.bandar');
+
 
         
         Route::middleware(['customAuth'])->group(function () {

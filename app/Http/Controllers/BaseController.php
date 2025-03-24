@@ -11,6 +11,7 @@ use App\Mail\ApplicationConfirmation;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Parameter;
 
 
 
@@ -140,6 +141,17 @@ class BaseController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+    public function getBandar(Request $request)
+    {
+        $search = $request->input('query');
+
+        $cities = Parameter::where('grp', 'city')
+            ->where('prm', 'LIKE', "%{$search}%") // Search for matching cities
+            ->pluck('prm', 'code')
+            ->toArray();
+
+        return response()->json($cities);
     }
 
     public function getInstitutesByCity(Request $request)
@@ -758,10 +770,16 @@ private function checkInvoicePaymentStatus($user)
 
     public function logout()
     {
+        if (!Auth::check()) {
+            return redirect()->route('subscriptionLogin');
+        }
+
         session()->forget(['encrypted_key', 'encrypted_user']);
         Auth::logout();
+
         return redirect()->route('subscriptionLogin');
     }
+
 
     public function makePayment($uid, $coa_id)
     {
