@@ -36,8 +36,8 @@ class Wizard1 {
             "steps": 0,
             "highlight_time": 1000,
             "navigation": "all",
-            "next": "Next",
-            "prev": "Prev",
+            "next": "Seterusnya",
+            "prev": "Sebelum",
             "finish": "Submit",
 
             "highlight_type": { "error": "error", "warning": "warning", "success": "success", "info": "info" },
