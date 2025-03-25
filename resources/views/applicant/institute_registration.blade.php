@@ -92,11 +92,11 @@
                                                                 :required='true' value="{{ $institute->mel }}" />
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                                 <x-input-field level="Nombor Telefon" id="poskod"
-                                                                    spanText="Rasmi" name="hp" type="text"
+                                                                    spanText="Rasmi" name="hp" type="number"
                                                                     placeholder="012345678901" :required='true'
                                                                     value="{{ $institute->hp }}" />
                                                                 <x-input-field level="Nombor Fax" id="poskod"
-                                                                    name="fax" type="text" placeholder="031234567"
+                                                                    name="fax" type="number" placeholder="031234567"
                                                                     value="{{ $institute->Category->fax }}" />
 
                                                             </div>
@@ -148,10 +148,10 @@
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div class="grid grid-cols-2 gap-4">
                                                                 <x-input-field level="Keluasan Institusi" id="institusi"
-                                                                    name="rem13" type="text" placeholder="1000 sqt"
+                                                                    name="rem13" type="number" placeholder="1000 sqt"
                                                                     value="{{ $institute->rem13 }}" />
                                                                 <x-input-field level="Kapasiti Jemaah" id="institusi"
-                                                                    name="rem14" type="text" placeholder="1000"
+                                                                    name="rem14" type="number" placeholder="1000"
                                                                     value="{{ $institute->rem14 }}" />
                                                             </div>
                                                             <x-input-field level="Media Sosial" id="social"
@@ -239,7 +239,7 @@
 
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <x-input-field level="Poskod" id="poskod" name="pcode"
-                                                                type="text" placeholder="" :required='true'
+                                                                type="number" placeholder="" :required='true'
                                                                 value="{{ $institute->pcode }}" />
 
                                                             <div class="flex flex-col mt-4">
@@ -307,7 +307,7 @@
                                                                 placeholder="" :required='true'
                                                                 value="{{ $institute->con1 }}" />
                                                             <x-input-field level="No. Kad Pengenalan" id="institusi"
-                                                                name="ic" type="text" placeholder=""
+                                                                name="ic" type="number" placeholder=""
                                                                 :required='true' value="{{ $institute->ic }}" />
                                                         </div>
                                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -315,7 +315,7 @@
                                                                 type="select" placeholder="pilih" :valueList="$parameters['user_positions']"
                                                                 :required='true' value="{{ $institute->pos1 }}" />
                                                             <x-input-field level="Nombor Telefon" id="institusi"
-                                                                name="tel1" type="text" placeholder=""
+                                                                name="tel1" type="number" placeholder=""
                                                                 :required='true' value="{{ $institute->tel1 }}" />
                                                         </div>
                                                     </div>
