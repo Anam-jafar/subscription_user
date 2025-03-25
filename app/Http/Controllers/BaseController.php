@@ -823,7 +823,7 @@ private function checkInvoicePaymentStatus($user)
 
             "modepay" => "FPX",
             "amount" => $item->val,
-            "app" => "EBOSS",
+            "app" => "MAISADMINEBOSS",
             "outcharge" => "1"
         ];
 

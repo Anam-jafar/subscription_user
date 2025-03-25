@@ -15,6 +15,13 @@
             Malaysia.</p>
         <x-alert />
         <div class="max-w-md mx-auto p-4 space-y-4 !mt-12 !mb-8">
+
+            <!-- Semak Pendaftaran Button -->
+            <button onclick="window.location.href='{{ route('findInstitute') }}'"
+                class="w-full bg-purple-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-purple-700 transition-colors">
+                <span class="text-lg font-normal">Semak / Daftar</span>
+                <i class="fe fe-search text-white text-xl"></i>
+            </button>
             <!-- Log Masuk Button -->
             <button onclick="window.location.href='{{ route('subscriptionLoginEmail') }}'"
                 class="w-full bg-indigo-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-indigo-700 transition-colors">
@@ -24,12 +31,7 @@
 
             </button>
 
-            <!-- Semak Pendaftaran Button -->
-            <button onclick="window.location.href='{{ route('findInstitute') }}'"
-                class="w-full bg-purple-600 text-white py-3 px-6 rounded-full shadow-lg flex justify-between items-center hover:bg-purple-700 transition-colors">
-                <span class="text-lg font-normal">Semak / Daftar</span>
-                <i class="fe fe-search text-white text-xl"></i>
-            </button>
+
         </div>
 
     </div>

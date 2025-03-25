@@ -207,7 +207,7 @@
                   <form id="logout-form" action="{{ route('subscriptionLogout') }}" method="POST">
                       @csrf
                       <button type="submit"
-                          class="w-1/2 bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-semibold flex items-center justify-center">
+                          class="w-full bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 transition-colors text-lg font-semibold flex items-center justify-center">
                           Keluar
                           <span class="fe fe-log-out text-2xl ml-4"></span>
                       </button>
