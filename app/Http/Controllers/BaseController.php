@@ -122,15 +122,27 @@ class BaseController extends Controller
     {
         return view('applicant.institute_subscribed');
     }
-    public function searchInstitutes(Request $request)
-    {
+public function searchInstitutes(Request $request)
+{
+    $clients = DB::table('client')
+        ->where('name', 'LIKE', '%' . $request->institute_name . '%')
+        ->select('uid', 'name', 'rem8')
+        ->get()
+        ->mapWithKeys(function ($client) {
+            $rem8_value = DB::table('type')->where('code', $client->rem8)->value('prm');
 
-        $clients = DB::table('client')
-            ->where('name', 'LIKE', '%' . $request->institute_name . '%')
-            ->pluck('name', 'uid'); 
+            return [
+                $client->uid => [
+                    'name' => $client->name,
+                    'rem8' => $rem8_value ?? $client->rem8 // Use the fetched value or fallback to original
+                ]
+            ];
+        });
 
-        return response()->json($clients);
-    }
+    return response()->json($clients);
+}
+
+
 
     public function getCities()
     {
@@ -215,7 +227,7 @@ class BaseController extends Controller
 
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Untuk meneruskan anda mesti memilih institut');
+            return back()->with('error', 'Nama Intitusi anda tiada dalam rekod, Sila hubungi Pegawai Agama Daerah anda untuk makluman lanjut.');
         }
     }
 
@@ -682,6 +694,7 @@ public function home()
 
     // Fetch Latest Invoice if Subscription Status is 2
     if ($user->subscription_status == 2) {
+
         
         $invoiceDetails = DB::table('fin_ledger')
             ->select('dt', 'tid', 'item', 'total', 'src', 'code')
@@ -727,7 +740,7 @@ private function checkInvoicePaymentStatus($user)
     // Only proceed if user has pending invoices (status 2)
     if ($user->subscription_status == 2) {
 
-        $user_id = $user->id;
+        $user_id = $user->uid;
 
         // Fetch total invoice amount (INV) and total received payment (CSL)
         $paymentDetails = DB::table('fin_ledger as inv')
@@ -750,6 +763,7 @@ private function checkInvoicePaymentStatus($user)
             ->where('inv.src', 'INV')
             ->groupBy('inv.vid', 'payments.total_received')
             ->first(); // Get single result
+
 
         // Check if outstanding amount is 0
         $paymentConfirmed = ($paymentDetails && $paymentDetails->outstanding == 0);

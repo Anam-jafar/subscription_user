@@ -54,7 +54,7 @@
                                                                 <x-input-field
                                                                     level="Peratus Kemajuan Pembinaan Terkini (%)"
                                                                     id="p1" name="latest_contruction_progress"
-                                                                    type="text" placeholder="00" :required="true" />
+                                                                    type="number" placeholder="00" :required="true" />
                                                             </div>
 
 
@@ -69,11 +69,11 @@
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Kos Pembinaan (Asal, RM)"
                                                                     id="i1" name="ori_contruction_cost"
-                                                                    type="text" placeholder="00.00" :rightAlign="true"
+                                                                    type="number" placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                                 <x-input-field
                                                                     level="(ii) Variation Order (Tambah Kurang, RM)"
-                                                                    id="i2" name="variation_order" type="text"
+                                                                    id="i2" name="variation_order" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                             </div>
@@ -85,11 +85,11 @@
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Kutipan Semasa (RM)"
-                                                                    id="i3" name="current_collection" type="text"
+                                                                    id="i3" name="current_collection" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                                 <x-input-field level="(ii) Kutipan Terkumpul (RM)"
-                                                                    id="i04" name="total_expenses" type="text"
+                                                                    id="i04" name="total_expenses" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                             </div>
@@ -102,19 +102,19 @@
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Pindahan Kepada PWS (RM)"
-                                                                    id="i4" name="transfer_pws" type="text"
+                                                                    id="i4" name="transfer_pws" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                                 <x-input-field
                                                                     level="(ii) Belanja Pembinaan Masjid/Surau (RM)"
                                                                     id="i5" name="contruction_expenses"
-                                                                    type="text" placeholder="00.00" :rightAlign="true"
+                                                                    type="number" placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                             </div>
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(iii) Belanja Pembinaan PWS (RM)"
-                                                                    id="i6" name="pws_expenses" type="text"
+                                                                    id="i6" name="pws_expenses" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                             </div>
@@ -127,11 +127,11 @@
                                                             </div>
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <x-input-field level="(i) Lebihan Masjid/Surau (RM)"
-                                                                    id="i4" name="inst_surplus" type="text"
+                                                                    id="i4" name="inst_surplus" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                                 <x-input-field level="(ii) Lebihan PWS (RM)"
-                                                                    id="i5" name="pws_surplus" type="text"
+                                                                    id="i5" name="pws_surplus" type="number"
                                                                     placeholder="00.00" :rightAlign="true"
                                                                     :required="true" />
                                                             </div>
@@ -216,8 +216,7 @@
                                                 <div class="register-page">
                                                     @if ($instituteType == 2)
                                                         <div class="sm:gap-x-6 gap-y-4">
-                                                            <x-required-warning-text />
-
+                                                            <span class="text-md text-red-500 fe fe-info">Hanya Fail PDF yang diterima</span>
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
@@ -276,7 +275,7 @@
                                                         </div>
                                                     @else
                                                         <div class="sm:gap-x-6 gap-y-4">
-                                                            <x-required-warning-text />
+                                                            <span class="text-md text-red-500 fe fe-info">Hanya Fail PDF yang diterima</span>
 
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">

@@ -139,7 +139,7 @@
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <div class="grid grid-cols-12 sm:gap-x-6 gap-y-4">
+                                                        <div class="sm:gap-x-6 gap-y-4">
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div class="grid grid-cols-2 gap-6">
                                                                     <x-input-field level="Bagi Tahun" id="ye"
@@ -210,6 +210,7 @@
                                                 <div class="register-page">
                                                     @if ($instituteType == 2)
                                                         <div class="sm:gap-x-6 gap-y-4">
+                                                            <span class="text-md text-red-500 fe fe-info">Hanya Fail PDF yang diterima</span>
 
                                                             <div class="grid grid-cols1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
@@ -294,7 +295,7 @@
                                                         </div>
                                                     @else
                                                         <div class="sm:gap-x-6 gap-y-4">
-
+                                                            <span class="text-md text-red-500 fe fe-info">Hanya Fail PDF yang diterima</span>
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                                 <div class="flex flex-col mt-4">
                                                                     <label for="input3"

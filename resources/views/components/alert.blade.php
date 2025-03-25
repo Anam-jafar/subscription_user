@@ -60,12 +60,13 @@
 
     <style>
         .animate-fade-out {
-            animation: fadeOut 5s ease-in-out;
             opacity: 1;
         }
 
         @keyframes fadeOut {
-            0% {
+
+            0%,
+            70% {
                 opacity: 1;
             }
 
@@ -75,12 +76,17 @@
         }
     </style>
 
-
     <script>
         document.querySelectorAll('.alert').forEach(alert => {
+            // Set animation after a short delay to ensure it's applied
+            setTimeout(() => {
+                alert.style.animation = "fadeOut 3s ease-in-out 7s forwards";
+            }, 100);
+
+            // Remove the alert completely after the full animation
             setTimeout(() => {
                 alert.remove();
-            }, 5000); // 10 seconds
+            }, 10000); // 7s visibility + 3s fade out
         });
     </script>
 </div>

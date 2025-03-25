@@ -39,7 +39,7 @@
 
               <!-- Success Message -->
               <div class="flex justify-center">
-                  <img src="{{ asset('subscription/assets/icons/pending.svg') }}" alt="MAIS Logo" class="w-56 h-56" />
+                  <img src="{{ asset('subscription/assets/icons/pending.svg') }}" alt="MAIS Logo" class="w-64 h-64" />
               </div>
 
               <div class="text-center !mt-2 !mb-4">

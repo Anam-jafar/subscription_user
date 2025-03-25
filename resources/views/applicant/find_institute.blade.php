@@ -171,11 +171,10 @@
                             return;
                         }
 
-                        Object.entries(data).forEach(([uid, name]) => {
+                        Object.entries(data).forEach(([uid, { name, rem8 }]) => {
                             const item = document.createElement("div");
-                            item.classList.add("p-2", "hover:bg-gray-200", "cursor-pointer",
-                                "text-gray-800");
-                            item.textContent = name;
+                            item.classList.add("p-2", "hover:bg-gray-200", "cursor-pointer", "text-gray-800");
+                            item.textContent = `${name} (${rem8})`; // ✅ Show name with rem8 in brackets
                             item.dataset.uid = uid;
 
                             item.addEventListener("click", function() {

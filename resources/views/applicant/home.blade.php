@@ -6,8 +6,15 @@
               <img src="{{ asset('subscription/assets/icons/fin_logo.svg') }}" alt="MAIS Logo" class="w-32 h-32" />
           </div>
           <!-- Title -->
-          <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">SISTEM PENGURUSAN MASJID
-          </h1>
+          <div class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont flex items-center justify-center cursor-pointer"
+              onclick="location.reload();">
+              <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">
+                  SISTEM PENGURUSAN MASJID
+              </h1>
+              <img src="{{ asset('subscription/assets/icons/reload.svg') }}" alt="Reload Icon" class="w-7 h-7 ml-3" />
+          </div>
+
+
 
 
 
@@ -162,6 +169,7 @@
 
                               <!-- Send New Button -->
                               <a href="{{ route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code]) }}"
+                                  target=_blank
                                   class="flex items-center bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition-colors w-full md:w-auto">
                                   <div class="flex items-center">
                                       <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}"

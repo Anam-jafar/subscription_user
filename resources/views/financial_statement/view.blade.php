@@ -390,7 +390,7 @@
                                                             class="text-blue-500 hover:text-blue-700 hover:cursor-pointer no-underline text-md font-bold flex items-center">
                                                             <span
                                                                 class="fe fe-arrow-left-circle mr-2 text-md font-bold"></span>
-                                                            Senarai Penghantaran
+                                                            Kembali
                                                         </a>
 
                                                     </div>
