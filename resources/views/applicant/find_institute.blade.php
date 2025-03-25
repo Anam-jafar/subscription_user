@@ -14,45 +14,42 @@
         <h1 class="text-[#2624D0] text-2xl !font-extrabold text-center mt-4">
             SEMAK PENDAFTARAN
         </h1>
+        <!-- Info Message -->
+        <!-- Clickable Text -->
+        <p class="mt-2 text-md text-blue-800 text-center !mb-4 cursor-pointer hover:text-blue-600 font-semibold"
+            onclick="document.getElementById('successModal').style.display='flex'">
+            <span class="fe fe-info text-blue-600"></span>
+            Jika institusi anda tiada di dalam senarai, sila hubungi Pihak MAIS
+        </p>
+
+        <!-- Modal -->
+        <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-40 !mt-0 z-50"
+            style="display: none;">
+            <div class="bg-white rounded-xl shadow-lg p-6 max-w-3xl w-full text-center relative">
+                <button onclick="document.getElementById('successModal').style.display='none'"
+                    class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 text-3xl p-3">
+                    &times;
+                </button>
+
+                <h2 class="text-green-600 text-lg font-semibold mb-2 text-start">
+                    Hubungi kami di
+                </h2>
+                <hr>
+                <div class="text-gray-700 text-start leading-relaxed p-4">
+                    <p><strong>Sektor Audit Dalam dan Integriti (MAIS)</strong></p>
+                    <p>Tingkat 5, Kompleks MAIS Klang</p>
+                    <p>Lot 336, Jalan Meru Off Jalan Kapar</p>
+                    <p>41050 Klang, Selangor Darul Ehsan</p>
+                    <p><strong>Telefon:</strong> +603-3361 4000 / 4180</p>
+                    <p><strong>Email:</strong> <a href="mailto:auditkewms@mais.gov.my"
+                            class="text-blue-600 hover:underline">auditkewms@mais.gov.my</a></p>
+                </div>
+            </div>
+        </div>
 
         <!-- Subtitle -->
         <div class="text-center space-y-1">
             <h2 class="text-black text-lg">Cari / Pilih Institusi Anda</h2>
-            <!-- Info Message -->
-            <!-- Clickable Text -->
-            <p class="mt-2 text-md text-gray-800 text-center !mb-4 cursor-pointer hover:text-blue-600"
-                onclick="document.getElementById('successModal').style.display='flex'">
-                <span class="fe fe-info"></span>
-                Jika institusi anda tiada di dalam senarai, sila hubungi Pihak MaIS
-            </p>
-
-            <!-- Modal -->
-            <div id="successModal"
-                class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-40 !mt-0 z-50"
-                style="display: none;">
-                <div class="bg-white rounded-xl shadow-lg p-6 max-w-3xl w-full text-center relative">
-                    <button onclick="document.getElementById('successModal').style.display='none'"
-                        class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 text-3xl p-3">
-                        &times;
-                    </button>
-
-                    <h2 class="text-green-600 text-lg font-semibold mb-2 text-start">
-                        Maklumat Hubungan
-                    </h2>
-                    <hr>
-                    <div class="text-gray-700 text-start leading-relaxed">
-                        <p><strong>Sektor Audit Dalam dan Integriti (MAIS)</strong></p>
-                        <p>Tingkat 5, Kompleks MAIS Klang</p>
-                        <p>Lot 336, Jalan Meru Off Jalan Kapar</p>
-                        <p>41050 Klang, Selangor Darul Ehsan</p>
-                        <p><strong>Telefon:</strong> +603-3361 4000 / 4180</p>
-                        <p><strong>Email:</strong> <a href="mailto:auditkewms@mais.gov.my"
-                                class="text-blue-600 hover:underline">auditkewms@mais.gov.my</a></p>
-                    </div>
-                </div>
-            </div>
-
-
             <p class="text-black font-normal">Carian Kata Kunci</p>
         </div>
 
