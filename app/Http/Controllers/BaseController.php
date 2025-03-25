@@ -701,7 +701,7 @@ public function home()
         $receiptDetails = DB::table('fin_ledger')
             ->select('dt', 'tid', 'item', 'total', 'src', 'code', 'ref')
             ->where('vid', $user->uid)
-            ->where('src', 'REC')
+            ->where('src', 'CSL')
             ->orderByDesc('id') 
             ->first();
 
@@ -724,36 +724,48 @@ public function home()
  */
 private function checkInvoicePaymentStatus($user)
 {
-    // Only proceed if user has pending invoice (status 2)
+    // Only proceed if user has pending invoices (status 2)
     if ($user->subscription_status == 2) {
-        // Get latest invoice
-        $latestInvoice = DB::table('fin_ledger')
-            ->select('tid')
-            ->where('vid', $user->uid)
-            ->where('src', 'INV')
-            ->orderByDesc('id')
-            ->first();
-            
-        if ($latestInvoice) {
-            // Check if any receipt references this invoice's tid in its ref field
-            $paymentConfirmed = DB::table('fin_ledger')
-                ->where('vid', $user->uid)
-                ->where('src', 'REC')
-                ->where('ref', $latestInvoice->tid)
-                ->exists();
-                
-            // If payment confirmed, update subscription status to 3
-            if ($paymentConfirmed) {
-                DB::table('client')
-                    ->where('uid', $user->uid)
-                    ->update(['subscription_status' => 3]);
-                    
-                // Update local user object to reflect the change
-                $user->subscription_status = 3;
-            }
+
+        $user_id = $user->id;
+
+        // Fetch total invoice amount (INV) and total received payment (CSL)
+        $paymentDetails = DB::table('fin_ledger as inv')
+            ->leftJoinSub(
+                DB::table('fin_ledger')
+                    ->select('vid', DB::raw('SUM(val) AS total_received'))
+                    ->where('src', 'CSL')
+                    ->groupBy('vid'),
+                'payments', // Alias for the subquery
+                'inv.vid',
+                '=',
+                'payments.vid'
+            )
+            ->select(
+                DB::raw('SUM(inv.val) AS total_invoice'),
+                DB::raw('COALESCE(payments.total_received, 0) AS total_received'),
+                DB::raw('SUM(inv.val) - COALESCE(payments.total_received, 0) AS outstanding')
+            )
+            ->where('inv.vid', $user_id)
+            ->where('inv.src', 'INV')
+            ->groupBy('inv.vid', 'payments.total_received')
+            ->first(); // Get single result
+
+        // Check if outstanding amount is 0
+        $paymentConfirmed = ($paymentDetails && $paymentDetails->outstanding == 0);
+
+        // If payment confirmed, update subscription status to 3
+        if ($paymentConfirmed) {
+            DB::table('client')
+                ->where('uid', $user->uid)
+                ->update(['subscription_status' => 3]);
+
+            // Update local user object to reflect the change
+            $user->subscription_status = 3;
         }
     }
 }
+
 
 
     public function requestSubscription($id) 
@@ -913,9 +925,8 @@ private function checkInvoicePaymentStatus($user)
 
         $parameters = $this->getCommon();
         return view('applicant.institute_registration', compact('institute', 'parameters'));
-
     }
-        public function showInstituteProfileRegistrationDetailsForm(Request $request)
+    public function showInstituteProfileRegistrationDetailsForm(Request $request)
     {
         $request->validate([
             'inst_refno' => 'required|string',
