@@ -122,6 +122,8 @@ public function create(Request $request, $inst_refno)
             $validatedData['submission_refno'] = $this->generateUniqueSubmissionRefno(
                 date('Y'), date('m'), date('d'), $institute->Type->prm
             );
+        }else{
+            $validatedData['submission_date'] = null;
         }
 
         // Handle file uploads
@@ -207,6 +209,8 @@ public function edit(Request $request, $id)
         $validatedData['status'] = ($request->input('draft') == "true") ? 0 : 1;
         if ($validatedData['status'] == 1) {
             $validatedData['submission_date'] = now();
+        }else{
+            $validatedData['submission_date'] = null;
         }
 
         // Handle file uploads

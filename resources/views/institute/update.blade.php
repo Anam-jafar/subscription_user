@@ -19,7 +19,7 @@
                                 class="w-24 h-24" />
                         </div>
                         <!-- Title -->
-                        <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">PEMBARUAN PROFIL MASJID
+                        <h1 class="text-center text-3xl !font-normal text-[#2624D0] mt-2 font-mont">KEMASKINI PROFIL MASJID
                         </h1>
 
                         <div class="box-body !p-0">
@@ -325,7 +325,7 @@
                                                     <button
                                                         class="ti-btn ti-btn-success opacity-50 py-2 px-4 rounded-full cursor-not-allowed w-24"
                                                         type="submit" disabled>
-                                                        Hantar
+                                                        Kemaskini
                                                     </button>
                                                 </div>
                                             </div>
