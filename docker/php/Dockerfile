@@ -1,71 +1,62 @@
 FROM php:8.1-fpm
 
+# Install system dependencies
+RUN apt-get update -y && apt-get install -y \
+    libicu-dev libmariadb-dev unzip zip zlib1g-dev libpng-dev \
+    libjpeg-dev libfreetype6-dev libjpeg62-turbo-dev libzip-dev \
+    git curl libcurl4-openssl-dev pkg-config libssl-dev \
+    nodejs npm && \
+    apt-get clean
+
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-
-RUN apt-get update -y && apt-get install -y \
-    libicu-dev \
-    libmariadb-dev \
-    unzip zip \
-    zlib1g-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libzip-dev \
-    git \
-    curl \
-    libcurl4-openssl-dev \
-    pkg-config \
-    libssl-dev \
-    && apt-get clean
-
+# Install PHP extensions
 RUN docker-php-ext-install gettext intl pdo_mysql zip \
     && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
+# Install MongoDB extension
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
+# Set working directory
 WORKDIR /var/www/html
 
-COPY . /var/www/html
+# Copy Laravel project files
+COPY . .
 
-COPY --chown=www-data:www-data . .
+# Debug: Check if artisan and vendor exist
+RUN ls -lah /var/www/html && ls -lah /var/www/html/vendor || echo "Vendor directory does not exist!"
 
-# Copy Composer files first (for caching optimization)
-COPY composer.json composer.lock /var/www/html/
+# Install Composer dependencies
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist \
+    --optimize-autoloader \
+    && ls -lah /var/www/html/vendor || echo "Vendor directory is missing!"
 
+# Generate Laravel key
+RUN php artisan key:generate || echo "Key generation failed!"
 
-RUN composer install --ignore-platform-reqs
-RUN composer dump-autoload --ignore-platform-reqs
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap /var/www/html/bootstrap/cache
-RUN chmod -R 777 /var/www/html/storage /var/www/html/bootstrap /var/www/html/bootstrap/cache
+# Regenerate autoload files (critical step)
+RUN composer dump-autoload -v
 
-# Install Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+# Install Node.js dependencies
+RUN npm install && npm run build && ls -lah public/build || echo "Vite build failed!"
 
-# Copy package.json and package-lock.json first to optimize Docker caching
-COPY package.json package-lock.json /var/www/html/
+# Set correct permissions
+RUN chown -R www-data:www-data /var/www/html/storage \
+                                /var/www/html/bootstrap/cache \
+                                /var/www/html/vendor \
+    && chmod -R 775 /var/www/html/storage \
+                    /var/www/html/bootstrap/cache
 
-# Install NPM dependencies
-RUN npm install
+# Expose port
+EXPOSE 9000
 
-# Copy the rest of the frontend files
-COPY resources/ /var/www/html/resources/
-
-# Build Vite assets
-RUN npm run build
-
-# Set final permissions
-RUN chown -R www-data:www-data /var/www/html
-
-# Add this near the end of your Dockerfile, before the CMD
-RUN mkdir -p /var/www/static_files/fin_statement_attachments \
-    && chown -R www-data:www-data /var/www/static_files \
-    && chmod -R 775 /var/www/static_files
-
-
-
-# Start PHP-FPM instead of Vite dev server (for production)
+# Start PHP-FPM
 CMD ["php-fpm"]
+

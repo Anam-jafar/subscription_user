@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
     app:
         build:
@@ -7,28 +6,32 @@ services:
             dockerfile: ./docker/php/Dockerfile
         container_name: mais_subscription_app
         volumes:
-            - .:/var/www/html
-            - /home/static_files:/var/www/static_files # Add this line
+            - /home/static_files:/var/www/static_files
+            - build-assets:/var/www/html/public/subscription/build  # Add this line
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+        networks:
+            - app-network
 
-        command: >
-            sh -c "mkdir -p /var/www/static_files/fin_statement_attachments &&
-                   chown -R www-data:www-data /var/www/static_files &&
-                   chmod -R 775 /var/www/static_files &&
-                   chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache &&
-                   chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache &&
-                   php-fpm"
 
     webserver:
         image: nginx:alpine
         container_name: mais_subscription_server
         volumes:
-            - .:/var/www/html
-            - /home/static_files:/var/www/static_files # Add this line
+            - ./public/subscription/assets:/var/www/html/public/subscription/assets
+            - /home/static_files:/var/www/static_files 
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - build-assets:/var/www/html/public/subscription/build  # Add this line
         ports:
-            - "7090:80" # Make sure this matches your nginx config
-
+            - "7090:80"
         depends_on:
             - app
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    build-assets:  # Add this named volume
