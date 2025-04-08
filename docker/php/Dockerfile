@@ -25,9 +25,6 @@ WORKDIR /var/www/html
 # Copy Laravel project files
 COPY . .
 
-# Debug: Check if artisan and vendor exist
-RUN ls -lah /var/www/html && ls -lah /var/www/html/vendor || echo "Vendor directory does not exist!"
-
 # Install Composer dependencies
 RUN composer install \
     --no-dev \
@@ -35,17 +32,16 @@ RUN composer install \
     --no-plugins \
     --no-scripts \
     --prefer-dist \
-    --optimize-autoloader \
-    && ls -lah /var/www/html/vendor || echo "Vendor directory is missing!"
+    --optimize-autoloader 
 
 # Generate Laravel key
-RUN php artisan key:generate || echo "Key generation failed!"
+RUN php artisan key:generate
 
 # Regenerate autoload files (critical step)
 RUN composer dump-autoload -v
 
 # Install Node.js dependencies
-RUN npm install && npm run build && ls -lah public/build || echo "Vite build failed!"
+RUN npm install && npm run build 
 
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html/storage \

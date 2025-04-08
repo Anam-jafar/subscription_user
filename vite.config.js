@@ -157,16 +157,11 @@ export default defineConfig({
             targets: [
                 {
                     src: [
-                        "resources/assets/audio/",
-                        "resources/assets/images/",
                         "resources/assets/icon-fonts/",
-                        "resources/assets/video/",
 
                         "resources/assets/js/apex-github-data.js",
-                        "resources/assets/js/apexcharts-candlestick-seriesdata.js",
                         "resources/assets/js/apexcharts-dayjs.js",
                         "resources/assets/js/apexcharts-irregulardata.js",
-                        "resources/assets/js/apexcharts-stock-prices.js",
                         "resources/assets/js/authentication-main.js",
                         "resources/assets/js/chat.js",
                         "resources/assets/js/coming-soon.js",
@@ -238,15 +233,6 @@ export default defineConfig({
             },
         },
     ],
-
-    server: {
-        host: "0.0.0.0", // Allow Vite to listen on all interfaces
-        port: 5173, // Default Vite port
-        hmr: {
-            host: "192.168.56.10", // Replace with your machine's IP
-        },
-        cors: true, // Allow CORS for cross-origin requests
-    },
 
     css: {
         preprocessorOptions: {

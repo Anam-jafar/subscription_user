@@ -7,7 +7,7 @@ services:
         container_name: mais_subscription_app
         volumes:
             - /home/static_files:/var/www/static_files
-            - build-assets:/var/www/html/public/subscription/build  # Add this line
+            - build-assets:/var/www/html/public/subscription/build 
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
         networks:
@@ -34,4 +34,4 @@ networks:
         driver: bridge
 
 volumes:
-    build-assets:  # Add this named volume
+    build-assets:  

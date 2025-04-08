@@ -9,17 +9,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\ApplicationConfirmation;
 use App\Mail\SubscriptionRequestConfirmation;
-
 use Illuminate\Support\Facades\Mail;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Parameter;
 
-
-
 class BaseController extends Controller
 {
-     private function getCommonData()
+    private function getCommonData()
     {
         return [
             'cities' => DB::table('client')
@@ -37,7 +34,7 @@ class BaseController extends Controller
                 ->pluck('prm')
                 ->mapWithKeys(fn ($prm) => [$prm => $prm])
                 ->toArray(),
-            
+
             'statuses' => DB::table('type')
                 ->where('grp', 'clientstatus')
                 ->distinct()
@@ -60,13 +57,13 @@ class BaseController extends Controller
                 ->distinct()
                 ->pluck('prm')
                 ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),  
+                ->toArray(),
             'institute_categories' => DB::table('type')
                 ->where('grp', 'type_CLIENT')
                 ->distinct()
                 ->pluck('prm')
                 ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),              
+                ->toArray(),
             'districts' => DB::table('type')
                 ->where('grp', 'district')
                 ->distinct()
@@ -122,25 +119,25 @@ class BaseController extends Controller
     {
         return view('applicant.institute_subscribed');
     }
-public function searchInstitutes(Request $request)
-{
-    $clients = DB::table('client')
-        ->where('name', 'LIKE', '%' . $request->institute_name . '%')
-        ->select('uid', 'name', 'rem8')
-        ->get()
-        ->mapWithKeys(function ($client) {
-            $rem8_value = DB::table('type')->where('code', $client->rem8)->value('prm');
+    public function searchInstitutes(Request $request)
+    {
+        $clients = DB::table('client')
+            ->where('name', 'LIKE', '%' . $request->institute_name . '%')
+            ->select('uid', 'name', 'rem8')
+            ->get()
+            ->mapWithKeys(function ($client) {
+                $rem8_value = DB::table('type')->where('code', $client->rem8)->value('prm');
 
-            return [
-                $client->uid => [
-                    'name' => $client->name,
-                    'rem8' => $rem8_value ?? $client->rem8 // Use the fetched value or fallback to original
-                ]
-            ];
-        });
+                return [
+                    $client->uid => [
+                        'name' => $client->name,
+                        'rem8' => $rem8_value ?? $client->rem8 // Use the fetched value or fallback to original
+                    ]
+                ];
+            });
 
-    return response()->json($clients);
-}
+        return response()->json($clients);
+    }
 
 
 
@@ -169,26 +166,26 @@ public function searchInstitutes(Request $request)
     }
 
     public function getInstitutesByCity(Request $request)
-{
-    try {
-        $request->validate([
-            'city' => 'required|string|min:1',
-            'search' => 'nullable|string|min:1'
-        ]);
+    {
+        try {
+            $request->validate([
+                'city' => 'required|string|min:1',
+                'search' => 'nullable|string|min:1'
+            ]);
 
-        $query = DB::table('client')->where('rem8', $request->city); // 🔹 Changed 'city' to 'rem8'
+            $query = DB::table('client')->where('rem8', $request->city); // 🔹 Changed 'city' to 'rem8'
 
-        if ($request->filled('search')) {
-            $query->where('name', 'LIKE', '%' . $request->search . '%');
+            if ($request->filled('search')) {
+                $query->where('name', 'LIKE', '%' . $request->search . '%');
+            }
+
+            $institutes = $query->pluck('name', 'uid');
+
+            return response()->json($institutes);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $institutes = $query->pluck('name', 'uid');
-
-        return response()->json($institutes);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
     }
-}
 
 
 
@@ -208,7 +205,7 @@ public function searchInstitutes(Request $request)
             // Get current date and time
             $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
 
-            if($institute->sta == 0){
+            if ($institute->sta == 0) {
                 return view('applicant.institute_registered', ['institute' => $institute, 'currentDateTime' => $currentDateTime]);
 
                 // if ($institute->subscription_status != 0) {
@@ -217,10 +214,10 @@ public function searchInstitutes(Request $request)
                 //     return view('applicant.institute_not_subscribed', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
                 // }
 
-            }elseif($institute->sta == 1){
-                if($institute->registration_request_date != null){
+            } elseif ($institute->sta == 1) {
+                if ($institute->registration_request_date != null) {
                     return view('applicant.institute_not_approved_yet', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
-                }else{
+                } else {
                     return view('applicant.institute_not_found', ['institute' => $institute,'currentDateTime' => $currentDateTime]);
                 }
             }
@@ -234,7 +231,7 @@ public function searchInstitutes(Request $request)
     #MAISMSADMIN
     public function instituteDetails(Request $request, $id)
     {
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
 
             $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
 
@@ -283,12 +280,12 @@ public function searchInstitutes(Request $request)
 
     public function fillOtp(Request $request, $email)
     {
-        if($request->isMethod('post')) {
+        if ($request->isMethod('post')) {
 
-            $otp = implode('', $request->input('otp')); 
-            $otp = intval($otp); 
+            $otp = implode('', $request->input('otp'));
+            $otp = intval($otp);
 
-            $request->merge(['otp' => $otp]); 
+            $request->merge(['otp' => $otp]);
 
             $request->validate([
                 'otp' => 'required|numeric|digits:6'
@@ -322,7 +319,7 @@ public function searchInstitutes(Request $request)
                     ->where('mel', $email)
                     ->update(['subscription_status' => 1,
                         'subcription_request_date' => now()->format('Y-m-d')
-                ]);  
+                ]);
 
                 return redirect()->route('fillOtp', ['email' => $email])->with('success', 'OTP verified successfully.');
             } else {
@@ -339,24 +336,24 @@ public function searchInstitutes(Request $request)
                 'email' => 'required|email'
             ]);
 
-        $email = $request->email;
+            $email = $request->email;
 
-        // Check if a user exists with the given email
-        $client = DB::table('client')->where('mel', $email)->first();
+            // Check if a user exists with the given email
+            $client = DB::table('client')->where('mel', $email)->first();
 
-        if (!$client) {
-            return back()->with('error', 'Tiada pengguna ditemui.');
-        }
+            if (!$client) {
+                return back()->with('error', 'Tiada pengguna ditemui.');
+            }
 
-        if ($client->sta != 0) {
-            return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
-        }
+            if ($client->sta != 0) {
+                return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
+            }
 
-        // $user = User::where('mel', $email )->first();
+            // $user = User::where('mel', $email )->first();
 
-        // Auth::login($user); // Log in the userP
-        // return redirect()->route('home')
-        //     ->with('success', 'Log Masuk Berjaya');
+            // Auth::login($user); // Log in the userP
+            // return redirect()->route('home')
+            //     ->with('success', 'Log Masuk Berjaya');
 
 
             // Step 1: Get the Encrypted Key
@@ -381,12 +378,12 @@ public function searchInstitutes(Request $request)
             ]);
 
             if ($otpResponse->successful()) {
-                return redirect()->route('subscriptionLoginOtp',['email' => $email]);
-            // } else {
-            //     return back()->with('error', 'Failed to send OTP. Please try again.');
-            // }
-                        } else {
-                return redirect()->route('subscriptionLoginOtp',['email' => $email]);
+                return redirect()->route('subscriptionLoginOtp', ['email' => $email]);
+                // } else {
+                //     return back()->with('error', 'Failed to send OTP. Please try again.');
+                // }
+            } else {
+                return redirect()->route('subscriptionLoginOtp', ['email' => $email]);
             }
 
         }
@@ -394,43 +391,6 @@ public function searchInstitutes(Request $request)
         return view('login.email_login');
     }
 
-    // public function showLoginByEmail(Request $request)
-    // {
-    //     if ($request->isMethod('post')) {
-    //         $request->validate([
-    //             'email' => 'required|email'
-    //         ]);
-
-    //         $email = $request->email;
-
-    //         $client = DB::table('client')->where('mel', $email)->first();
-
-
-    //         if ($client->sta != 0){
-
-    //             return back()->with('error', 'Institut tidak Aktif/ tidak berdaftar.');
-    //         }
-
-
-    //             $user = User::where('mel', $email )->first();
-
-
-    //             // if (!$user) {
-    //             //     return back()->with('error', 'User not found.');
-    //             // }
-
-    //             Auth::login($user); // Log in the user
-
-    //             // session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
-
-
-    //                 return redirect()->route('home')
-    //                     ->with('success', 'Log Masuk Berjaya');
-                
-    //     }
-
-    //     return view('login.email_login');
-    // }
 
 
     public function showLoginByMobile()
@@ -439,12 +399,12 @@ public function searchInstitutes(Request $request)
     }
     public function fillOtpLogin(Request $request, $email)
     {
-        if($request->isMethod('post')) {
+        if ($request->isMethod('post')) {
 
-            $otp = implode('', $request->input('otp')); 
-            $otp = intval($otp); 
+            $otp = implode('', $request->input('otp'));
+            $otp = intval($otp);
 
-            $request->merge(['otp' => $otp]); 
+            $request->merge(['otp' => $otp]);
 
             $request->validate([
                 'otp' => 'required|numeric|digits:6'
@@ -459,7 +419,7 @@ public function searchInstitutes(Request $request)
                 if (!$user) {
                     return back()->with('error', 'OTP yang salah disediakan');
                 }
-                Auth::login($user); 
+                Auth::login($user);
                 return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
             }
 
@@ -495,7 +455,7 @@ public function searchInstitutes(Request $request)
                     return back()->with('error', 'Otp yang salah disediakan');
                 }
 
-                Auth::login($user); 
+                Auth::login($user);
 
                 session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
 
@@ -509,289 +469,131 @@ public function searchInstitutes(Request $request)
         return view('login.fill_otp', ['email' => $email]);
     }
 
-    // public function fillOtpLogin(Request $request, $email)
-    // {
-    //     if($request->isMethod('post')) {
 
-    //         $otp = implode('', $request->input('otp')); 
-    //         $otp = intval($otp); 
 
-    //         $request->merge(['otp' => $otp]); 
 
-    //         $request->validate([
-    //             'otp' => 'required|numeric|digits:6'
-    //         ]);
-
-    //         $otp = $request->otp;
-
-    //         if ($otp == '123456') { // Check if OTP is the bypass code
-    //             $user = User::where('mel', $email)->first();
-
-    //             if (!$user) {
-    //                 return back()->with('error', 'OTP yang salah disediakan');
-    //             }
-    //          }
-
-    //             Auth::login($user);
-    //             return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
-
-    //         // Step 1: Get the Encrypted Key
-    //         $keyResponse = Http::post('https://devapi01.awfatech.com/api/v2/auth/appcode', [
-    //             'appcode' => 'MAISADMINEBOSS'
-    //         ]);
-
-    //         if (!$keyResponse->successful()) {
-    //             return back()->with('error', 'Failed to retrieve encryption key.');
-    //         }
-    //         $encryptedKey = $keyResponse->json('data.encrypted_key');
-    //         if (!$encryptedKey) {
-    //             return back()->with('error', 'Invalid encryption key response.');
-    //         }
-    //         session(['encrypted_key' => $encryptedKey]);
-    //         // Step 2: Verify OTP
-    //         $otpResponse = Http::withHeaders([
-    //             'x-encrypted-key' => $encryptedKey
-    //         ])->post('https://devapi01.awfatech.com/api/v2/auth/eboss/client/login/otp', [
-    //             'app_version' => "1.0.0",
-    //             'otp' => $otp,
-    //             'firebase_id' => '',
-    //             'platform_code' => 3,
-    //             'device_model' => ''
-    //         ]);
-
-    //         if ($otpResponse->successful()) {
-    //             // Step 3: Authenticate User using the response data
-    //             $user = User::where('uid', $otpResponse->json('data.user_id'))->first();
-
-    //             if (!$user) {
-    //                 return back()->with('error', 'OTP yang salah disediakan');
-    //             }
-
-    //             Auth::login($user);
-
-    //             session(['encrypted_user' => $otpResponse->json('data.encrypted_user')]);
-
-    //             return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
-
-    //         } else {
-    //             return back()->with('error', 'Gagal mengesahkan OTP. Sila cuba lagi.');
-    //         }
-
-    //     }
-    //     return view('login.fill_otp', ['email' => $email]);
-    // }
-
-    public function activateSubscription($id) 
+    public function home()
     {
-        $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
-
-        $invoiceDetails = DB::table('fin_ledger')
-            ->select('dt', 'tid', 'item', 'total', 'src', 'code')
-            ->where('vid', $id)
-            ->where('src', 'INV')
-            ->first() ?? null; // Set to null if no record is found
-
+        $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month Year Time with AM/PM
         $user = Auth::user();
 
-        return view('applicant.activate_subscription', compact('user', 'currentDateTime', 'invoiceDetails'));
+        // Fetch City and State Names
+        $user->CITY = DB::table('type')
+            ->where('code', $user->city)
+            ->value('prm');
+
+        $user->STATE = DB::table('type')
+            ->where('code', $user->state)
+            ->value('prm');
+
+        $invoiceDetails = null; // Default null
+        $invoiceLink = null;    // Default null
+        $receiptDetails = null; // Default null
+        $receiptLink = null;    // Default null
+
+        // Check and update subscription status if needed
+        $this->checkInvoicePaymentStatus($user);
+
+        // Fetch Latest Invoice if Subscription Status is 2
+        if ($user->subscription_status == 2) {
+
+
+            $invoiceDetails = DB::table('fin_ledger')
+                ->select('dt', 'tid', 'item', 'total', 'src', 'code')
+                ->where('vid', $user->uid)
+                ->where('src', 'INV')
+                ->orderByDesc('id')
+                ->first();
+
+            // Generate Invoice PDF Link
+            if ($invoiceDetails) {
+                $invoiceLink = "https://maisdev.awfatech.com/main/app/finance/pdf_gen.php?sysapp=maisadmineboss&op=inv&tid=" . $invoiceDetails->tid;
+            }
+        }
+
+        // Fetch Latest Receipt if Subscription Status is 3
+        if ($user->subscription_status == 3) {
+            $receiptDetails = DB::table('fin_ledger')
+                ->select('dt', 'tid', 'item', 'total', 'src', 'code', 'ref')
+                ->where('vid', $user->uid)
+                ->where('src', 'CSL')
+                ->orderByDesc('id')
+                ->first();
+
+            // Generate Receipt PDF Link
+            if ($receiptDetails) {
+                $receiptLink = "https://maisdev.awfatech.com/main/app/finance/pdf_gen.php?sysapp=maisadmineboss&op=rec&tid=" . $receiptDetails->tid;
+            }
+        }
+
+        return view('applicant.home', compact([
+            'user', 'currentDateTime', 'invoiceDetails', 'invoiceLink', 'receiptDetails', 'receiptLink'
+        ]));
     }
 
-
-    public function activatedSubscription($id) 
+    /**
+     * Check if a user's invoice has been paid and update subscription status if needed
+     *
+     * @param User $user The authenticated user
+     * @return void
+     */
+    private function checkInvoicePaymentStatus($user)
     {
-        $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month name year time with AM/PM
+        // Only proceed if user has pending invoices (status 2)
+        if ($user->subscription_status == 2) {
+
+            $user_id = $user->uid;
+
+            // Fetch total invoice amount (INV) and total received payment (CSL)
+            $paymentDetails = DB::table('fin_ledger as inv')
+                ->leftJoinSub(
+                    DB::table('fin_ledger')
+                        ->select('vid', DB::raw('SUM(val) AS total_received'))
+                        ->where('src', 'CSL')
+                        ->groupBy('vid'),
+                    'payments', // Alias for the subquery
+                    'inv.vid',
+                    '=',
+                    'payments.vid'
+                )
+                ->select(
+                    DB::raw('SUM(inv.val) AS total_invoice'),
+                    DB::raw('COALESCE(payments.total_received, 0) AS total_received'),
+                    DB::raw('SUM(inv.val) - COALESCE(payments.total_received, 0) AS outstanding')
+                )
+                ->where('inv.vid', $user_id)
+                ->where('inv.src', 'INV')
+                ->groupBy('inv.vid', 'payments.total_received')
+                ->first(); // Get single result
 
 
-        $invoiceDetails = DB::table('fin_ledger')
-            ->select('dt', 'tid', 'item', 'total', 'src', 'code')
-            ->where('vid', $id)
-            ->where('src', 'REC')
-            ->first();
+            // Check if outstanding amount is 0
+            $paymentConfirmed = ($paymentDetails && $paymentDetails->outstanding == 0);
 
+            // If payment confirmed, update subscription status to 3
+            if ($paymentConfirmed) {
+                DB::table('client')
+                    ->where('uid', $user->uid)
+                    ->update(['subscription_status' => 3]);
 
-        $user = Auth::user();
-        return view('applicant.activated_subscription', compact(['user', 'currentDateTime', 'invoiceDetails']));
-    }
-
-// public function home() 
-// {
-//     $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month Year Time with AM/PM
-//     $user = Auth::user();
-
-//     // Fetch City and State Names
-//     $user->CITY = DB::table('type')
-//         ->where('code', $user->city)
-//         ->value('prm');
-
-//     $user->STATE = DB::table('type')
-//         ->where('code', $user->state)
-//         ->value('prm');
-
-
-
-//     $invoiceDetails = null; // Default null
-//     $invoiceLink = null;    // Default null
-//     $receiptDetails = null; // Default null
-//     $receiptLink = null;    // Default null
-
-//     // Fetch Latest Invoice if Subscription Status is 2
-//     if ($user->subscription_status == 2) {
-
-//         $invoiceDetails = DB::table('fin_ledger')
-//             ->select('dt', 'tid', 'item', 'total', 'src', 'code')
-//             ->where('vid', $user->uid)
-//             ->where('src', 'INV')
-//             ->orderByDesc('id') 
-//             ->first();
-
-//         // Generate Invoice PDF Link
-//         if ($invoiceDetails) {
-//             $invoiceLink = "https://maisdev.awfatech.com/main/app/finance/pdf_gen.php?sysapp=maisadmineboss&op=inv&tid=" . $invoiceDetails->tid;
-//         }
-//     }
-
-//     // Fetch Latest Receipt if Subscription Status is 3
-//     if ($user->subscription_status == 3) {
-//         $receiptDetails = DB::table('fin_ledger')
-//             ->select('dt', 'tid', 'item', 'total', 'src', 'code')
-//             ->where('vid', $user->uid)
-//             ->where('src', 'REC')
-//             ->orderByDesc('id') 
-//             ->first();
-
-//         // Generate Receipt PDF Link
-//         if ($receiptDetails) {
-//             $receiptLink = "https://maisdev.awfatech.com/main/app/finance/pdf_gen.php?sysapp=maisadmineboss&op=rec&tid=" . $receiptDetails->tid;
-//         }
-//     }
-
-//     return view('applicant.home', compact([
-//         'user', 'currentDateTime', 'invoiceDetails', 'invoiceLink', 'receiptDetails', 'receiptLink'
-//     ]));
-// }
-
-public function home() 
-{
-    $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month Year Time with AM/PM
-    $user = Auth::user();
-
-    // Fetch City and State Names
-    $user->CITY = DB::table('type')
-        ->where('code', $user->city)
-        ->value('prm');
-
-    $user->STATE = DB::table('type')
-        ->where('code', $user->state)
-        ->value('prm');
-
-    $invoiceDetails = null; // Default null
-    $invoiceLink = null;    // Default null
-    $receiptDetails = null; // Default null
-    $receiptLink = null;    // Default null
-
-    // Check and update subscription status if needed
-    $this->checkInvoicePaymentStatus($user);
-
-    // Fetch Latest Invoice if Subscription Status is 2
-    if ($user->subscription_status == 2) {
-
-        
-        $invoiceDetails = DB::table('fin_ledger')
-            ->select('dt', 'tid', 'item', 'total', 'src', 'code')
-            ->where('vid', $user->uid)
-            ->where('src', 'INV')
-            ->orderByDesc('id') 
-            ->first();
-
-        // Generate Invoice PDF Link
-        if ($invoiceDetails) {
-            $invoiceLink = "https://maisdev.awfatech.com/main/app/finance/pdf_gen.php?sysapp=maisadmineboss&op=inv&tid=" . $invoiceDetails->tid;
+                // Update local user object to reflect the change
+                $user->subscription_status = 3;
+            }
         }
     }
 
-    // Fetch Latest Receipt if Subscription Status is 3
-    if ($user->subscription_status == 3) {
-        $receiptDetails = DB::table('fin_ledger')
-            ->select('dt', 'tid', 'item', 'total', 'src', 'code', 'ref')
-            ->where('vid', $user->uid)
-            ->where('src', 'CSL')
-            ->orderByDesc('id') 
-            ->first();
-
-        // Generate Receipt PDF Link
-        if ($receiptDetails) {
-            $receiptLink = "https://maisdev.awfatech.com/main/app/finance/pdf_gen.php?sysapp=maisadmineboss&op=rec&tid=" . $receiptDetails->tid;
-        }
-    }
-
-    return view('applicant.home', compact([
-        'user', 'currentDateTime', 'invoiceDetails', 'invoiceLink', 'receiptDetails', 'receiptLink'
-    ]));
-}
-
-/**
- * Check if a user's invoice has been paid and update subscription status if needed
- * 
- * @param User $user The authenticated user
- * @return void
- */
-private function checkInvoicePaymentStatus($user)
-{
-    // Only proceed if user has pending invoices (status 2)
-    if ($user->subscription_status == 2) {
-
-        $user_id = $user->uid;
-
-        // Fetch total invoice amount (INV) and total received payment (CSL)
-        $paymentDetails = DB::table('fin_ledger as inv')
-            ->leftJoinSub(
-                DB::table('fin_ledger')
-                    ->select('vid', DB::raw('SUM(val) AS total_received'))
-                    ->where('src', 'CSL')
-                    ->groupBy('vid'),
-                'payments', // Alias for the subquery
-                'inv.vid',
-                '=',
-                'payments.vid'
-            )
-            ->select(
-                DB::raw('SUM(inv.val) AS total_invoice'),
-                DB::raw('COALESCE(payments.total_received, 0) AS total_received'),
-                DB::raw('SUM(inv.val) - COALESCE(payments.total_received, 0) AS outstanding')
-            )
-            ->where('inv.vid', $user_id)
-            ->where('inv.src', 'INV')
-            ->groupBy('inv.vid', 'payments.total_received')
-            ->first(); // Get single result
 
 
-        // Check if outstanding amount is 0
-        $paymentConfirmed = ($paymentDetails && $paymentDetails->outstanding == 0);
-
-        // If payment confirmed, update subscription status to 3
-        if ($paymentConfirmed) {
-            DB::table('client')
-                ->where('uid', $user->uid)
-                ->update(['subscription_status' => 3]);
-
-            // Update local user object to reflect the change
-            $user->subscription_status = 3;
-        }
-    }
-}
-
-
-
-    public function requestSubscription($id) 
+    public function requestSubscription($id)
     {
         DB::table('client')
             ->where('uid', $id)
             ->update([
                 'subscription_status' => 1,
-                'subcription_request_date' => now()->format('Y-m-d') 
+                'subcription_request_date' => now()->format('Y-m-d')
             ]);
-            $email = DB::table('client')->where('uid', $id)->value('mel');
-            Mail::to($email)->send(new SubscriptionRequestConfirmation());
+        $email = DB::table('client')->where('uid', $id)->value('mel');
+        Mail::to($email)->send(new SubscriptionRequestConfirmation());
 
 
         return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!');
@@ -817,7 +619,7 @@ private function checkInvoicePaymentStatus($user)
 
         $user = DB::table('client')->where('uid', $uid)->first();
         $item = DB::table('fin_coa_item')->where('code', $coa_id)->first();
-        
+
         // API URL
         $url = 'https://devapi02.awfatech.com/api/v1/mais/finance/make_payment';
 
@@ -879,7 +681,7 @@ private function checkInvoicePaymentStatus($user)
         // If 'success' is missing or false, or 'data' key is missing, return an error in Malay
         return back()->with('error', 'Tidak dapat mendapatkan pautan pembayaran.');
     }
-        private function validateInstitute(Request $request): array
+    private function validateInstitute(Request $request): array
     {
         $rules = [
             'name' => 'nullable|string|max:255',
@@ -916,15 +718,14 @@ private function checkInvoicePaymentStatus($user)
 
     public function instituteRegistration(Request $request, $id)
     {
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
             $validatedData = $this->validateInstitute($request);
 
             DB::table('client')
                 ->where('id', $id)
                 ->update(array_merge(
-                    $validatedData, 
+                    $validatedData,
                     ['registration_request_date' => now()->toDateString()] // 'YYYY-MM-DD'
-
                 ));
             $email = DB::table('client')
                 ->where('id', $id)
@@ -949,7 +750,7 @@ private function checkInvoicePaymentStatus($user)
 
         // $institute = Institute::with(['instituteType', 'instituteCategory'])
         //     ->where('inst_refno', $request->inst_refno)
-        //     ->firstOrFail(); 
+        //     ->firstOrFail();
         $institute = DB::table('client')
             ->where('uid', $request->inst_refno)
             ->first();
