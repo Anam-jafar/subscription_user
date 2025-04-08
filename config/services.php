@@ -31,4 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'awfatech' => [
+        'appcode' => env('AWFATECH_APPCODE'),
+        'appcode_url' => env('AWFATECH_APPCODE_URL'),
+        'send_otp_url' => env('AWFATECH_SEND_OTP_URL'),
+        'check_otp_url' => env('AWFATECH_CHECK_OTP_URL'),
+        'make_payment_url' => env('AWFATECH_MAKE_PAYMENT_URL'),
+        'pdf_base_url' => env('AWFATECH_PDF_BASE_URL'),
+
+
+    ],
+
+
 ];

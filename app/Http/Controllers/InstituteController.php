@@ -8,14 +8,11 @@ use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-
-
-
 class InstituteController extends Controller
 {
     private function validateInstitute(Request $request): array
     {
-            $id = Auth::user()->id;
+        $id = Auth::user()->id;
 
         $rules = [
             'name' => 'nullable|string|max:255',
@@ -30,7 +27,7 @@ class InstituteController extends Controller
             'state' => 'nullable|string|max:50',
             'hp' => 'nullable',
             'fax' => 'nullable',
-        'mel' => ['nullable', 'email', 'max:255', Rule::unique('client', 'mel')->ignore($id)],
+            'mel' => ['nullable', 'email', 'max:255', Rule::unique('client', 'mel')->ignore($id)],
             'web' => 'nullable|string|max:255',
             'rem10' => 'nullable|string|max:50',
             'rem11' => 'nullable|string|max:50',
@@ -50,13 +47,39 @@ class InstituteController extends Controller
         return Validator::make($request->all(), $rules)->validate();
     }
 
+    public function instituteRegistration(Request $request, $id)
+    {
+        if ($request->isMethod('post')) {
+            $validatedData = $this->validateInstitute($request);
+
+            DB::table('client')
+                ->where('id', $id)
+                ->update(array_merge(
+                    $validatedData,
+                    ['registration_request_date' => now()->toDateString()] // 'YYYY-MM-DD'
+                ));
+            $email = DB::table('client')
+                ->where('id', $id)
+                ->value('mel');
+            Mail::to($email)->send(new ApplicationConfirmation());
+            return redirect()->back()
+                ->with('success', 'Your application has been submitted.');
+
+        }
+
+        $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
+
+        $parameters = $this->getCommon();
+        return view('applicant.institute_registration', compact('institute', 'parameters'));
+    }
+
     public function edit(Request $request)
     {
         $id = Auth::user()->id;
         $institute = Institute::with('type', 'category', 'City', 'subdistrict', 'district')->find($id);
 
         if ($request->isMethod('post')) {
-            
+
             $validatedData = $this->validateInstitute($request);
             $institute->update($validatedData);
 
@@ -65,6 +88,6 @@ class InstituteController extends Controller
         }
 
 
-        return view('institute.update', ['institute' => $institute, 'parameters' => $this->getCommon()]);        
+        return view('institute.update', ['institute' => $institute, 'parameters' => $this->getCommon()]);
     }
 }

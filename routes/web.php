@@ -23,10 +23,10 @@ use Illuminate\Http\Request;
 
 
 Route::prefix('subscription')->group(function () {
-    Route::get('/login', [BaseController::class, 'showLoginForm'])->name('subscriptionLogin');
-    Route::match(['get', 'post'], '/login-email', [BaseController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
-    Route::get('/login-phone', [BaseController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
-    Route::match(['get', 'post'], '/login-otp/{email}', [BaseController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('subscriptionLogin');
+    Route::match(['get', 'post'], '/login-email', [AuthController::class, 'showLoginByEmail'])->name('subscriptionLoginEmail');
+    Route::get('/login-phone', [AuthController::class, 'showLoginByMobile'])->name('subscriptionLoginPhone');
+    Route::match(['get', 'post'], '/login-otp/{email}', [AuthController::class, 'fillOtpLogin'])->name('subscriptionLoginOtp');
     Route::get('/search-bandar', [BaseController::class, 'getBandar'])->name('search.bandar');
 
 
@@ -55,7 +55,7 @@ Route::prefix('subscription')->group(function () {
 
     // Routes that don't require authentication
     Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
-    Route::post('/logout', [BaseController::class, 'logout'])->name('subscriptionLogout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('subscriptionLogout');
 
 
 
@@ -65,7 +65,7 @@ Route::prefix('subscription')->group(function () {
 
 
     Route::get('/find-institute', [BaseController::class, 'findInstitute'])->name('findInstitute');
-    Route::match(['get', 'post'], '/institute-registration/{id}', [BaseController::class, 'instituteRegistration'])->name('instituteRegistration');
+    Route::match(['get', 'post'], '/institute-registration/{id}', [InstituteController::class, 'instituteRegistration'])->name('instituteRegistration');
 
 
 
@@ -74,8 +74,10 @@ Route::prefix('subscription')->group(function () {
     Route::get('/get-cities', [BaseController::class, 'getCities'])->name('getCities');
     Route::get('/get-institutes', [BaseController::class, 'getInstitutesByCity'])->name('getInstitutes');
     Route::post('/institute-check', [BaseController::class, 'instituteCheck'])->name('instituteCheck');
+
+
     Route::match(['get', 'post'], '/institute-details/{id}', [BaseController::class, 'instituteDetails'])->name('instituteDetails');
-    Route::match(['get', 'post'], '/fill-otp/{email}', [BaseController::class, 'fillOtp'])->name('fillOtp');
+    Route::match(['get', 'post'], '/fill-otp/{email}', [AuthController::class, 'fillOtp'])->name('fillOtp');
 
 
 

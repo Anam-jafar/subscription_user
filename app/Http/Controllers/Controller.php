@@ -7,89 +7,16 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Parameter;
-
+use Illuminate\Support\Facades\Http;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, ValidatesRequests;
+    use AuthorizesRequests;
+    use ValidatesRequests;
 
     protected function getCommon()
     {
         return [
-            'cities' => DB::table('client')
-                ->distinct()
-                ->pluck('city')
-                ->mapWithKeys(fn ($city) => [$city => $city])
-                ->toArray(),
-            'schs' => collect(DB::select('SELECT sname, sid FROM sch'))
-                ->mapWithKeys(fn ($item) => [$item->sid => $item->sname])
-                ->toArray(),
-            'states' => DB::table('type')->where('grp', 'state')->get(),
-            'syslevels' => DB::table('type')
-                ->where('grp', 'syslevel')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            'statuses' => DB::table('type')
-                ->where('grp', 'clientstatus')
-                ->distinct()
-                ->pluck('prm', 'val')
-                ->toArray(),
-            'areas' => DB::table('type')
-                ->where('grp', 'clientcate1')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            'categories' => DB::table('type')
-                ->where('grp', 'type_CLIENT')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            'institute_types' => DB::table('type')
-                ->where('grp', 'clientcate1')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            'institute_categories' => DB::table('type')
-                ->where('grp', 'type_CLIENT')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            // 'districts' => DB::table('type')
-            //     ->where('grp', 'district')
-            //     ->distinct()
-            //     ->pluck('prm')
-            //     ->mapWithKeys(fn ($prm) => [$prm => $prm])
-            //     ->toArray(),
-            // 'sub_districts' => DB::table('type')
-            //     ->where('grp', 'sub_district')
-            //     ->distinct()
-            //     ->pluck('prm')
-            //     ->mapWithKeys(fn ($prm) => [$prm => $prm])
-            //     ->toArray(),
-            'departments' => DB::table('type')
-                ->where('grp', 'jobdiv')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            'admin_positions' => DB::table('type')
-                ->where('grp', 'job')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
-            'user_positions' => DB::table('type')
-                ->where('grp', 'externalposition')
-                ->distinct()
-                ->pluck('prm')
-                ->mapWithKeys(fn ($prm) => [$prm => $prm])
-                ->toArray(),
             'types' => Parameter::where('grp', 'clientcate1')
                 ->pluck('prm', 'code')
                 ->toArray(),
@@ -120,4 +47,86 @@ class Controller extends BaseController
 
         ];
     }
+
+    protected function getEncryptedKey(): bool
+    {
+        if (session()->has('encrypted_key')) {
+            return true;
+        }
+
+        $appcode = config('services.awfatech.appcode');
+        $url = config('services.awfatech.appcode_url');
+
+        $keyResponse = Http::post($url, [
+            'appcode' => $appcode,
+        ]);
+
+        if (!$keyResponse->successful()) {
+            return false;
+        }
+
+        $encryptedKey = $keyResponse->json('data.encrypted_key');
+
+        if (!$encryptedKey) {
+            return false;
+        }
+
+        session(['encrypted_key' => $encryptedKey]);
+
+        return true;
+    }
+
+
+
+    protected function sendOtp(string $email): bool
+    {
+        $encryptedKey = session('encrypted_key');
+
+        if (!$encryptedKey) {
+            return false;
+        }
+
+        $url = config('services.awfatech.send_otp_url');
+
+        $response = Http::withHeaders([
+            'x-encrypted-key' => $encryptedKey
+        ])->post($url, [
+            'input' => $email,
+            'role' => 'general'
+        ]);
+
+        return $response->successful();
+    }
+
+    protected function checkOtp(string $otp): ?array
+    {
+        $encryptedKey = session('encrypted_key');
+
+        if (!$encryptedKey) {
+            return null;
+        }
+
+        $url = config('services.awfatech.check_otp_url');
+
+        $response = Http::withHeaders([
+            'x-encrypted-key' => $encryptedKey
+        ])->post($url, [
+            'app_version' => '1.0.0',
+            'otp' => $otp,
+            'firebase_id' => '',
+            'platform_code' => 3,
+            'device_model' => ''
+        ]);
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        return $response->json('data');
+    }
+
+
+
+
+
 }
