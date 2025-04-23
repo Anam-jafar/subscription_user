@@ -148,9 +148,9 @@ public function create(Request $request, $inst_refno)
         $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
 
         if ($financialStatement) {
-            return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
+            return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dihantar');
         } else {
-            return back()->withInput()->with('error', 'Failed to create financial statement');
+            return back()->withInput()->with('error', 'Laporan kewangan tidak berjaya dihantar');
         }
     }
 
@@ -202,7 +202,7 @@ public function edit(Request $request, $id)
         // Retrieve existing financial statement
         $financialStatement = FinancialStatement::find($id);
         if (!$financialStatement) {
-            return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+            return redirect()->route('statementList')->with('error', 'Tiada rekod ditemui');
         }
 
         // Determine submission status
@@ -234,7 +234,7 @@ public function edit(Request $request, $id)
 
         // Update financial statement
         $financialStatement->update($validatedData);
-        return redirect()->route('statementList')->with('success', 'Financial Statement updated successfully');
+        return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dikemaskini');
     }
 
     // Fetch existing data
@@ -306,7 +306,9 @@ $instituteType = isset($institute->Category->lvl) ? intval($institute->Category-
             $financialStatements->getCollection()->transform(function ($financialStatement) {
             $financialStatement->CATEGORY = $financialStatement->Category->prm ?? null;
             $financialStatement->INSTITUTE = $financialStatement->Institute->name ?? null;
-            $financialStatement->SUBMISSION_DATE = date('d-m-Y', strtotime($financialStatement->submission_date));
+            $financialStatement->SUBMISSION_DATE = !is_null($financialStatement->submission_date)
+    		? date('d-m-Y', strtotime($financialStatement->submission_date))
+    		: null;
             $financialStatement->FIN_STATUS = Parameter::where('grp', 'splkstatus')
                 ->where('val', $financialStatement->status)
                 ->pluck('prm', 'val')
@@ -338,7 +340,7 @@ public function editRequest(Request $request, $id)
     $financialStatement = FinancialStatement::with('AuditType')->find($id);
 
     if (!$financialStatement) {
-        return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+        return redirect()->route('statementList')->with('error', 'Tiada rekod ditemui');
     }
 
     // Update the financial statement
