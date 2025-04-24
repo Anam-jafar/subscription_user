@@ -6,22 +6,24 @@ services:
             dockerfile: ./docker/php/Dockerfile
         container_name: mais_subscription_app
         volumes:
+            - ./resources/views:/var/www/html/resources/views # For Dev
+            - ./app:/var/www/html/app # For Dev
+            - ./routes:/var/www/html/routes # For Dev
             - /home/static_files:/var/www/static_files
-            - build-assets:/var/www/html/public/subscription/build 
+            - build-assets:/var/www/html/public/subscription/build
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
         networks:
             - app-network
-
 
     webserver:
         image: nginx:alpine
         container_name: mais_subscription_server
         volumes:
             - ./public/subscription/assets:/var/www/html/public/subscription/assets
-            - /home/static_files:/var/www/static_files 
+            - /home/static_files:/var/www/static_files
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - build-assets:/var/www/html/public/subscription/build  # Add this line
+            - build-assets:/var/www/html/public/subscription/build # Add this line
         ports:
             - "7090:80"
         depends_on:
@@ -34,4 +36,4 @@ networks:
         driver: bridge
 
 volumes:
-    build-assets:  
+    build-assets:

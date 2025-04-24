@@ -8,20 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class FinancialStatement extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'splk_submission';
     public $timestamps = false;
 
 
     protected $fillable = ['inst_refno', 'fin_year', 'fin_category', 'latest_contruction_progress', 'ori_contruction_cost',
                             'variation_order', 'current_collection', 'total_collection', 'transfer_pws', 'contruction_expenses',
-                            'inst_surplus', 'pws_surplus', 'pws_expenses', 'balance_forward', 'total_expenses', 'total_income', 
+                            'inst_surplus', 'pws_surplus', 'pws_expenses', 'balance_forward', 'total_expenses', 'total_income',
                             'total_surplus', 'bank_cash_balance', 'status', 'submission_date', 'submission_refno',
-                            'cancellation_date', 'cancel_reason_byuser', 'cancel_reason_adm', 'suggestion_adm', 
-                            'created_by', 'created_at', 'verified_by', 'verified_at', 'attachment1', 'attachment1_info', 'attachment2', 'attachment3', 'request_edit_reason', 'request_edit_date'
+                            'cancellation_date', 'cancel_reason_byuser', 'cancel_reason_adm', 'suggestion_adm',
+                            'created_by', 'created_at', 'verified_by', 'verified_at', 'attachment1', 'attachment1_info',
+                            'attachment2', 'attachment3', 'request_edit_reason', 'request_edit_date', 'institute_class', 'institute_type',
                     ];
 
-    
+
     public function Category()
     {
         return $this->belongsTo(Parameter::class, 'fin_category', 'code');
@@ -35,7 +36,7 @@ class FinancialStatement extends Model
         return $this->belongsTo(Parameter::class, 'attachment1_info', 'code');
     }
 
-    
+
 
     public function finCategory()
     {

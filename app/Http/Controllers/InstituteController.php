@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Institute;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Mail\ApplicationConfirmation;
+use App\Mail\SubscriptionRequestConfirmation;
+use Illuminate\Support\Facades\Mail;
 
 class InstituteController extends Controller
 {
     private function validateInstitute(Request $request): array
     {
-        $id = Auth::user()->id;
+        $user = Auth::user();
+        $id = $user ? $user->id : null;
 
         $rules = [
             'name' => 'nullable|string|max:255',
@@ -27,7 +32,12 @@ class InstituteController extends Controller
             'state' => 'nullable|string|max:50',
             'hp' => 'nullable',
             'fax' => 'nullable',
-            'mel' => ['nullable', 'email', 'max:255', Rule::unique('client', 'mel')->ignore($id)],
+            'mel' => [
+                'nullable',
+                'email',
+                'max:255',
+                Rule::unique('client', 'mel')->ignore($id),
+            ],
             'web' => 'nullable|string|max:255',
             'rem10' => 'nullable|string|max:50',
             'rem11' => 'nullable|string|max:50',
@@ -46,6 +56,7 @@ class InstituteController extends Controller
 
         return Validator::make($request->all(), $rules)->validate();
     }
+
 
     public function instituteRegistration(Request $request, $id)
     {

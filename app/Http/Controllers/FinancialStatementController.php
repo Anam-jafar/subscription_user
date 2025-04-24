@@ -11,7 +11,6 @@ use App\Models\Parameter;
 use App\Models\Institute;
 use Carbon\Carbon;
 
-
 class FinancialStatementController extends Controller
 {
     private function validateFinancialStatement(Request $request): array
@@ -41,7 +40,7 @@ class FinancialStatementController extends Controller
             'attachment2' => 'nullable|file|mimes:pdf|max:10240',
             'attachment3' => 'nullable|file|mimes:pdf|max:10240',
     ];
-    
+
 
         return Validator::make($request->all(), $rules)->validate();
     }
@@ -74,179 +73,187 @@ class FinancialStatementController extends Controller
     }
 
 
-public function create(Request $request, $inst_refno)
-{
-    if ($request->isMethod('post')) {
-        // Validate input data
-        $validator = Validator::make($request->all(), [
-            'inst_refno' => 'nullable',
-            'fin_year' => 'nullable',
-            'fin_category' => 'nullable',
-            'latest_contruction_progress' => 'nullable|numeric|min:1|max:100',
-            'ori_contruction_cost' => 'nullable|numeric',
-            'variation_order' => 'nullable|numeric',
-            'current_collection' => 'nullable|numeric',
-            'total_collection' => 'nullable|numeric',
-            'total_statement' => 'nullable|numeric',
-            'transfer_pws' => 'nullable|numeric',
-            'contruction_expenses' => 'nullable|numeric',
-            'inst_surplus' => 'nullable|numeric',
-            'pws_surplus' => 'nullable|numeric',
-            'pws_expenses' => 'nullable|numeric',
-            'balance_forward' => 'nullable|numeric',
-            'total_expenses' => 'nullable|numeric',
-            'total_income' => 'nullable',
-            'total_surplus' => 'nullable',
-            'bank_cash_balance' => 'nullable|numeric',
-            'attachment1_info' => 'nullable',
-            'attachment1' => 'nullable|file|mimes:pdf|max:10240',
-            'attachment2' => 'nullable|file|mimes:pdf|max:10240',
-            'attachment3' => 'nullable|file|mimes:pdf|max:10240',
-        ]);
+    public function create(Request $request, $inst_refno)
+    {
+        if ($request->isMethod('post')) {
+            // Validate input data
+            $validator = Validator::make($request->all(), [
+                'inst_refno' => 'nullable',
+                'fin_year' => 'nullable',
+                'fin_category' => 'nullable',
+                'latest_contruction_progress' => 'nullable|numeric|min:1|max:100',
+                'ori_contruction_cost' => 'nullable|numeric',
+                'variation_order' => 'nullable|numeric',
+                'current_collection' => 'nullable|numeric',
+                'total_collection' => 'nullable|numeric',
+                'total_statement' => 'nullable|numeric',
+                'transfer_pws' => 'nullable|numeric',
+                'contruction_expenses' => 'nullable|numeric',
+                'inst_surplus' => 'nullable|numeric',
+                'pws_surplus' => 'nullable|numeric',
+                'pws_expenses' => 'nullable|numeric',
+                'balance_forward' => 'nullable|numeric',
+                'total_expenses' => 'nullable|numeric',
+                'total_income' => 'nullable',
+                'total_surplus' => 'nullable',
+                'bank_cash_balance' => 'nullable|numeric',
+                'attachment1_info' => 'nullable',
+                'attachment1' => 'nullable|file|mimes:pdf|max:10240',
+                'attachment2' => 'nullable|file|mimes:pdf|max:10240',
+                'attachment3' => 'nullable|file|mimes:pdf|max:10240',
+            ]);
 
-        // If validation fails, return back with input and errors
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+            // If validation fails, return back with input and errors
+            if ($validator->fails()) {
+                return back()->withInput()->withErrors($validator);
+            }
 
-        // Retrieve validated data
-        $validatedData = $validator->validated();
+            // Retrieve validated data
+            $validatedData = $validator->validated();
 
-        // Determine submission status
-        $validatedData['status'] = ($request->input('draft') == "true") ? 0 : 1;
+            // Determine submission status
+            $validatedData['status'] = ($request->input('draft') == "true") ? 0 : 1;
 
-        // Set submission reference if not a draft
-        if ($validatedData['status'] == 1) {
-            $validatedData['submission_date'] = now();
             $institute = Institute::with('Type')->where('uid', $validatedData['inst_refno'])->first();
-            $validatedData['submission_refno'] = $this->generateUniqueSubmissionRefno(
-                date('Y'), date('m'), date('d'), $institute->Type->prm
-            );
-        }else{
-            $validatedData['submission_date'] = null;
-        }
 
-        // Handle file uploads
-        $fileFields = ['attachment1', 'attachment2', 'attachment3'];
-        $attachmentData = [];
+            $validatedData['institute_class'] = $institute->cate1 ?? null;
+            $validatedData['institute_type'] = $institute->cate ?? null;
+
+
+            // Set submission reference if not a draft
+            if ($validatedData['status'] == 1) {
+                $validatedData['submission_date'] = now();
+                $validatedData['submission_refno'] = $this->generateUniqueSubmissionRefno(
+                    date('Y'),
+                    date('m'),
+                    date('d'),
+                    $institute->Type->prm
+                );
+            } else {
+                $validatedData['submission_date'] = null;
+            }
+
+            // Handle file uploads
+            $fileFields = ['attachment1', 'attachment2', 'attachment3'];
+            $attachmentData = [];
             $storagePath = '/var/www/static_files/fin_statement_attachments';
 
-        if (!file_exists($storagePath)) {
-            mkdir($storagePath, 0777, true);
-        }
-
-        foreach ($fileFields as $field) {
-            if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
-                $file->move($storagePath, $filename);
-                $attachmentData[$field] = 'fin_statement_attachments/' . $filename; // Relative path
+            if (!file_exists($storagePath)) {
+                mkdir($storagePath, 0777, true);
             }
-        }
 
-        // Create financial statement
-        $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    $file = $request->file($field);
+                    $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
+                    $file->move($storagePath, $filename);
+                    $attachmentData[$field] = 'fin_statement_attachments/' . $filename; // Relative path
+                }
+            }
 
-        if ($financialStatement) {
-            return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
-        } else {
-            return back()->withInput()->with('error', 'Failed to create financial statement');
-        }
-    }
+            // Create financial statement
+            $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
 
-    // Fetch institute data
-    $institute = Institute::where('uid', $inst_refno)->first();
-$instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
-
-    // Generate years array
-    $currentYear = date('Y');
-    $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
-
-    // Fetch common parameters
-    $parameters = $this->getCommon();
-
-    return view('financial_statement.create', compact(['institute', 'instituteType', 'years', 'parameters']));
-}
-
-
-public function edit(Request $request, $id)
-{
-    if ($request->isMethod('post')) {
-        // Validate input data
-        $validatedData = Validator::make($request->all(), [
-            'inst_refno' => 'nullable',
-            'fin_year' => 'nullable',
-            'fin_category' => 'nullable',
-            'latest_contruction_progress' => 'nullable|numeric|min:1|max:100',
-            'ori_contruction_cost' => 'nullable|numeric',
-            'variation_order' => 'nullable|numeric',
-            'current_collection' => 'nullable|numeric',
-            'total_collection' => 'nullable|numeric',
-            'total_statement' => 'nullable|numeric',
-            'transfer_pws' => 'nullable|numeric',
-            'contruction_expenses' => 'nullable|numeric',
-            'inst_surplus' => 'nullable|numeric',
-            'pws_surplus' => 'nullable|numeric',
-            'pws_expenses' => 'nullable|numeric',
-            'balance_forward' => 'nullable|numeric',
-            'total_expenses' => 'nullable|numeric',
-            'total_income' => 'nullable',
-            'total_surplus' => 'nullable',
-            'bank_cash_balance' => 'nullable|numeric',
-            'attachment1_info' => 'nullable',
-            'attachment1' => 'nullable|file|mimes:pdf|max:10240',
-            'attachment2' => 'nullable|file|mimes:pdf|max:10240',
-            'attachment3' => 'nullable|file|mimes:pdf|max:10240',
-        ])->validate();
-
-        // Retrieve existing financial statement
-        $financialStatement = FinancialStatement::find($id);
-        if (!$financialStatement) {
-            return redirect()->route('statementList')->with('error', 'Financial Statement not found');
-        }
-
-        // Determine submission status
-        $validatedData['status'] = ($request->input('draft') == "true") ? 0 : 1;
-        if ($validatedData['status'] == 1) {
-            $validatedData['submission_date'] = now();
-        }else{
-            $validatedData['submission_date'] = null;
-        }
-
-        // Handle file uploads
-        $fileFields = ['attachment1', 'attachment2', 'attachment3'];
-        $storagePath = '/var/www/static_files/fin_statement_attachments';
-
-        if (!file_exists($storagePath)) {
-            mkdir($storagePath, 0777, true);
-        }
-
-        foreach ($fileFields as $field) {
-            if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
-                $file->move($storagePath, $filename);
-                $validatedData[$field] = 'fin_statement_attachments/' . $filename; // Save relative path
+            if ($financialStatement) {
+                return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
             } else {
-                $validatedData[$field] = $financialStatement->$field; // Keep existing file
+                return back()->withInput()->with('error', 'Failed to create financial statement');
             }
         }
 
-        // Update financial statement
-        $financialStatement->update($validatedData);
-        return redirect()->route('statementList')->with('success', 'Financial Statement updated successfully');
+        // Fetch institute data
+        $institute = Institute::where('uid', $inst_refno)->first();
+        $instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
+
+        // Generate years array
+        $currentYear = date('Y');
+        $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+
+        // Fetch common parameters
+        $parameters = $this->getCommon();
+
+        return view('financial_statement.create', compact(['institute', 'instituteType', 'years', 'parameters']));
     }
 
-    // Fetch existing data
-    $financialStatement = FinancialStatement::find($id);
-    $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
-$instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
-    $currentYear = date('Y');
-    $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
-    $parameters = $this->getCommon();
 
-    return view('financial_statement.edit', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
-}
+    public function edit(Request $request, $id)
+    {
+        if ($request->isMethod('post')) {
+            // Validate input data
+            $validatedData = Validator::make($request->all(), [
+                'inst_refno' => 'nullable',
+                'fin_year' => 'nullable',
+                'fin_category' => 'nullable',
+                'latest_contruction_progress' => 'nullable|numeric|min:1|max:100',
+                'ori_contruction_cost' => 'nullable|numeric',
+                'variation_order' => 'nullable|numeric',
+                'current_collection' => 'nullable|numeric',
+                'total_collection' => 'nullable|numeric',
+                'total_statement' => 'nullable|numeric',
+                'transfer_pws' => 'nullable|numeric',
+                'contruction_expenses' => 'nullable|numeric',
+                'inst_surplus' => 'nullable|numeric',
+                'pws_surplus' => 'nullable|numeric',
+                'pws_expenses' => 'nullable|numeric',
+                'balance_forward' => 'nullable|numeric',
+                'total_expenses' => 'nullable|numeric',
+                'total_income' => 'nullable',
+                'total_surplus' => 'nullable',
+                'bank_cash_balance' => 'nullable|numeric',
+                'attachment1_info' => 'nullable',
+                'attachment1' => 'nullable|file|mimes:pdf|max:10240',
+                'attachment2' => 'nullable|file|mimes:pdf|max:10240',
+                'attachment3' => 'nullable|file|mimes:pdf|max:10240',
+            ])->validate();
+
+            // Retrieve existing financial statement
+            $financialStatement = FinancialStatement::find($id);
+            if (!$financialStatement) {
+                return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+            }
+
+            // Determine submission status
+            $validatedData['status'] = ($request->input('draft') == "true") ? 0 : 1;
+            if ($validatedData['status'] == 1) {
+                $validatedData['submission_date'] = now();
+            } else {
+                $validatedData['submission_date'] = null;
+            }
+
+            // Handle file uploads
+            $fileFields = ['attachment1', 'attachment2', 'attachment3'];
+            $storagePath = '/var/www/static_files/fin_statement_attachments';
+
+            if (!file_exists($storagePath)) {
+                mkdir($storagePath, 0777, true);
+            }
+
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    $file = $request->file($field);
+                    $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
+                    $file->move($storagePath, $filename);
+                    $validatedData[$field] = 'fin_statement_attachments/' . $filename; // Save relative path
+                } else {
+                    $validatedData[$field] = $financialStatement->$field; // Keep existing file
+                }
+            }
+
+            // Update financial statement
+            $financialStatement->update($validatedData);
+            return redirect()->route('statementList')->with('success', 'Financial Statement updated successfully');
+        }
+
+        // Fetch existing data
+        $financialStatement = FinancialStatement::find($id);
+        $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
+        $instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
+        $currentYear = date('Y');
+        $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+        $parameters = $this->getCommon();
+
+        return view('financial_statement.edit', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
+    }
 
 
     public function view(Request $request, $id)
@@ -276,7 +283,7 @@ $instituteType = isset($institute->Category->lvl) ? intval($institute->Category-
         $financialStatement->FIN_STATUS = Parameter::where('grp', 'splkstatus')
                 ->where('val', $financialStatement->status)
                 ->pluck('prm', 'val')
-                ->map(fn($prm, $val) => ['val' => $val, 'prm' => $prm])
+                ->map(fn ($prm, $val) => ['val' => $val, 'prm' => $prm])
                 ->first();
         $verifiedBy = DB::table('usr')->where('uid', $financialStatement->verified_by)->first();
         $verifiedBy = $verifiedBy->name ?? null;
@@ -302,15 +309,15 @@ $instituteType = isset($institute->Category->lvl) ? intval($institute->Category-
             ->orderBy('id', 'desc')
             ->paginate($perPage)->withQueryString();
 
-        
-            $financialStatements->getCollection()->transform(function ($financialStatement) {
+
+        $financialStatements->getCollection()->transform(function ($financialStatement) {
             $financialStatement->CATEGORY = $financialStatement->Category->prm ?? null;
             $financialStatement->INSTITUTE = $financialStatement->Institute->name ?? null;
             $financialStatement->SUBMISSION_DATE = date('d-m-Y', strtotime($financialStatement->submission_date));
             $financialStatement->FIN_STATUS = Parameter::where('grp', 'splkstatus')
                 ->where('val', $financialStatement->status)
                 ->pluck('prm', 'val')
-                ->map(fn($prm, $val) => ['val' => $val, 'prm' => $prm])
+                ->map(fn ($prm, $val) => ['val' => $val, 'prm' => $prm])
                 ->first();
             return $financialStatement;
         });
@@ -324,32 +331,32 @@ $instituteType = isset($institute->Category->lvl) ? intval($institute->Category-
             'years' => $years,
         ]);
     }
-    
-public function editRequest(Request $request, $id)
-{
+
+    public function editRequest(Request $request, $id)
+    {
 
         if (strlen($request->request_edit_reason) < 1) {
-        return redirect()->back()->with('error', 'Sebab permintaan mesti diisi.');
+            return redirect()->back()->with('error', 'Sebab permintaan mesti diisi.');
+        }
+
+        $request_edit_reason = $request->input('request_edit_reason');
+
+        // Find the financial statement with its AuditType relation
+        $financialStatement = FinancialStatement::with('AuditType')->find($id);
+
+        if (!$financialStatement) {
+            return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+        }
+
+        // Update the financial statement
+        $financialStatement->update([
+            'request_edit_reason' => $request_edit_reason,
+            'request_edit_date' => Carbon::now('Asia/Kuala_Lumpur'),
+            'status' => 4,
+        ]);
+
+        return redirect()->route('statementList')->with('success', 'Permohonan Berjaya Dihantar');
     }
-
-    $request_edit_reason = $request->input('request_edit_reason');
-
-    // Find the financial statement with its AuditType relation
-    $financialStatement = FinancialStatement::with('AuditType')->find($id);
-
-    if (!$financialStatement) {
-        return redirect()->route('statementList')->with('error', 'Financial Statement not found');
-    }
-
-    // Update the financial statement
-    $financialStatement->update([
-        'request_edit_reason' => $request_edit_reason,
-        'request_edit_date' => Carbon::now('Asia/Kuala_Lumpur'),
-        'status' => 4,
-    ]);
-
-    return redirect()->route('statementList')->with('success', 'Permohonan Berjaya Dihantar');
-}
 
 
 }
