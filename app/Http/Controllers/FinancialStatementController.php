@@ -155,9 +155,9 @@ class FinancialStatementController extends Controller
             $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
 
             if ($financialStatement) {
-                return redirect()->route('statementList')->with('success', 'Financial Statement created successfully');
+                return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dihantar');
             } else {
-                return back()->withInput()->with('error', 'Failed to create financial statement');
+                return back()->withInput()->with('error', 'Laporan kewangan tidak berjaya dihantar');
             }
         }
 
@@ -209,7 +209,7 @@ class FinancialStatementController extends Controller
             // Retrieve existing financial statement
             $financialStatement = FinancialStatement::find($id);
             if (!$financialStatement) {
-                return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+                return redirect()->route('statementList')->with('error', 'Tiada rekod ditemui');
             }
 
             // Determine submission status
@@ -241,7 +241,7 @@ class FinancialStatementController extends Controller
 
             // Update financial statement
             $financialStatement->update($validatedData);
-            return redirect()->route('statementList')->with('success', 'Financial Statement updated successfully');
+            return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dikemaskini');
         }
 
         // Fetch existing data
@@ -345,7 +345,7 @@ class FinancialStatementController extends Controller
         $financialStatement = FinancialStatement::with('AuditType')->find($id);
 
         if (!$financialStatement) {
-            return redirect()->route('statementList')->with('error', 'Financial Statement not found');
+            return redirect()->route('statementList')->with('error', 'Tiada rekod ditemui');
         }
 
         // Update the financial statement
