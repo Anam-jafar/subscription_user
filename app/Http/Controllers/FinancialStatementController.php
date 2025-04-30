@@ -10,6 +10,8 @@ use App\Models\FinancialStatement;
 use App\Models\Parameter;
 use App\Models\Institute;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 class FinancialStatementController extends Controller
 {
@@ -151,14 +153,20 @@ class FinancialStatementController extends Controller
                 }
             }
 
-            // Create financial statement
-            $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
+            try {
+                // Create financial statement
+                $financialStatement = FinancialStatement::create(array_merge($validatedData, $attachmentData));
 
-            if ($financialStatement) {
-                return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dihantar');
-            } else {
-                return back()->withInput()->with('error', 'Laporan kewangan tidak berjaya dihantar');
+                if ($financialStatement) {
+                    return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dihantar');
+                } else {
+                    return back()->withInput()->with('error', 'Laporan kewangan tidak berjaya dihantar');
+                }
+            } catch (\Exception $e) {
+                Log::error('Ralat Penyerahan Laporan Kewangan: ' . $e->getMessage());
+                return back()->withInput()->with('error', 'Penghantaran tidak berjaya. Sila cuba sebentar lagi!');
             }
+
         }
 
         // Fetch institute data
@@ -239,9 +247,15 @@ class FinancialStatementController extends Controller
                 }
             }
 
-            // Update financial statement
-            $financialStatement->update($validatedData);
-            return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dikemaskini');
+
+            try {
+                // Update financial statement
+                $financialStatement->update($validatedData);
+                return redirect()->route('statementList')->with('success', 'Laporan kewangan berjaya dikemaskini');
+            } catch (\Exception $e) {
+                Log::error('Ralat Penyerahan Laporan Kewangan: ' . $e->getMessage());
+                return back()->withInput()->with('error', 'Penghantaran tidak berjaya. Sila cuba sebentar lagi!');
+            }
         }
 
         // Fetch existing data

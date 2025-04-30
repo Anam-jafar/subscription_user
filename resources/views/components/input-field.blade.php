@@ -21,14 +21,15 @@
         </option>
       @endforeach
     </select>
-  @elseif ($type === 'money')
-    <input type="text" id="{{ $id }}_formatted"
-      class="{{ $disabled || $readonly ? 'bg-[#EBEBEB]' : '' }} {{ $rightAlign && $rightAlign === true ? 'text-right' : 'text-left' }} h-[3rem] w-full rounded-lg border !border-[#6E829F] p-2 !text-gray-800"
-      placeholder="{{ $placeholder }}"
-      value="{{ old($name, $value) !== null && old($name, $value) !== '' && old($name, $value) !== '0' ? number_format(old($name, $value), 0, '.', ',') : '' }}"
-      {{ $readonly ? 'readonly' : '' }} {{ $disabled ? 'disabled' : '' }}>
+@elseif ($type === 'money')
+  <input type="text" id="{{ $id }}_formatted"
+    class="{{ $disabled || $readonly ? 'bg-[#EBEBEB]' : '' }} {{ $rightAlign && $rightAlign === true ? 'text-right' : 'text-left' }} h-[3rem] w-full rounded-lg border !border-[#6E829F] p-2 !text-gray-800"
+    placeholder="{{ $placeholder }}"
+    value="{{ old($name, $value) !== null && old($name, $value) !== '' && old($name, $value) !== '0' ? number_format((float) old($name, $value), 2, '.', ',') : '' }}"
+    {{ $readonly ? 'readonly' : '' }} {{ $disabled ? 'disabled' : '' }}>
 
-    <input type="hidden" name="{{ $name }}" id="{{ $id }}" value="{{ old($name, $value) }}">
+  <input type="hidden" name="{{ $name }}" id="{{ $id }}" value="{{ old($name, $value) !== null && old($name, $value) !== '' ? number_format((float) old($name, $value), 2, '.', '') : '' }}">
+
   @else
     <!-- Render input field -->
     <input type="{{ $type }}" id="{{ $id }}" name="{{ $name }}"
@@ -49,28 +50,58 @@
   @endif
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const formattedInput = document.getElementById('{{ $id }}_formatted');
-    const hiddenInput = document.getElementById('{{ $id }}');
+document.addEventListener('DOMContentLoaded', function () {
+  const formattedInput = document.getElementById('{{ $id }}_formatted');
+  const hiddenInput = document.getElementById('{{ $id }}');
 
-    if (formattedInput && hiddenInput) {
-      formattedInput.addEventListener('input', function() {
-        let raw = this.value.replace(/,/g, '');
-        if (!isNaN(raw)) {
-          hiddenInput.value = raw;
-          this.value = raw ? Number(raw).toLocaleString('en-US') : '';
-        } else {
-          this.value = '';
-          hiddenInput.value = '';
-        }
-      });
+  if (formattedInput && hiddenInput) {
+    formattedInput.addEventListener('input', function () {
+      let raw = this.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
 
-      // Initial formatting in case of back navigation or autofill
-      if (hiddenInput.value && hiddenInput.value !== '0') {
-        formattedInput.value = Number(hiddenInput.value).toLocaleString('en-US');
+      // Only allow one decimal point
+      const parts = raw.split('.');
+      if (parts.length > 2) {
+        raw = parts[0] + '.' + parts.slice(1).join('');
+      }
+
+      // Limit decimal to 2 places
+      if (parts.length === 2) {
+        raw = parts[0] + '.' + parts[1].slice(0, 2);
+      }
+
+      hiddenInput.value = raw;
+    });
+
+    // Format on blur (when input loses focus)
+    formattedInput.addEventListener('blur', function () {
+      const raw = hiddenInput.value;
+      const floatVal = parseFloat(raw);
+      if (!isNaN(floatVal)) {
+        formattedInput.value = floatVal.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+        hiddenInput.value = floatVal.toFixed(2);
       } else {
         formattedInput.value = '';
+        hiddenInput.value = '';
       }
+    });
+
+    // Initial formatting on load (e.g., browser back, autofill)
+    if (hiddenInput.value && hiddenInput.value !== '0') {
+      const floatVal = parseFloat(hiddenInput.value);
+      if (!isNaN(floatVal)) {
+        formattedInput.value = floatVal.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
+    } else {
+      formattedInput.value = '';
     }
-  });
+  }
+});
+
+
 </script>

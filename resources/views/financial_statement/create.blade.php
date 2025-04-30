@@ -240,9 +240,9 @@
 
                                 <div class="mt-4 flex flex-col">
                                   <label for="attachment3" class="mb-2 text-gray-800">
-                                    Penyata Penyesuaian Bank <span class="text-red-500">*</span>
+                                    Penyata Penyesuaian Bank 
                                   </label>
-                                  <input type="file" id="attachment3" name="attachment3" required accept=".pdf"
+                                  <input type="file" id="attachment3" name="attachment3" accept=".pdf"
                                     onchange="validateFiles()"
                                     class="block h-[3rem] w-full rounded-sm border border-gray-200 text-sm text-textmuted file:me-4 file:h-[3rem] file:rounded-s-sm file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary focus:z-10 focus:border-gray-200 focus:shadow-sm focus:outline-0 focus-visible:outline-none dark:border-white/10 dark:text-textmuted/50 dark:focus:border-white/10 dark:focus:shadow-white/10">
                                   <span id="attachment3-error" class="mt-1 text-sm text-red-500"></span>

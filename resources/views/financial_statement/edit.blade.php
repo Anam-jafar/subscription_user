@@ -271,7 +271,7 @@
                                 </div>
                                 <div class="mt-4 flex flex-col">
                                   <label for="input3" class="mb-2 text-gray-800">Penyata Penyesuaian Bank
-                                    <span class="text-red-500">*</span></label>
+                                    </label>
 
                                   <input type="file" id="attachment3" name="attachment3" accept=".pdf"
                                     onchange="validateFiles()"
