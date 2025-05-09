@@ -118,7 +118,7 @@ class FinancialStatementController extends Controller
 
             $institute = Institute::with('Type')->where('uid', $validatedData['inst_refno'])->first();
 
-            $validatedData['institute_class'] = $institute->cate1 ?? null;
+            $validatedData['institute'] = $institute->cate1 ?? null;
             $validatedData['institute_type'] = $institute->cate ?? null;
 
 
