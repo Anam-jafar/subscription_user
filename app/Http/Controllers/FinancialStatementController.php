@@ -177,11 +177,13 @@ class FinancialStatementController extends Controller
         // Fetch institute data
         $institute = Institute::where('uid', $inst_refno)->first();
 
+        $code = $request->input('institute_type') ?? Auth::user()->cate;
 
         $instituteType = (int) DB::table('type')
             ->where('grp', 'type_CLIENT')
-            ->where('code', $request->input('institute_type'))
+            ->where('code', $code)
             ->value('lvl');
+
 
 
         // Generate years array
