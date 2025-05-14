@@ -25,7 +25,8 @@
             </div>
             <div class="box-body !p-0">
               <form class="wizard wizard-tab horizontal" id="financial_form" method="POST"
-                action="{{ route('createStatement', ['id' => $institute->id]) }}" enctype="multipart/form-data">
+                action="{{ route('createStatement', ['id' => $institute->id, 'institute_type' => request('institute_type')]) }}"
+                enctype="multipart/form-data">
 
                 @csrf
                 <aside class="wizard-content container">
@@ -240,7 +241,7 @@
 
                                 <div class="mt-4 flex flex-col">
                                   <label for="attachment3" class="mb-2 text-gray-800">
-                                    Penyata Penyesuaian Bank 
+                                    Penyata Penyesuaian Bank
                                   </label>
                                   <input type="file" id="attachment3" name="attachment3" accept=".pdf"
                                     onchange="validateFiles()"

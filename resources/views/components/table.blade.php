@@ -1,3 +1,6 @@
+@props([
+    'currentInstitute' => null,
+])
 <div class="min-h-[55vh] overflow-auto sm:p-2">
   <table class="mt-4 min-w-full border-separate border-spacing-y-4 divide-y divide-gray-200" style="table-layout: fixed;">
     @php
@@ -74,7 +77,8 @@
             @endphp
 
             @if ($finalRoute)
-              <a href="{{ route($finalRoute, ['id' => $row->id]) }}" class="text-blue-500 hover:underline">
+              <a href="{{ route($finalRoute, ['id' => $row->id, 'institute_type' => request('institute_type', $currentInstitute)]) }}"
+                class="text-blue-500 hover:underline">
                 <i class="fe {{ $docIcon ? 'fe-file-text' : 'fe-edit' }}"></i>
               </a>
             @endif

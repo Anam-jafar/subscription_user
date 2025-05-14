@@ -12,7 +12,6 @@ use App\Models\Institute;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
-
 class FinancialStatementController extends Controller
 {
     private function validateFinancialStatement(Request $request): array
@@ -118,8 +117,14 @@ class FinancialStatementController extends Controller
 
             $institute = Institute::with('Type')->where('uid', $validatedData['inst_refno'])->first();
 
-            $validatedData['institute'] = $institute->cate1 ?? null;
-            $validatedData['institute_type'] = $institute->cate ?? null;
+            $institutionType = $request->input('institute_type');
+            $institution = DB::table('type')
+                ->where('grp', 'type_CLIENT')
+                ->where('code', $institutionType)
+                ->value('etc');
+
+            $validatedData['institute'] = $institution ?? null;
+            $validatedData['institute_type'] = $institutionType ?? null;
 
 
             // Set submission reference if not a draft
@@ -171,7 +176,13 @@ class FinancialStatementController extends Controller
 
         // Fetch institute data
         $institute = Institute::where('uid', $inst_refno)->first();
-        $instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
+
+
+        $instituteType = (int) DB::table('type')
+            ->where('grp', 'type_CLIENT')
+            ->where('code', $request->input('institute_type'))
+            ->value('lvl');
+
 
         // Generate years array
         $currentYear = date('Y');
@@ -261,7 +272,13 @@ class FinancialStatementController extends Controller
         // Fetch existing data
         $financialStatement = FinancialStatement::find($id);
         $institute = Institute::where('uid', $financialStatement->inst_refno)->first();
-        $instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
+
+        $instituteType = (int) DB::table('type')
+            ->where('grp', 'type_CLIENT')
+            ->where('code', $request->input('institute_type'))
+            ->value('lvl');
+
+
         $currentYear = date('Y');
         $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
         $parameters = $this->getCommon();
@@ -302,7 +319,15 @@ class FinancialStatementController extends Controller
         $verifiedBy = DB::table('usr')->where('uid', $financialStatement->verified_by)->first();
         $verifiedBy = $verifiedBy->name ?? null;
         $institute = Institute::with('UserPosition')->where('uid', $financialStatement->inst_refno)->first();
-        $instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
+        // $instituteType = isset($institute->Category->lvl) ? intval($institute->Category->lvl) : null;
+
+
+        $instituteType = (int) DB::table('type')
+            ->where('grp', 'type_CLIENT')
+            ->where('code', $request->input('institute_type'))
+            ->value('lvl');
+
+
         $currentYear = date('Y');
         $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
 
@@ -314,6 +339,29 @@ class FinancialStatementController extends Controller
     public function list(Request $request)
     {
         $perPage = $request->input('per_page', 10);
+
+        $distinctInstitutes = DB::table('institute_history')
+            ->where('inst_refno', Auth::user()->uid)
+            ->distinct()
+            ->pluck('institute_type')
+            ->toArray();
+
+        $currentInstitute = Auth::user()->cate;
+        if (!in_array($currentInstitute, $distinctInstitutes)) {
+            $distinctInstitutes[] = $currentInstitute;
+        }
+
+        $institutionHistory = DB::table('type')
+            ->where('grp', 'type_CLIENT')
+            ->whereIn('code', $distinctInstitutes)
+            ->pluck('prm', 'code');
+
+
+        if (!$request->filled('institute_type')) {
+            $request->merge([
+                'institute_type' => $currentInstitute,
+            ]);
+        }
 
         $query = FinancialStatement::where('inst_refno', Auth::user()->uid);
 
@@ -343,6 +391,8 @@ class FinancialStatementController extends Controller
             'parameters' => $this->getCommon(),
             'financialStatements' => $financialStatements,
             'years' => $years,
+            'institutionHistory' => $institutionHistory,
+            'currentInstitute' => $currentInstitute,
         ]);
     }
 
