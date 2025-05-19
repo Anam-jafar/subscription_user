@@ -46,12 +46,12 @@ class FinancialStatementController extends Controller
         return Validator::make($request->all(), $rules)->validate();
     }
 
-    private function generateUniqueSubmissionRefno($year, $month, $day, $instituteType)
+    private function generateUniqueSubmissionRefno($year, $instituteType, $instituteID)
     {
         $instituteType = strtoupper($instituteType);
         $count = DB::table('splk_submission')->count() + 1;
         $uniqueNumber = str_pad($count, 6, '0', STR_PAD_LEFT);
-        $newRefNo = "i-STATEMENT/{$instituteType}/{$year}/{$month}/{$day}/{$uniqueNumber}";
+        $newRefNo = "STM-{$year}-{$instituteType}-{$instituteID}-{$uniqueNumber}";
 
         return $newRefNo;
     }
@@ -126,25 +126,34 @@ class FinancialStatementController extends Controller
             $validatedData['institute'] = $institution ?? null;
             $validatedData['institute_type'] = $institutionType ?? null;
 
+            $fin_category = DB::table('type')
+                ->where('grp', 'statement')
+                ->where('code', $validatedData['fin_category'])
+                ->value('val');
 
             // Set submission reference if not a draft
             if ($validatedData['status'] == 1) {
                 $validatedData['submission_date'] = now();
                 $validatedData['submission_refno'] = $this->generateUniqueSubmissionRefno(
                     date('Y'),
-                    date('m'),
-                    date('d'),
-                    $institute->Type->prm
+                    $fin_category,
+                    $institute->uid
                 );
             } else {
                 $validatedData['submission_date'] = null;
             }
 
             // Handle file uploads
+
             $fileFields = ['attachment1', 'attachment2', 'attachment3'];
             $attachmentData = [];
-            $storagePath = '/var/www/static_files/fin_statement_attachments';
 
+            $year = $request->input('fin_year');
+            $year = preg_replace('/[^0-9]/', '', $year); // Sanitize year input to digits only
+
+            $storagePath = "/var/www/static_files/fin_statement_attachments/$year";
+
+            // Create directory if it doesn't exist
             if (!file_exists($storagePath)) {
                 mkdir($storagePath, 0777, true);
             }
@@ -152,11 +161,14 @@ class FinancialStatementController extends Controller
             foreach ($fileFields as $field) {
                 if ($request->hasFile($field)) {
                     $file = $request->file($field);
-                    $filename = $field . '_' . time() . '_' . uniqid() . '.pdf';
+                    $filename = $year.'_'.$fin_category . '_' . $institute->uid .'_'. $field . '_' . rand(1, 99) . '.pdf';
                     $file->move($storagePath, $filename);
-                    $attachmentData[$field] = 'fin_statement_attachments/' . $filename; // Relative path
+
+                    // Save the relative path for DB or other uses
+                    $attachmentData[$field] = "fin_statement_attachments/$year/$filename";
                 }
             }
+
 
             try {
                 // Create financial statement

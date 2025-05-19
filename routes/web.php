@@ -82,12 +82,16 @@ Route::prefix('subscription')->group(function () {
 
 
 
-    Route::get('/download/attachment/{filename}', function ($filename) {
-        $path = '/var/www/static_files/fin_statement_attachments/' . $filename;
+
+    Route::get('/download/attachment/{year}/{filename}', function ($year, $filename) {
+        $path = "/var/www/static_files/fin_statement_attachments/$year/$filename";
+
         if (file_exists($path)) {
             return response()->file($path);
         }
+
         abort(404);
     })->name('download.attachment');
+
 
 });
