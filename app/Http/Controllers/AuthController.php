@@ -13,12 +13,21 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Parameter;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function showLoginForm()
     {
+
+        Log::channel('external_api_error')->error('Failed to call external API.', [
+            'url' => 'url',
+            'response' => 'response' ?? null
+        ]);
+
         return view('applicant.login');
+
+
     }
 
 
@@ -79,6 +88,10 @@ class AuthController extends Controller
 
             // Bypass for testing
             if ($otp === 123456) {
+
+
+                Log::channel('internal_error')->error('Something went wrong inside the app.');
+
                 $user = User::where('mel', $email)->first();
 
                 if (!$user) {
@@ -104,6 +117,9 @@ class AuthController extends Controller
             Auth::login($user);
 
             session(['encrypted_user' => $otpData['encrypted_user'] ?? null]);
+
+            Log::info('User logged in.');
+
 
             return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
         }
