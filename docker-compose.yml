@@ -9,19 +9,21 @@ services:
             - ./resources/views:/var/www/html/resources/views # For Dev
             - ./app:/var/www/html/app # For Dev
             - ./routes:/var/www/html/routes # For Dev
-            - /home/static_files:/var/www/static_files
+            - ../static_files:/var/www/static_files
             - build-assets:/var/www/html/public/subscription/build
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
         networks:
             - app-network
+        command: >
+            sh -c "chown -R www-data:www-data /var/www/static_files && php-fpm"
 
     webserver:
         image: nginx:alpine
         container_name: mais_subscription_server
         volumes:
             - ./public/subscription/assets:/var/www/html/public/subscription/assets
-            - /home/static_files:/var/www/static_files
+            - ../static_files:/var/www/static_files
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
             - build-assets:/var/www/html/public/subscription/build # Add this line
         ports:
