@@ -105,7 +105,7 @@ class InstituteController extends Controller
             $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
 
             $parameters = $this->getCommon();
-            return view('applicant.institute_registration', compact('institute', 'parameters'));
+            return view('institute.registration', compact('institute', 'parameters'));
         } catch (\Exception $e) {
             Log::channel('internal_error')->error('Failed to fetch institute', [
                 'user_id' => Auth::id(),

@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('applicant.login');
+        return view('login.login');
     }
 
     public function showLoginByEmail(Request $request)
