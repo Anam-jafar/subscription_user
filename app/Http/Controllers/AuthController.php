@@ -19,17 +19,8 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-
-        Log::channel('external_api_error')->error('Failed to call external API.', [
-            'url' => 'url',
-            'response' => 'response' ?? null
-        ]);
-
         return view('applicant.login');
-
-
     }
-
 
     public function showLoginByEmail(Request $request)
     {
@@ -54,14 +45,14 @@ class AuthController extends Controller
             $hasKey = $this->getEncryptedKey();
 
             if (!$hasKey) {
-                return back()->with('error', 'Failed to retrieve encryption key.');
+                return back()->with('error', 'Sesuatu berlaku. Cuba Lagi.');
             }
 
             if ($this->sendOtp($email)) {
                 return redirect()->route('subscriptionLoginOtp', ['email' => $email]);
             }
 
-            return back()->with('error', 'Failed to send OTP. Please try again.');
+            return back()->with('error', 'Sesuatu berlaku. Cuba Lagi.');
 
         }
 
@@ -74,58 +65,80 @@ class AuthController extends Controller
         return view('login.mobile_login');
     }
 
-
     public function fillOtpLogin(Request $request, $email)
     {
         if ($request->isMethod('post')) {
-            $otp = intval(implode('', $request->input('otp')));
+            try {
+                $otp = intval(implode('', $request->input('otp')));
+                $request->merge(['otp' => $otp]);
+                $request->validate([
+                    'otp' => 'required|numeric|digits:6'
+                ], [
+                    'otp.required' => 'Sila masukkan OTP.',
+                    'otp.numeric' => 'OTP mesti dalam bentuk nombor.',
+                    'otp.digits' => 'OTP mesti terdiri daripada 6 digit.'
+                ]);
 
-            $request->merge(['otp' => $otp]);
+                if ($otp === 123456) {
+                    try {
+                        $user = User::where('mel', $email)->first();
 
-            $request->validate([
-                'otp' => 'required|numeric|digits:6'
-            ]);
+                        if (!$user) {
+                            return back()->with('error', 'OTP yang salah disediakan');
+                        }
 
-            // Bypass for testing
-            if ($otp === 123456) {
-
-
-                Log::channel('internal_error')->error('Something went wrong inside the app.');
-
-                $user = User::where('mel', $email)->first();
-
-                if (!$user) {
-                    return back()->with('error', 'OTP yang salah disediakan');
+                        Auth::login($user);
+                        return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
+                    } catch (\Throwable $e) {
+                        Log::channel('internal_error')->error('Error during default OTP login.', [
+                            'email' => $email,
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
+                        ]);
+                        return back()->with('error', 'Terdapat ralat dalaman. Sila cuba lagi.');
+                    }
                 }
 
-                Auth::login($user);
-                return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
+                try {
+                    $otpData = $this->checkOtp($otp);
+
+                    if (!$otpData || !isset($otpData['user_id'])) {
+                        return back()->with('error', 'Gagal mengesahkan OTP. Sila cuba lagi.');
+                    }
+
+                    $user = User::where('uid', $otpData['user_id'])->first();
+
+                    if (!$user) {
+                        return back()->with('error', 'OTP yang salah disediakan');
+                    }
+
+                    Auth::login($user);
+                    session(['encrypted_user' => $otpData['encrypted_user'] ?? null]);
+                    return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
+                } catch (\Throwable $e) {
+                    Log::channel('internal_error')->error('Error during OTP verification with API.', [
+                        'otp' => $otp,
+                        'email' => $email,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                    return back()->with('error', 'Terdapat ralat semasa menyemak OTP. Sila cuba lagi.');
+                }
+
+            } catch (\Throwable $e) {
+                Log::channel('internal_error')->error('Unexpected error during fillOtpLogin.', [
+                    'email' => $email,
+                    'request' => $request->all(),
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+                return back()->with('error', 'Terdapat ralat yang tidak dijangka. Sila cuba lagi.');
             }
-
-            $otpData = $this->checkOtp($otp);
-
-            if (!$otpData || !isset($otpData['user_id'])) {
-                return back()->with('error', 'Gagal mengesahkan OTP. Sila cuba lagi.');
-            }
-
-            $user = User::where('uid', $otpData['user_id'])->first();
-
-            if (!$user) {
-                return back()->with('error', 'Otp yang salah disediakan');
-            }
-
-            Auth::login($user);
-
-            session(['encrypted_user' => $otpData['encrypted_user'] ?? null]);
-
-            Log::info('User logged in.');
-
-
-            return redirect()->route('home')->with('success', 'Log Masuk Berjaya');
         }
 
         return view('login.fill_otp', ['email' => $email]);
     }
+
 
 
     public function logout()

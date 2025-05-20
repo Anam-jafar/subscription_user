@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Parameter;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -48,6 +49,7 @@ class Controller extends BaseController
         ];
     }
 
+
     protected function getEncryptedKey(): bool
     {
         if (session()->has('encrypted_key')) {
@@ -62,12 +64,25 @@ class Controller extends BaseController
         ]);
 
         if (!$keyResponse->successful()) {
+            Log::channel('external_api_error')->error('Appcode Fetch Failed', [
+                'endpoint' => $url,
+                'appcode' => $appcode,
+                'response_status' => $keyResponse->status(),
+                'response_body' => $keyResponse->json(),
+            ]);
+
             return false;
         }
 
         $encryptedKey = $keyResponse->json('data.encrypted_key');
 
         if (!$encryptedKey) {
+            Log::channel('external_api_error')->error('Appcode Fetch Failed: No encrypted_key in response', [
+                'endpoint' => $url,
+                'appcode' => $appcode,
+                'response_body' => $keyResponse->json(),
+            ]);
+
             return false;
         }
 
@@ -77,12 +92,12 @@ class Controller extends BaseController
     }
 
 
-
     protected function sendOtp(string $email): bool
     {
         $encryptedKey = session('encrypted_key');
 
         if (!$encryptedKey) {
+            Log::channel('external_api_error')->warning('Send OTP skipped: No encrypted key in session.');
             return false;
         }
 
@@ -95,14 +110,27 @@ class Controller extends BaseController
             'role' => 'general'
         ]);
 
-        return $response->successful();
+        if (!$response->successful()) {
+            Log::channel('external_api_error')->error('Send OTP API failed', [
+                'endpoint' => $url,
+                'email' => $email,
+                'response_status' => $response->status(),
+                'response_body' => $response->json(),
+            ]);
+
+            return false;
+        }
+
+        return true;
     }
+
 
     protected function checkOtp(string $otp): ?array
     {
         $encryptedKey = session('encrypted_key');
 
         if (!$encryptedKey) {
+            Log::channel('external_api_error')->warning('Check OTP skipped: No encrypted key in session.');
             return null;
         }
 
@@ -119,14 +147,17 @@ class Controller extends BaseController
         ]);
 
         if (!$response->successful()) {
+            Log::channel('external_api_error')->error('Check OTP API failed', [
+                'endpoint' => $url,
+                'otp' => $otp,
+                'response_status' => $response->status(),
+                'response_body' => $response->json(),
+            ]);
+
             return null;
         }
 
         return $response->json('data');
     }
-
-
-
-
 
 }
