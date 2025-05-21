@@ -290,11 +290,13 @@
 
                             <!-- Action buttons container -->
                             <div class="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
-                              <button type="submit" id="submit" disabled
-                                class="flex w-full cursor-not-allowed items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 md:w-40">
+                              <button
+                                class="flex w-full cursor-not-allowed items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white opacity-50 transition-colors hover:bg-blue-700 md:w-40"
+                                type="submit" id="submit">
                                 Kemaskini
                               </button>
                             </div>
+
                           </div>
                         </div>
                       </div>
@@ -321,7 +323,7 @@
     // Add this to your scripts section or create a new script tag with this code
     document.addEventListener('DOMContentLoaded', function() {
       const checkbox = document.getElementById('myCheckbox');
-      const submitButton = document.querySelector('.ti-btn-success');
+      const submitButton = document.getElementById('submit');
 
       // Set initial button state
       submitButton.disabled = true;
