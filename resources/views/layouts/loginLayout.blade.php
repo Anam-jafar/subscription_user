@@ -30,11 +30,6 @@
 </head>
 
 <body>
-  <!-- LOADER -->
-  <div id="loader">
-    <img src="{{ asset('subscription/build/assets/images/media/loader.svg') }}" alt="">
-  </div>
-  <!-- LOADER -->
   <div class="page">
     <div
       class="flex min-h-screen items-center justify-center bg-white lg:bg-gradient-to-t lg:from-[rgb(0,5,22)] lg:to-[rgb(15,24,124)]">
