@@ -310,10 +310,22 @@
                             (MAIS) BERHAK MENGAMBIL TINDAKAN UNDANG-UNDANG KE ATAS DIRI SAYA.
                           </p>
 
-                          <button class="ti-btn ti-btn-success w-24 cursor-not-allowed rounded-full px-4 py-2 opacity-50"
-                            type="submit" disabled>
-                            Hantar
-                          </button>
+                          <div class="mt-8 flex flex-col justify-between space-y-3 md:flex-row md:space-y-0">
+                            <!-- Back button -->
+                            <a href="{{ route('subscriptionLogin') }}"
+                              class="text-md mb-4 flex items-center font-bold text-blue-500 no-underline hover:cursor-pointer hover:text-blue-700 md:mb-0">
+                              <span class="fe fe-arrow-left-circle text-md mr-2 font-bold"></span>
+                              Kembali
+                            </a>
+
+                            <!-- Action buttons container -->
+                            <div class="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
+                              <button type="submit" id="submit" disabled
+                                class="flex w-full cursor-not-allowed items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 md:w-40">
+                                Hantar
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
