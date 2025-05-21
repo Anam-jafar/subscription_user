@@ -3,7 +3,7 @@
 
     /* Form Wizard 1 */
     let args = {
-        "wz_class": ".wizard-tab",
+        wz_class: ".wizard-tab",
         highlight: true,
         highlight_time: 1000,
     };
@@ -12,7 +12,6 @@
     /* Form Wizard 1 */
 
     /* Data Picker */
-    flatpickr("#date", {});
+    // flatpickr("#date", {});
     /* Data Picker */
-
 })();
