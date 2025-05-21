@@ -15,11 +15,8 @@ use Illuminate\Support\Facades\Log;
 
 class InstituteController extends Controller
 {
-    private function validateInstitute(Request $request): array
+    private function validateInstitute(Request $request, $id = null): array
     {
-        $user = Auth::user();
-        $id = $user ? $user->id : null;
-
         $rules = [
             'name' => 'nullable|string|max:255',
             'cate1' => 'nullable|string|max:50',
@@ -58,10 +55,11 @@ class InstituteController extends Controller
         return Validator::make($request->all(), $rules)->validate();
     }
 
+
     public function instituteRegistration(Request $request, $id)
     {
         if ($request->isMethod('post')) {
-            $validatedData = $this->validateInstitute($request);
+            $validatedData = $this->validateInstitute($request, $id);
             try {
                 DB::table('client')
                     ->where('id', $id)
@@ -133,7 +131,8 @@ class InstituteController extends Controller
         }
 
         if ($request->isMethod('post')) {
-            $validatedData = $this->validateInstitute($request);
+
+            $validatedData = $this->validateInstitute($request, $id);
             try {
                 $institute->update($validatedData);
                 return redirect()->route('home')
