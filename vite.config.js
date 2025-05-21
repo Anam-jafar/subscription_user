@@ -24,7 +24,6 @@ export default defineConfig({
                 "resources/js/app.js",
 
                 // Resources assets js file paths
-                "resources/assets/js/custom.js",
                 "resources/assets/js/form-wizard-init.js",
                 "resources/assets/js/leaflet.js",
             ],
