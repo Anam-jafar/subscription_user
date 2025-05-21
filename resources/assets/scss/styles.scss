@@ -66,7 +66,7 @@ typography
 @forward "variables";
 @forward "switcher";
 
-/* CUSTOM */  
+/* CUSTOM */
 @forward "custom/authentication";
 @forward "custom/custom";
 @forward "custom/dashboard_styles";
@@ -76,32 +76,11 @@ typography
 @forward "custom/ribbons";
 @forward "custom/widgets";
 
-/* MENU-STYLES */
-@forward "menu-styles/closed_menu";
-@forward "menu-styles/detached_menu";
-@forward "menu-styles/double_menu";
-@forward "menu-styles/horizontal";
-@forward "menu-styles/icon_click";
-@forward "menu-styles/icon_hover";
-@forward "menu-styles/icon_overlay";
-@forward "menu-styles/icontext";
-@forward "menu-styles/menu_click";
-@forward "menu-styles/menu_hover";
-@forward "menu-styles/vertical";
-
-// /* PAGES */
-@forward "pages/chat";
-@forward "pages/ecommerce";
-@forward "pages/file-manager";
-@forward "pages/landing";
-@forward "pages/mail";
-@forward "pages/task";
-
 /* TAILWIND */
 @forward "tailwind/accordion";
 @forward "tailwind/alerts";
 @forward "tailwind/avatars";
-@forward "tailwind/breadcrumb";  
+@forward "tailwind/breadcrumb";
 @forward "tailwind/buttons";
 @forward "tailwind/cards";
 @forward "tailwind/carousels";
@@ -116,13 +95,6 @@ typography
 @forward "tailwind/toast";
 @forward "tailwind/tooltip";
 
-/* UTILITIES */
-@forward "util/avatars";
-@forward "util/background";
-@forward "util/border";
-@forward "util/typography";
-
-
 /* FONT */
 /* Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
