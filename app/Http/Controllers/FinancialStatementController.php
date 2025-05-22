@@ -344,7 +344,10 @@ class FinancialStatementController extends Controller
             $financialStatements->getCollection()->transform(function ($financialStatement) {
                 $financialStatement->CATEGORY = $financialStatement->Category->prm ?? null;
                 $financialStatement->INSTITUTE = $financialStatement->Institute->name ?? null;
-                $financialStatement->SUBMISSION_DATE = date('d-m-Y', strtotime($financialStatement->submission_date));
+                $financialStatement->SUBMISSION_DATE =
+                    ($financialStatement->submission_date !== null)
+                    ? date('d-m-Y', strtotime($financialStatement->submission_date))
+                    : null;
                 $financialStatement->FIN_STATUS = Parameter::where('grp', 'splkstatus')
                     ->where('val', $financialStatement->status)
                     ->pluck('prm', 'val')
