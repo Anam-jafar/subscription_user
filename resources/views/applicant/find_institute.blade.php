@@ -320,6 +320,10 @@
       // Listen to input changes
       searchInstituteInput.addEventListener("input", toggleButtonState);
       instituteInput.addEventListener("input", toggleButtonState);
+
+      // Also check on change (for autofill, select elements, or programmatic changes)
+      searchInstituteInput.addEventListener("change", toggleButtonState);
+      instituteInput.addEventListener("change", toggleButtonState);
     });
   </script>
 @endsection
