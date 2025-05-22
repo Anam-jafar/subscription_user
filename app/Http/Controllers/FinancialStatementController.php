@@ -156,7 +156,6 @@ class FinancialStatementController extends Controller
             } catch (\Exception $e) {
                 Log::channel('internal_error')->error('Exception during FinancialStatement submission', [
                     'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
                     'request_data' => $request->all(),
                 ]);
 
@@ -183,7 +182,6 @@ class FinancialStatementController extends Controller
             Log::channel('internal_error')->error('Exception during loading financial statement create view', [
                 'inst_refno' => $inst_refno,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return back()->with('error', 'Ralat semasa memuatkan halaman. Sila cuba sebentar lagi.');
@@ -199,7 +197,6 @@ class FinancialStatementController extends Controller
             Log::channel('internal_error')->error('Failed to fetch financial statement or institute', [
                 'id' => $id,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
             return back()->with('error', 'Ralat semasa memuatkan data. Sila cuba sebentar lagi.');
         }
@@ -231,7 +228,6 @@ class FinancialStatementController extends Controller
                 Log::channel('internal_error')->error('Failed to update financial statement', [
                     'id' => $id,
                     'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
                     'validated_data' => $validatedData,
                 ]);
 
@@ -257,7 +253,6 @@ class FinancialStatementController extends Controller
             Log::channel('internal_error')->error('Failed to load edit view for financial statement', [
                 'id' => $id,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return back()->with('error', 'Ralat semasa memuatkan halaman kemaskini.');
@@ -304,7 +299,6 @@ class FinancialStatementController extends Controller
             Log::channel('internal_error')->error('Failed to load financial statement view', [
                 'id' => $id,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
             ]);
 
             return back()->with('error', 'Ralat semasa memuatkan halaman laporan kewangan.');
@@ -373,7 +367,6 @@ class FinancialStatementController extends Controller
             Log::channel('internal_error')->error('Ralat ketika memuatkan senarai laporan kewangan', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
             ]);
 
             return back()->with('error', 'Ralat semasa memuatkan senarai laporan kewangan. Sila cuba sebentar lagi.');

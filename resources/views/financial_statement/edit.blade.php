@@ -248,7 +248,7 @@
                                 </div>
                                 <x-input-field level="Jenis Pengauditan" id="institusi" name="attachment1_info"
                                   type="select" placeholder="" :valueList="$parameters['audit_types']"
-                                  value="{{ $financialStatement->AuditType->prm }}" />
+                                  value="{{ $financialStatement->AuditType?->prm }}" />
 
                               </div>
 
@@ -271,7 +271,7 @@
                                 </div>
                                 <div class="mt-4 flex flex-col">
                                   <label for="input3" class="mb-2 text-gray-800">Penyata Penyesuaian Bank
-                                    </label>
+                                  </label>
 
                                   <input type="file" id="attachment3" name="attachment3" accept=".pdf"
                                     onchange="validateFiles()"

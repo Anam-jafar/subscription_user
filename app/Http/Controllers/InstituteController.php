@@ -18,41 +18,87 @@ class InstituteController extends Controller
     private function validateInstitute(Request $request, $id = null): array
     {
         $rules = [
-            'name' => 'nullable|string|max:255',
-            'cate1' => 'nullable|string|max:50',
-            'cate' => 'nullable|string|max:50',
-            'rem8' => 'nullable|string|max:50',
-            'rem9' => 'nullable|string|max:50',
-            'addr' => 'nullable|string|max:128',
-            'addr1' => 'nullable|string|max:128',
-            'pcode' => 'nullable|numeric|digits_between:1,8',
+            'addr' => 'required|string|max:255',
+            'addr1' => 'nullable|string|max:255',
+            'pcode' => 'required|digits:5',
             'city' => 'nullable|string|max:50',
-            'state' => 'nullable|string|max:50',
-            'hp' => 'nullable|regex:/^\d+$/',
-            'fax' => 'nullable|numeric|digits_between:1,10',
+            'hp' => 'required|regex:/^\d{10,11}$/',
+            'fax' => 'nullable|numeric|digits_between:1,15',
             'mel' => [
-                'nullable',
+                'required',
                 'email',
-                'max:255',
+                'max:48',
                 Rule::unique('client', 'mel')->ignore($id),
             ],
-            'web' => 'nullable|string|max:255',
-            'rem10' => 'nullable|string|max:50',
-            'rem11' => 'nullable|string|max:50',
-            'rem12' => 'nullable|string|max:50',
-            'rem13' => 'nullable|string|max:50',
-            'rem14' => 'nullable|string|max:50',
-            'rem15' => 'nullable|string|max:50',
-            'location' => 'nullable|string|max:255',
-            'con1' => 'nullable|string|max:50',
-            'ic' => 'nullable|string|max:50',
-            'pos1' => 'nullable|string|max:50',
-            'tel1' => 'nullable|regex:/^\d+$/',
-            'sta' => 'nullable|string|max:50',
-            'country' => 'nullable|string|max:50',
+            'web' => 'nullable|string|max:48',
+            'rem10' => 'nullable|string|max:48',
+            'rem11' => 'nullable|string|max:100',
+            'rem12' => 'nullable|string|max:100',
+            'rem13' => 'nullable|numeric',
+            'rem14' => 'nullable|numeric',
+            'rem15' => 'required|string|max:100',
+            'location' => 'required|string|max:255',
+            'con1' => 'required|string|max:32',
+            'ic' => 'required|digits:12',
+            'pos1' => 'required|string|max:32',
+            'tel1' => 'required|regex:/^\d{10,11}$/',
+            'sta' => 'nullable',
+            'country' => 'nullable|string|max:48',
         ];
 
-        return Validator::make($request->all(), $rules)->validate();
+        $messages = [
+            'addr.required' => 'Alamat diperlukan.',
+            'addr.max' => 'Alamat tidak boleh melebihi 255 aksara.',
+
+            'addr1.max' => 'Alamat tambahan tidak boleh melebihi 255 aksara.',
+
+            'pcode.required' => 'Poskod diperlukan.',
+            'pcode.digits' => 'Poskod mesti terdiri daripada 5 angka.',
+
+            'city.max' => 'Bandar tidak boleh melebihi 48 aksara.',
+
+            'hp.required' => 'Nombor telefon bimbit diperlukan.',
+            'hp.regex' => 'Nombor telefon bimbit mesti terdiri daripada 10 atau 11 angka.',
+
+            'fax.numeric' => 'Nombor faks mesti dalam format nombor.',
+            'fax.digits_between' => 'Nombor faks mesti antara 1 hingga 15 angka.',
+
+            'mel.required' => 'Alamat emel diperlukan.',
+            'mel.email' => 'Alamat emel tidak sah.',
+            'mel.max' => 'Alamat emel tidak boleh melebihi 48 aksara.',
+            'mel.unique' => 'Alamat emel telah digunakan.',
+
+            'web.max' => 'Laman web tidak boleh melebihi 48 aksara.',
+
+            'rem10.max' => 'Medan tambahan tidak boleh melebihi 48 aksara.',
+            'rem11.max' => 'Medan tambahan tidak boleh melebihi 100 aksara.',
+            'rem12.max' => 'Medan tambahan tidak boleh melebihi 100 aksara.',
+            'rem13.numeric' => 'Medan tambahan mesti dalam format nombor.',
+            'rem14.numeric' => 'Medan tambahan mesti dalam format nombor.',
+            'rem15.required' => 'Maklumat tambahan diperlukan.',
+            'rem15.max' => 'Maklumat tambahan tidak boleh melebihi 100 aksara.',
+
+            'location.required' => 'Lokasi diperlukan.',
+            'location.max' => 'Lokasi tidak boleh melebihi 255 aksara.',
+
+            'con1.required' => 'Nama pegawai diperlukan.',
+            'con1.max' => 'Nama pegawai tidak boleh melebihi 32 aksara.',
+
+            'ic.required' => 'No. kad pengenalan diperlukan.',
+            'ic.digits' => 'No. kad pengenalan mesti mengandungi tepat 12 angka.',
+
+
+            'pos1.required' => 'Jawatan pegawai diperlukan.',
+            'pos1.max' => 'Jawatan tidak boleh melebihi 32 aksara.',
+
+            'tel1.required' => 'Nombor telefon diperlukan.',
+            'tel1.regex' => 'Nombor telefon mesti terdiri daripada 10 atau 11 angka.',
+
+            'country.max' => 'Negara tidak boleh melebihi 48 aksara.',
+        ];
+
+
+        return Validator::make($request->all(), $rules, $messages)->validate();
     }
 
 
@@ -72,7 +118,6 @@ class InstituteController extends Controller
                     'user_id' => Auth::id(),
                     'client_id' => $id,
                     'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
                 ]);
 
                 return back()->withInput()->with('error', 'Pendaftaran gagal dikemas kini. Sila cuba lagi.');
@@ -92,7 +137,6 @@ class InstituteController extends Controller
                     'client_id' => $id,
                     'email' => $email ?? null,
                     'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
                 ]);
             }
 
@@ -125,7 +169,6 @@ class InstituteController extends Controller
             Log::channel('internal_error')->error('Failed to fetch Institute Data', [
                 'user_id' => $id,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
             return back()->with('error', 'Gagal memuatkan data institusi. Sila cuba lagi.');
         }
