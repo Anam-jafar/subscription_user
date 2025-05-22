@@ -46,7 +46,6 @@ class BaseController extends Controller
             Log::channel('internal_error')->error('Error during institute search.', [
                 'institute_name' => $request->institute_name,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json(['error' => 'An error occurred while searching for institutes.'], 500);
@@ -65,7 +64,6 @@ class BaseController extends Controller
         } catch (\Exception $e) {
             Log::channel('internal_error')->error('Error fetching cities.', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json(['error' => 'Failed to fetch cities.'], 500);
@@ -88,7 +86,6 @@ class BaseController extends Controller
             Log::channel('internal_error')->error('Error fetching bandar.', [
                 'query' => $request->input('query'),
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json(['error' => 'Failed to fetch bandar.'], 500);
@@ -119,7 +116,6 @@ class BaseController extends Controller
                 'city' => $request->city,
                 'search' => $request->search,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json(['error' => 'Failed to fetch institutes.'], 500);
@@ -158,7 +154,6 @@ class BaseController extends Controller
                 'institute_name' => $request->institute_name,
                 'institute_refno' => $request->institute_refno,
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
 
             return back()->with('error', 'Nama Intitusi anda tiada dalam rekod, Sila hubungi Pegawai Agama Daerah anda untuk makluman lanjut.');
