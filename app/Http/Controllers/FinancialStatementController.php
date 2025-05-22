@@ -108,7 +108,8 @@ class FinancialStatementController extends Controller
             try {
                 $institute = Institute::with('Type')->where('uid', $validatedData['inst_refno'])->first();
 
-                $institutionType = $request->input('institute_type');
+                $institutionType = $request->input('institute_type') ?? Auth::user()->cate;
+
                 $institution = DB::table('type')
                     ->where('grp', 'type_CLIENT')
                     ->where('code', $institutionType)
