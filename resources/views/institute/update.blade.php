@@ -38,10 +38,10 @@
                             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                               <div class="grid grid-cols-2 gap-4">
                                 <x-input-field level="Institusi" id="institusi" name="" type="text"
-                                  placeholder="Institusi" value="{{ $institute->Type->prm }}" disabled="true" />
+                                  placeholder="Institusi" value="{{ $institute->Type?->prm }}" disabled="true" />
 
                                 <x-input-field level="Jenis Institusi" id="institusi" name="" type="text"
-                                  placeholder="Institusi" value="{{ $institute->Category->prm }}" disabled="true" />
+                                  placeholder="Institusi" value="{{ $institute->Category?->prm }}" disabled="true" />
                               </div>
                               <x-input-field level="Nama Institusi" id="institusi" name="name" type="text"
                                 placeholder="Institusi" value="{{ $institute->name }}" disabled="true" />
@@ -158,15 +158,15 @@
                                 </div>
 
                                 <x-input-field level="Mukim" id="institusi" name="rem9" type="text"
-                                  placeholder="Institusi" value="{{ $institute->Subdistrict->prm }}"
+                                  placeholder="Institusi" value="{{ $institute->Subdistrict?->prm }}"
                                   disabled="true" />
                               </div>
                               <div class="grid grid-cols-2 gap-4">
                                 <x-input-field level="Daerah" id="negeri" name="rem8" type="text"
-                                  placeholder="Enter negeri" value="{{ $institute->District->prm }}"
+                                  placeholder="Enter negeri" value="{{ $institute->District?->prm }}"
                                   disabled="true" />
                                 <x-input-field level="Negeri" id="negeri" name="state" type="text"
-                                  placeholder="Enter negeri" value="{{ $institute->State->prm }}" disabled="true" />
+                                  placeholder="Enter negeri" value="{{ $institute->State?->prm }}" disabled="true" />
                               </div>
                             </div>
 

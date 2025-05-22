@@ -158,7 +158,7 @@
                                     placeholder="Year" value="{{ $financialStatement->fin_year }}" disabled='true' />
 
                                   <x-input-field level="Kategori Penyata" id="statment" name="fin_category"
-                                    type="text" placeholder="Pilih" value="{{ $financialStatement->Category->prm }}"
+                                    type="text" placeholder="Pilih" value="{{ $financialStatement->Category?->prm }}"
                                     disabled='true' />
                                 </div>
                                 <x-input-field level="Peratus Kemajuan Pembinaan Terkini (%)" id="p1"
@@ -237,7 +237,7 @@
 
                                   <x-input-field level="Kategori Penyata" id="statment" name="fin_category"
                                     type="text" placeholder="Pilih"
-                                    value="{{ $financialStatement->Category->prm }}" disabled='true' />
+                                    value="{{ $financialStatement->Category?->prm }}" disabled='true' />
                                 </div>
                                 <x-input-field level="(a) Baki Bawa Ke Hadapan 1 Januari (RM)" id="balance_forward"
                                   name="balance_forward" type="money" placeholder="00.00" :rightAlign="true"
@@ -306,7 +306,7 @@
                                 <x-pdf-download title="Penyata Kewangan Dan Nota Kewangan"
                                   pdfFile="{{ $financialStatement->attachment1 ?? '' }}" />
                                 <x-input-field level="Jenis Pengauditan" id="institusi" name="attachment1_info"
-                                  type="text" placeholder="" value="{{ $financialStatement->AuditType->prm }}"
+                                  type="text" placeholder="" value="{{ $financialStatement->AuditType?->prm }}"
                                   disabled='true' />
                               </div>
 
