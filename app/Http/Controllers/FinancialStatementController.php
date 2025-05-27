@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Log;
 
 class FinancialStatementController extends Controller
 {
+    protected $years;
+
+    public function __construct()
+    {
+        $currentYear = date('Y');
+        $this->years = array_combine(
+            range($currentYear, $currentYear - 3),
+            range($currentYear, $currentYear - 3)
+        );
+    }
+
     private function generateUniqueSubmissionRefno($year, $instituteType, $instituteID)
     {
         $instituteType = strtoupper($instituteType);
@@ -172,8 +183,7 @@ class FinancialStatementController extends Controller
                 ->where('code', $code)
                 ->value('lvl');
 
-            $currentYear = date('Y');
-            $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+            $years = $this->years;
             $parameters = $this->getCommon();
 
             return view('financial_statement.create', compact(['institute', 'instituteType', 'years', 'parameters']));
@@ -243,8 +253,7 @@ class FinancialStatementController extends Controller
                 ->where('code', $code)
                 ->value('lvl');
 
-            $currentYear = date('Y');
-            $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+            $years = $this->years;
             $parameters = $this->getCommon();
 
             return view('financial_statement.edit', compact(['institute', 'instituteType', 'years', 'parameters', 'financialStatement']));
@@ -281,8 +290,7 @@ class FinancialStatementController extends Controller
                 ->where('code', $code)
                 ->value('lvl');
 
-            $currentYear = date('Y');
-            $years = array_combine(range($currentYear - 3, $currentYear + 1), range($currentYear - 3, $currentYear + 1));
+            $years = $this->years;
 
             $parameters = $this->getCommon();
 
@@ -356,8 +364,7 @@ class FinancialStatementController extends Controller
                 return $financialStatement;
             });
 
-            $currentYear = date('Y');
-            $years = array_combine(range($currentYear - 3, $currentYear + 3), range($currentYear - 3, $currentYear + 3));
+            $years = $this->years;
 
             return view('financial_statement.list', [
                 'parameters' => $this->getCommon(),
