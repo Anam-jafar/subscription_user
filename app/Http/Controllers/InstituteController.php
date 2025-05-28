@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 class InstituteController extends Controller
 {
+	// Function for validating institute
     private function validateInstitute(Request $request, $id = null): array
     {
         $rules = [
