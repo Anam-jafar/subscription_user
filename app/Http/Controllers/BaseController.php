@@ -353,7 +353,8 @@ class BaseController extends Controller
                     "name" => $user->name,
                     "email" => $user->mel,
                     "hp" => $user->hp,
-                    "addr" => $user->addr
+                    "addr" => $user->addr,
+                    "ic" => $user->ic
                 ],
                 "cart" => [
                     [
