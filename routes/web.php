@@ -47,6 +47,12 @@ Route::get('/download/attachment/{year}/{filename}', function ($year, $filename)
 })->name('download.attachment');
 
 
+Route::get('/health', function () {
+    return response('OK', 200);
+});
+
+
+
 
 /*
 |--------------------------------------------------------------------------
