@@ -8,6 +8,7 @@ services:
         volumes:
             - ./resources/views:/var/www/html/resources/views # For Dev
             - ./app:/var/www/html/app # For Dev
+            - ./database:/var/www/html/database # For Dev
             - ./routes:/var/www/html/routes # For Dev
             - ../static_files:/var/www/static_files
             - build-assets:/var/www/html/public/subscription/build
@@ -17,7 +18,11 @@ services:
             - app-network
         restart: always
         command: >
-            sh -c "chown -R www-data:www-data /var/www/static_files && php-fpm"
+            sh -c "
+            chown -R www-data:www-data /var/www/static_files && 
+            php artisan migrate --force &&
+            php artisan config:cache &&
+            php-fpm"
 
     webserver:
         image: nginx:alpine
