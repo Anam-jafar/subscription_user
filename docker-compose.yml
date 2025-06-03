@@ -19,9 +19,7 @@ services:
         restart: always
         command: >
             sh -c "
-            chown -R www-data:www-data /var/www/static_files &&
-            php artisan migrate &&
-            php artisan config:clear && 
+            chown -R www-data:www-data /var/www/static_files && 
             php-fpm"
 
     webserver:
