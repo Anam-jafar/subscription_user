@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: mais_subscription_app
+    volumes:
+      - ./resources/views:/var/www/html/resources/views # For Dev
+      - ./app:/var/www/html/app # For Dev
+      - ./database:/var/www/html/database # For Dev
+      - ./routes:/var/www/html/routes # For Dev
+      - ../static_files:/var/www/static_files
+      - build-assets:/var/www/html/public/subscription/build
+    environment:
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+    networks:
+      - app-network
+    restart: always
+    command: >
+      sh -c "
+      chown -R www-data:www-data /var/www/static_files && 
+      php artisan migrate --force --path=database/migrations/sessions/0000_00_00_000000_create_sessions_table_fixed.php &&
+      php-fpm -F"
+  webserver:
+    image: nginx:alpine
+    container_name: mais_subscription_server
+    volumes:
+      - ./public:/var/www/html/public
+      - ./public/subscription/assets:/var/www/html/public/subscription/assets
+      - ../static_files:/var/www/static_files
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - build-assets:/var/www/html/public/subscription/build # Add this line
+    ports:
+      - "7090:80"
+    depends_on:
+      - app
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  build-assets:
