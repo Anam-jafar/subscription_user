@@ -12,6 +12,8 @@ services:
             - ./routes:/var/www/html/routes # For Dev
             - ../static_files:/var/www/static_files
             - build-assets:/var/www/html/public/subscription/build
+            - ./composer.json:/var/www/html/composer.json
+            - ./composer.lock:/var/www/html/composer.lock
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
         networks:
