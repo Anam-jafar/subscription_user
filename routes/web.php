@@ -36,15 +36,16 @@ Route::match(['get', 'post'], '/institute-registration/{id}', [InstituteControll
 
 Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
 
-Route::get('/download/attachment/{year}/{filename}', function ($year, $filename) {
-    $path = "/var/www/static_files/fin_statement_attachments/$year/$filename";
 
-    if (file_exists($path)) {
-        return response()->file($path);
-    }
+// Route::get('/download/attachment/{year}/{filename}', function ($year, $filename) {
+//     $path = "/var/www/static_files/fin_statement_attachments/$year/$filename";
 
-    abort(404);
-})->name('download.attachment');
+//     if (file_exists($path)) {
+//         return response()->file($path);
+//     }
+
+//     abort(404);
+// })->name('download.attachment');
 
 
 Route::get('/health', function () {
@@ -65,6 +66,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::controller(BaseController::class)->group(function () {
         Route::get('/', 'home')->name('home');
         Route::get('/request-subscription/{id}', 'requestSubscription')->name('requestSubscription');
+        Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
     });
 
     Route::controller(FinancialStatementController::class)->group(function () {
@@ -75,5 +77,11 @@ Route::middleware(['customAuth'])->group(function () {
         Route::post('/statement/edit-request/{id}', 'editRequest')->name('editRequestStatement');
     });
 
-    Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
+
+    Route::get('/download/s3/attachment/{filepath}', [App\Http\Controllers\S3FileController::class, 'downloadAttachment'])
+        ->name('download.s3.attachment');
+
+
+    Route::get('/test-s3', [FinancialStatementController::class, 'testS3Connection']);
+
 });

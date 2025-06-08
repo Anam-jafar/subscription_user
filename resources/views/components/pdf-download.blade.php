@@ -1,18 +1,28 @@
 @php
-  $storageRoot = '/var/www/static_files';
-  $storageFilePath = $pdfFile ? $storageRoot . '/' . $pdfFile : '';
+  use Illuminate\Support\Facades\Storage;
 
-  $fileExists = $storageFilePath && file_exists($storageFilePath);
-  $fileSize = $fileExists ? round(filesize($storageFilePath) / 1024, 2) . ' KB' : 'N/A';
+  $fileExists = false;
+  $fileSize = 'N/A';
+  $downloadUrl = '#';
 
-  // Extract year and filename from the path for the route
-  $year = $pdfFile ? explode('/', $pdfFile)[1] : null;
-  $filename = $pdfFile ? basename($pdfFile) : null;
+  if ($pdfFile) {
+      try {
+          // Check if file exists in S3
+          $fileExists = Storage::disk('s3')->exists($pdfFile);
 
-  $downloadUrl =
-      $fileExists && $year && $filename
-          ? route('download.attachment', ['year' => $year, 'filename' => $filename])
-          : '#';
+          if ($fileExists) {
+              // Get file size from S3
+              $fileSizeBytes = Storage::disk('s3')->size($pdfFile);
+              $fileSize = round($fileSizeBytes / 1024, 2) . ' KB';
+
+              // Create download URL
+              $downloadUrl = route('download.s3.attachment', ['filepath' => base64_encode($pdfFile)]);
+          }
+      } catch (\Exception $e) {
+          \Log::error('Error checking S3 file: ' . $e->getMessage(), ['file' => $pdfFile]);
+          $fileExists = false;
+      }
+  }
 @endphp
 
 <div class="mt-2 rounded-lg bg-gray-50">

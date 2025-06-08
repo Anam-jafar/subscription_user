@@ -11,6 +11,7 @@ use App\Models\Parameter;
 use App\Models\Institute;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class FinancialStatementController extends Controller
 {
@@ -81,28 +82,143 @@ class FinancialStatementController extends Controller
         ]);
     }
 
+    // protected function handleAttachments(Request $request, $finYear, $finCategory, $instUid)
+    // {
+    //     $fileFields = ['attachment1', 'attachment2', 'attachment3'];
+    //     $attachments = [];
+
+    //     $year = preg_replace('/[^0-9]/', '', $finYear);
+    //     $storagePath = "/var/www/static_files/fin_statement_attachments/$year";
+
+    //     if (!file_exists($storagePath)) {
+    //         mkdir($storagePath, 0777, true);
+    //     }
+
+    //     foreach ($fileFields as $field) {
+    //         if ($request->hasFile($field)) {
+    //             $file = $request->file($field);
+    //             $filename = "{$year}_{$finCategory}_{$instUid}_{$field}_" . rand(1, 99) . '.pdf';
+    //             $file->move($storagePath, $filename);
+    //             $attachments[$field] = "fin_statement_attachments/$year/$filename";
+    //         }
+    //     }
+
+    //     return $attachments;
+    // }
+
+    // protected function handleAttachments(Request $request, $finYear, $finCategory, $instUid)
+    // {
+    //     $fileFields = ['attachment1', 'attachment2', 'attachment3'];
+    //     $attachments = [];
+
+    //     $year = preg_replace('/[^0-9]/', '', $finYear);
+    //     $s3Path = "fin_statement_attachments/$year";
+
+    //     foreach ($fileFields as $field) {
+    //         if ($request->hasFile($field)) {
+    //             $file = $request->file($field);
+    //             $filename = "{$year}_{$finCategory}_{$instUid}_{$field}_" . rand(1, 99) . '.pdf';
+
+    //             // Store file in S3 bucket 'stgmais'
+    //             $filePath = Storage::disk('s3')->putFileAs(
+    //                 $s3Path,
+    //                 $file,
+    //                 $filename
+    //             );
+
+    //             $attachments[$field] = $filePath;
+
+    //             // Get the full S3 URL for the file
+    //             $attachments[$field . '_url'] = Storage::disk('s3')->url($filePath);
+    //         }
+    //     }
+
+    //     return $attachments;
+    // }
+
     protected function handleAttachments(Request $request, $finYear, $finCategory, $instUid)
     {
         $fileFields = ['attachment1', 'attachment2', 'attachment3'];
         $attachments = [];
 
         $year = preg_replace('/[^0-9]/', '', $finYear);
-        $storagePath = "/var/www/static_files/fin_statement_attachments/$year";
-
-        if (!file_exists($storagePath)) {
-            mkdir($storagePath, 0777, true);
-        }
 
         foreach ($fileFields as $field) {
             if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $filename = "{$year}_{$finCategory}_{$instUid}_{$field}_" . rand(1, 99) . '.pdf';
-                $file->move($storagePath, $filename);
-                $attachments[$field] = "fin_statement_attachments/$year/$filename";
+                try {
+                    $file = $request->file($field);
+
+                    // Validate the file
+                    if (!$file->isValid()) {
+                        Log::error("Invalid file for field: {$field}");
+                        continue;
+                    }
+
+                    // Validate file type and size
+                    if (!$this->validateFile($file)) {
+                        Log::error("File validation failed for field: {$field}");
+                        continue;
+                    }
+
+                    $filename = "{$year}_{$finCategory}_{$instUid}_{$field}_" . rand(1000, 9999) . '.pdf';
+                    $filePath = "fin_statement_attachments/{$year}/{$filename}";
+
+                    // Store file in S3 with KMS encryption
+                    $success = Storage::disk('s3')->putFileAs(
+                        "fin_statement_attachments/{$year}",
+                        $file,
+                        $filename
+                    );
+
+                    if ($success) {
+                        $attachments[$field] = $filePath;
+                        Log::info("File uploaded successfully to S3", [
+                            'field' => $field,
+                            'filePath' => $filePath,
+                            'size' => $file->getSize()
+                        ]);
+                    } else {
+                        Log::error("Failed to upload file to S3", ['field' => $field]);
+                    }
+
+                } catch (\Exception $e) {
+                    Log::error("Exception during S3 file upload", [
+                        'field' => $field,
+                        'error' => $e->getMessage(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine()
+                    ]);
+                    continue;
+                }
             }
         }
 
         return $attachments;
+    }
+
+    /**
+     * Validate uploaded file
+     */
+    private function validateFile($file)
+    {
+        // Check file size (max 10MB)
+        if ($file->getSize() > 10 * 1024 * 1024) {
+            return false;
+        }
+
+        // Check MIME type
+        $allowedMimes = ['application/pdf'];
+        if (!in_array($file->getMimeType(), $allowedMimes)) {
+            return false;
+        }
+
+        // Check file extension
+        $allowedExtensions = ['pdf'];
+        if (!in_array(strtolower($file->getClientOriginalExtension()), $allowedExtensions)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function create(Request $request, $inst_refno)
@@ -415,6 +531,108 @@ class FinancialStatementController extends Controller
             ]);
 
             return back()->with('error', 'Ralat semasa menghantar permohonan. Sila cuba sebentar lagi.');
+        }
+    }
+
+    // Add this to test S3 connection
+    public function testS3Connection()
+    {
+        try {
+            // Check if S3 disk is configured
+            $disk = Storage::disk('s3');
+
+            // Get the S3 client configuration
+            $config = config('filesystems.disks.s3');
+
+            Log::info('S3 Configuration:', [
+                'driver' => $config['driver'] ?? 'not set',
+                'key' => $config['key'] ? 'SET' : 'NOT SET',
+                'secret' => $config['secret'] ? 'SET' : 'NOT SET',
+                'region' => $config['region'] ?? 'not set',
+                'bucket' => $config['bucket'] ?? 'not set',
+                'use_path_style_endpoint' => $config['use_path_style_endpoint'] ?? 'not set'
+            ]);
+
+            // Test environment variables
+            $envCheck = [
+                'AWS_ACCESS_KEY_ID' => env('AWS_ACCESS_KEY_ID') ? 'SET' : 'NOT SET',
+                'AWS_SECRET_ACCESS_KEY' => env('AWS_SECRET_ACCESS_KEY') ? 'SET' : 'NOT SET',
+                'AWS_DEFAULT_REGION' => env('AWS_DEFAULT_REGION') ?? 'not set',
+                'AWS_BUCKET' => env('AWS_BUCKET') ?? 'not set',
+                'FILESYSTEM_DISK' => env('FILESYSTEM_DISK') ?? 'not set'
+            ];
+
+            Log::info('Environment Variables:', $envCheck);
+
+            // Try to list files (this tests basic connectivity)
+            Log::info('Attempting to list S3 files...');
+            $files = $disk->files();
+            Log::info('S3 files list successful', ['file_count' => count($files)]);
+
+            // Test basic put operation without KMS first
+            Log::info('Testing basic put operation...');
+            $testContent = 'test content - ' . now();
+            $testPath = 'test/connection-test-' . time() . '.txt';
+
+            $result = $disk->put($testPath, $testContent);
+
+            if ($result) {
+                Log::info('Put operation successful', ['path' => $testPath]);
+
+                // Try to retrieve it
+                Log::info('Testing get operation...');
+                $retrieved = $disk->get($testPath);
+                Log::info('Get operation successful', ['content_length' => strlen($retrieved)]);
+
+                // Try to check if file exists
+                Log::info('Testing exists operation...');
+                $exists = $disk->exists($testPath);
+                Log::info('Exists operation result', ['exists' => $exists]);
+
+                // Clean up
+                Log::info('Cleaning up test file...');
+                $deleted = $disk->delete($testPath);
+                Log::info('Delete operation result', ['deleted' => $deleted]);
+
+                return response()->json([
+                    'status' => 'S3 connection successful',
+                    'config' => $envCheck,
+                    'operations' => [
+                        'list' => 'success',
+                        'put' => 'success',
+                        'get' => 'success',
+                        'exists' => $exists ? 'success' : 'failed',
+                        'delete' => $deleted ? 'success' : 'failed'
+                    ]
+                ]);
+            } else {
+                Log::error('Put operation failed');
+                return response()->json([
+                    'status' => 'S3 put operation failed',
+                    'config' => $envCheck
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('S3 Connection Error', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'status' => 'S3 connection error',
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'config_check' => [
+                    'AWS_ACCESS_KEY_ID' => env('AWS_ACCESS_KEY_ID') ? 'SET' : 'NOT SET',
+                    'AWS_SECRET_ACCESS_KEY' => env('AWS_SECRET_ACCESS_KEY') ? 'SET' : 'NOT SET',
+                    'AWS_DEFAULT_REGION' => env('AWS_DEFAULT_REGION') ?? 'not set',
+                    'AWS_BUCKET' => env('AWS_BUCKET') ?? 'not set'
+                ]
+            ]);
         }
     }
 

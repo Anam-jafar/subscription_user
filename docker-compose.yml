@@ -13,8 +13,12 @@ services:
             - ./database:/var/www/html/database # For Dev
             - ./routes:/var/www/html/routes # For Dev
             - ../static_files:/var/www/static_files
+            - build-assets:/var/www/html/public/subscription/build
+            - ./composer.json:/var/www/html/composer.json:rw
+            - ./composer.lock:/var/www/html/composer.lock:rw
         ports:
             - "8060:80"
+
         environment:
             - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
         restart: always
