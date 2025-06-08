@@ -22,7 +22,7 @@ class InstituteController extends Controller
             'addr1' => 'nullable|string|max:255',
             'pcode' => 'required|digits:5',
             'city' => 'nullable|string|max:50',
-            'hp' => 'required|regex:/^\d{10,11}$/',
+            'hp' => 'required|regex:/^\d+$/|max:16',
             'fax' => 'nullable|numeric|digits_between:1,15',
             'mel' => [
                 'required',
@@ -30,16 +30,16 @@ class InstituteController extends Controller
                 'max:48',
                 Rule::unique('client', 'mel')->ignore($id),
             ],
-            'web' => 'nullable|string|max:48',
-            'rem10' => 'nullable|string|max:48',
-            'rem11' => 'nullable|string|max:100',
-            'rem12' => 'nullable|string|max:100',
+            'web' => 'nullable|string|max:255',
+            'rem10' => 'nullable|string|max:255',
+            'rem11' => 'nullable|string|max:255',
+            'rem12' => 'nullable|string|max:255',
             'rem13' => 'nullable|numeric',
             'rem14' => 'nullable|numeric',
-            'rem15' => 'required|string|max:100',
+            'rem15' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'con1' => 'required|string|max:32',
-            'ic' => 'required|digits:12',
+            'con1' => 'required|string|max:255',
+            'ic' => 'required|regex:/^\d+$/|max:128',
             'pos1' => 'required|string|max:32',
             'tel1' => 'required|regex:/^\d{10,11}$/',
             'sta' => 'nullable',
@@ -58,7 +58,8 @@ class InstituteController extends Controller
             'city.max' => 'Bandar tidak boleh melebihi 48 aksara.',
 
             'hp.required' => 'Nombor telefon bimbit diperlukan.',
-            'hp.regex' => 'Nombor telefon bimbit mesti terdiri daripada 10 atau 11 angka.',
+            'hp.regex' => 'Nombor telefon bimbit mestilah terdiri daripada digit sahaja.',
+            'hp.max' => 'Nombor telefon tidak boleh melebihi 16 angka',
 
             'fax.numeric' => 'Nombor faks mesti dalam format nombor.',
             'fax.digits_between' => 'Nombor faks mesti antara 1 hingga 15 angka.',
@@ -68,24 +69,25 @@ class InstituteController extends Controller
             'mel.max' => 'Alamat emel tidak boleh melebihi 48 aksara.',
             'mel.unique' => 'Alamat emel telah digunakan.',
 
-            'web.max' => 'Laman web tidak boleh melebihi 48 aksara.',
+            'web.max' => 'Laman web tidak boleh melebihi 255 aksara.',
 
-            'rem10.max' => 'Medan tambahan tidak boleh melebihi 48 aksara.',
-            'rem11.max' => 'Medan tambahan tidak boleh melebihi 100 aksara.',
-            'rem12.max' => 'Medan tambahan tidak boleh melebihi 100 aksara.',
+            'rem10.max' => 'Medan tambahan tidak boleh melebihi 255 aksara.',
+            'rem11.max' => 'Medan tambahan tidak boleh melebihi 255 aksara.',
+            'rem12.max' => 'Medan tambahan tidak boleh melebihi 255 aksara.',
             'rem13.numeric' => 'Medan tambahan mesti dalam format nombor.',
             'rem14.numeric' => 'Medan tambahan mesti dalam format nombor.',
             'rem15.required' => 'Maklumat tambahan diperlukan.',
-            'rem15.max' => 'Maklumat tambahan tidak boleh melebihi 100 aksara.',
+            'rem15.max' => 'Maklumat tambahan tidak boleh melebihi 255 aksara.',
 
             'location.required' => 'Lokasi diperlukan.',
             'location.max' => 'Lokasi tidak boleh melebihi 255 aksara.',
 
             'con1.required' => 'Nama pegawai diperlukan.',
-            'con1.max' => 'Nama pegawai tidak boleh melebihi 32 aksara.',
+            'con1.max' => 'Nama pegawai tidak boleh melebihi 255 aksara.',
 
             'ic.required' => 'No. kad pengenalan diperlukan.',
-            'ic.digits' => 'No. kad pengenalan mesti mengandungi tepat 12 angka.',
+            'ic.regex' => 'No. kad pengenalan bimbit mestilah terdiri daripada digit sahaja.',
+            'ic.max' => 'No. kad pengenalan tidak boleh melebihi 128 angka',
 
 
             'pos1.required' => 'Jawatan pegawai diperlukan.',
@@ -145,6 +147,19 @@ class InstituteController extends Controller
 
         try {
             $institute = Institute::with('Type', 'Category', 'City', 'Subdistrict', 'District')->where('uid', $id)->first();
+            // if institute hp exits then pass to the view by filtering, like if there is any space remove it and if there is - remove it.
+
+            if ($institute && $institute->hp) {
+                // Remove spaces and dashes from 'hp'
+                $institute->hp = str_replace([' ', '-'], '', $institute->hp);
+            }
+
+            if ($institute && $institute->tel1) {
+                // Remove spaces and dashes from 'tel1'
+                $institute->hp = str_replace([' ', '-'], '', $institute->tel1);
+            }
+
+
 
             $parameters = $this->getCommon();
             return view('institute.registration', compact('institute', 'parameters'));
@@ -165,6 +180,17 @@ class InstituteController extends Controller
 
         try {
             $institute = Institute::with('type', 'category', 'City', 'subdistrict', 'district')->find($id);
+
+            if ($institute && $institute->hp) {
+                // Remove spaces and dashes from 'hp'
+                $institute->hp = str_replace([' ', '-'], '', $institute->hp);
+            }
+
+            if ($institute && $institute->tel1) {
+                // Remove spaces and dashes from 'tel1'
+                $institute->hp = str_replace([' ', '-'], '', $institute->tel1);
+            }
+
         } catch (\Exception $e) {
             Log::channel('internal_error')->error('Failed to fetch Institute Data', [
                 'user_id' => $id,

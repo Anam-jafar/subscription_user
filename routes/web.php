@@ -67,6 +67,12 @@ Route::middleware(['customAuth'])->group(function () {
         Route::get('/', 'home')->name('home');
         Route::get('/request-subscription/{id}', 'requestSubscription')->name('requestSubscription');
         Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
+
+
+        // Invoice PDF routes
+        Route::get('/invoice/pdf/{tid}/{flag}', [BaseController::class, 'generateInvoicePdf'])
+        ->name('invoice.generate.pdf');
+
     });
 
     Route::controller(FinancialStatementController::class)->group(function () {
