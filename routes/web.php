@@ -72,6 +72,12 @@ Route::prefix('subscription')->group(function () {
         });
 
         Route::match(['get', 'post'], '/institute/edit', [InstituteController::class, 'edit'])->name('instituteEdit');
+
+
+        // Invoice PDF routes
+        Route::get('/invoice/pdf/{tid}/{flag}', [BaseController::class, 'generateInvoicePdf'])
+        ->name('invoice.generate.pdf');
+
     });
 
 

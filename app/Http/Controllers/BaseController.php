@@ -14,6 +14,7 @@ use App\Models\Institute;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Parameter;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BaseController extends Controller
 {
@@ -160,10 +161,79 @@ class BaseController extends Controller
         }
     }
 
+    // public function home()
+    // {
+    //     try {
+    //         $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month Year Time with AM/PM
+    //         $user = Auth::user();
+
+    //         // Fetch City and State Names
+    //         $user->CITY = DB::table('type')
+    //             ->where('code', $user->city)
+    //             ->value('prm');
+
+    //         $user->STATE = DB::table('type')
+    //             ->where('code', $user->state)
+    //             ->value('prm');
+
+    //         $invoiceDetails = null; // Default null
+    //         $invoiceLink = null;    // Default null
+    //         $receiptDetails = null; // Default null
+    //         $receiptLink = null;    // Default null
+
+    //         // Check and update subscription status if needed
+    //         $this->checkInvoicePaymentStatus($user);
+
+    //         $pdfBaseUrl = config('services.awfatech.pdf_base_url');
+    //         $appName = strtolower(config('services.awfatech.appcode'));
+
+    //         // Fetch Latest Invoice if Subscription Status is 2
+    //         if ($user->subscription_status == 2) {
+    //             $invoiceDetails = DB::table('fin_ledger')
+    //                 ->select('dt', 'tid', 'item', 'total', 'src', 'code')
+    //                 ->where('vid', $user->uid)
+    //                 ->where('src', 'INV')
+    //                 ->orderByDesc('id')
+    //                 ->first();
+
+    //             if ($invoiceDetails) {
+    //                 $invoiceLink = "{$pdfBaseUrl}?sysapp={$appName}&op=inv&tid={$invoiceDetails->tid}";
+    //             }
+    //         }
+
+    //         // Fetch Latest Receipt if Subscription Status is 3
+    //         if ($user->subscription_status == 3) {
+    //             $receiptDetails = DB::table('fin_ledger')
+    //                 ->select('dt', 'tid', 'item', 'total', 'src', 'code', 'ref')
+    //                 ->where('vid', $user->uid)
+    //                 ->where('src', 'CSL')
+    //                 ->orderByDesc('id')
+    //                 ->first();
+
+    //             if ($receiptDetails) {
+    //                 $receiptLink = "{$pdfBaseUrl}?sysapp={$appName}&op=rec&tid={$receiptDetails->tid}";
+    //             }
+    //         }
+
+    //         return view('applicant.home', compact([
+    //             'user', 'currentDateTime', 'invoiceDetails', 'invoiceLink', 'receiptDetails', 'receiptLink'
+    //         ]));
+
+    //     } catch (\Exception $e) {
+    //         Log::channel('internal_error')->error('Internal error in home method.', [
+    //             'message' => $e->getMessage(),
+    //             'trace' => $e->getTraceAsString(),
+    //         ]);
+
+    //         return back()->with('error', 'An unexpected error occurred. Please contact support.');
+    //     }
+    // }
+
+
     public function home()
     {
         try {
-            $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A'); // Format: Date Month Year Time with AM/PM
+            $currentDateTime = now('Asia/Kuala_Lumpur')->format('d F Y h:i A');
             $user = Auth::user();
 
             // Fetch City and State Names
@@ -175,16 +245,13 @@ class BaseController extends Controller
                 ->where('code', $user->state)
                 ->value('prm');
 
-            $invoiceDetails = null; // Default null
-            $invoiceLink = null;    // Default null
-            $receiptDetails = null; // Default null
-            $receiptLink = null;    // Default null
+            $invoiceDetails = null;
+            $invoiceLink = null;
+            $receiptDetails = null;
+            $receiptLink = null;
 
             // Check and update subscription status if needed
             $this->checkInvoicePaymentStatus($user);
-
-            $pdfBaseUrl = config('services.awfatech.pdf_base_url');
-            $appName = strtolower(config('services.awfatech.appcode'));
 
             // Fetch Latest Invoice if Subscription Status is 2
             if ($user->subscription_status == 2) {
@@ -196,7 +263,8 @@ class BaseController extends Controller
                     ->first();
 
                 if ($invoiceDetails) {
-                    $invoiceLink = "{$pdfBaseUrl}?sysapp={$appName}&op=inv&tid={$invoiceDetails->tid}";
+                    // Generate local PDF link instead of external
+                    $invoiceLink = route('invoice.generate.pdf', ['tid' => $invoiceDetails->tid , 'flag' => '0']);
                 }
             }
 
@@ -205,12 +273,13 @@ class BaseController extends Controller
                 $receiptDetails = DB::table('fin_ledger')
                     ->select('dt', 'tid', 'item', 'total', 'src', 'code', 'ref')
                     ->where('vid', $user->uid)
-                    ->where('src', 'CSL')
+                    ->where('src', 'INV')
                     ->orderByDesc('id')
                     ->first();
 
                 if ($receiptDetails) {
-                    $receiptLink = "{$pdfBaseUrl}?sysapp={$appName}&op=rec&tid={$receiptDetails->tid}";
+                    // Generate local PDF link instead of external
+                    $receiptLink = route('invoice.generate.pdf', ['tid' => $receiptDetails->tid, 'flag' => '1']);
                 }
             }
 
@@ -227,6 +296,114 @@ class BaseController extends Controller
             return back()->with('error', 'An unexpected error occurred. Please contact support.');
         }
     }
+
+    /**
+     * Generate Invoice PDF
+     */
+    public function generateInvoicePdf($tid, $reciept = false)
+    {
+        try {
+            $user = Auth::user();
+
+            // Fetch invoice details
+            $invoiceRecord = DB::table('fin_ledger')
+                ->where('tid', $tid)
+                ->where('vid', $user->uid)
+                ->where('src', 'INV')
+                ->first();
+
+            if (!$invoiceRecord) {
+                return abort(404, 'Invoice not found');
+            }
+
+            // Build invoice data structure
+            $invoiceData = $this->buildInvoiceData($invoiceRecord, $user, $reciept);
+
+            // Generate PDF
+            $pdf = Pdf::loadView('invoices.template', compact('invoiceData'));
+
+            return $pdf->stream('invoice-' . $tid . '.pdf');
+
+        } catch (\Exception $e) {
+            Log::channel('internal_error')->error('Error generating invoice PDF.', [
+                'tid' => $tid,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return back()->with('error', 'Unable to generate invoice PDF.');
+        }
+    }
+
+    /**
+     * Build invoice data structure from database record
+     */
+    private function buildInvoiceData($invoiceRecord, $user, $reciept = false)
+    {
+        // Get additional invoice items if they exist in a separate table
+        $invoiceItems = $this->getInvoiceItems($invoiceRecord->tid);
+        $processedBy = DB::table('usr')
+            ->where('uid', $invoiceRecord->adm)
+            ->value('name') ?? '';
+
+        return [
+            'company' => [
+                'name' => 'MAJLIS AGAMA ISLAM SELANGOR',
+                'address_line_1' => 'Portal Rasmi Majlis Agama Islam Selangor Tingkat 9 & 10, Menara Utara',
+                'address_line_2' => 'Bangunan Sultan Idris Shah, 40000 Shah Alam',
+                'address_line_3' => 'Selangor',
+                'phone' => '603-5514 9400/2175',
+                'fax' => '603-5512 4042',
+                'website' => 'https://mais.gov.my'
+            ],
+            'invoice' => [
+                'title' => $reciept ? 'Resit' : 'Invois',
+                'date' => \Carbon\Carbon::parse($invoiceRecord->dt)->format('d/m/Y'),
+                'number' => $invoiceRecord->tid,
+                'processed_by' => $processedBy ?? '',
+            ],
+            'customer' => [
+                'name' => $user->name ?? 'N/A',
+                'address_line_1' => $user->addr ?? 'N/A',
+                'address_line_2' => $user->addr1 ?? '',
+                'postal_code' => $user->pcode ?? '',
+                'state' => $user->STATE ?? $user->state ?? '',
+                'country' => 'MALAYSIA',
+                'officer' => $user->con1 ?? '',
+                'phone' => $user->tel1 ?? '',
+            ],
+
+            'items' => $invoiceItems,
+            'totals' => [
+                'subtotal' => $invoiceRecord->total,
+                'paid' => $reciept ? $invoiceRecord->total : 0.00,
+                'total' => $reciept ? 0.00 : $invoiceRecord->total
+            ],
+            'footer_note' => '"Perbuatan salahguna kuasa penyelewengan dan mengemukakan tuntutan palsu adalah kesalahan di bawah Akta Suruhanjaya Pencegahan Rasuah Malaysia 2009".',
+            'system_info' => 'Powered by Mais - Business Operation Support System'
+        ];
+    }
+
+    /**
+     * Get invoice line items
+     */
+    private function getInvoiceItems($tid)
+    {
+        // If no separate items table, create a single item from the main record
+        $mainRecord = DB::table('fin_ledger')->where('tid', $tid)->first();
+
+        return [
+            [
+                'bil' => 1,
+                'description' => $mainRecord->item ?? 'Service Charge',
+                'price' => $mainRecord->val,
+                'unit' => 1,
+                'total' => $mainRecord->total
+            ]
+        ];
+    }
+
+
 
     private function checkInvoicePaymentStatus($user)
     {
