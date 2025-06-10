@@ -126,7 +126,7 @@
                             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                               <div class="grid grid-cols-2 gap-4">
                                 <x-input-field level="Keluasan Institusi" id="institusi" name="rem13" type="number"
-                                  placeholder="1000 sqt" value="{{ $institute->rem13 }}" />
+                                  placeholder="1000 sqft" value="{{ $institute->rem13 }}" />
                                 <x-input-field level="Kapasiti Jemaah" id="institusi" name="rem14" type="number"
                                   placeholder="1000" value="{{ $institute->rem14 }}" />
                               </div>
@@ -424,9 +424,11 @@
       const citySearchInput = document.getElementById("citySearch");
       const cityDropdown = document.getElementById("city");
       const cityResults = document.getElementById("cityResults");
+      const searchBandarUrl = "{{ route('search.bandar') }}";
+
 
       function fetchCities(searchValue = "") {
-        fetch(`/subscription/search-bandar?query=${searchValue}`)
+        fetch(`${searchBandarUrl}?query=${encodeURIComponent(searchValue)}`)
           .then(response => response.json())
           .then(data => {
             cityResults.innerHTML = "";

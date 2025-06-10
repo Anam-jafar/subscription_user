@@ -249,9 +249,10 @@ class BaseController extends Controller
             $invoiceLink = null;
             $receiptDetails = null;
             $receiptLink = null;
+            $invoiceStatus = 0;
 
             // Check and update subscription status if needed
-            $this->checkInvoicePaymentStatus($user);
+            // $this->checkInvoicePaymentStatus($user);
 
             // Fetch Latest Invoice if Subscription Status is 2
             if ($user->subscription_status == 2) {
@@ -266,6 +267,9 @@ class BaseController extends Controller
                     // Generate local PDF link instead of external
                     $invoiceLink = route('invoice.generate.pdf', ['tid' => $invoiceDetails->tid , 'flag' => '0']);
                 }
+                $invoiceStatus = DB::table('fin_invoice')
+                    ->where('tid', $invoiceDetails->tid)
+                    ->value('sta');
             }
 
             // Fetch Latest Receipt if Subscription Status is 3
@@ -284,7 +288,7 @@ class BaseController extends Controller
             }
 
             return view('applicant.home', compact([
-                'user', 'currentDateTime', 'invoiceDetails', 'invoiceLink', 'receiptDetails', 'receiptLink'
+                'user', 'currentDateTime', 'invoiceDetails', 'invoiceLink', 'receiptDetails', 'receiptLink', 'invoiceStatus'
             ]));
 
         } catch (\Exception $e) {
@@ -468,8 +472,21 @@ class BaseController extends Controller
                 ]);
 
             $email = DB::table('client')->where('uid', $id)->value('mel');
+            $to = [
+                [
+                    'email' => $email,
+                    'name' => ''
+                ]
+            ];
 
-            Mail::to($email)->send(new SubscriptionRequestConfirmation());
+            $dynamicTemplateData = [
+            ];
+
+            $templateType = 'mais-subscription-request-confirmation';
+
+            // Just call the function - it handles success/failure internally
+            $this->sendEmail($to, $dynamicTemplateData, $templateType);
+
 
             return redirect()->back()->with('success', 'Permohonan anda untuk langganan dihantar!');
         } catch (\Exception $e) {
@@ -484,11 +501,20 @@ class BaseController extends Controller
     }
 
 
-    public function makePayment($uid, $coa_id)
+    public function makePayment($uid, $coa_id, $invoice_id)
     {
         try {
             $user = DB::table('client')->where('uid', $uid)->first();
             $item = DB::table('fin_coa_item')->where('code', $coa_id)->first();
+
+            $invoice = DB::table('fin_invoice')->where('tid', $invoice_id)->first();
+
+            if ($invoice->sta == 1) {
+                return back()->with('error', 'Tidak dapat memproses invois ini sekarang.');
+            }
+            if ($invoice->sta == 2) {
+                return back()->with('warning', 'Invois ini telah pun diproses. Sila semak status pembayaran anda.');
+            }
 
             // Individually validate payer_detail fields
             if (!$user) {
@@ -522,6 +548,7 @@ class BaseController extends Controller
                 return back()->with('error', 'Terjadi ralat semasa proses pembayaran. Sila hubungi pihak berwajib.');
             }
 
+
             $url = config('services.awfatech.make_payment_url');
             $app = config('services.awfatech.appcode');
 
@@ -552,7 +579,8 @@ class BaseController extends Controller
                 "modepay" => "FPX",
                 "amount" => $item->val,
                 "app" => $app,
-                "outcharge" => "1"
+                "outcharge" => "1",
+                "invoice_id" => $invoice_id
             ];
 
             $headers = [
@@ -566,6 +594,7 @@ class BaseController extends Controller
             $responseData = $response->json();
 
             if (isset($responseData['success']) && $responseData['success'] && isset($responseData['data']['payment_full_link'])) {
+                DB::table('fin_invoice')->where('tid', $invoice_id)->update(['sta' => 1]);
                 return redirect()->away($responseData['data']['payment_full_link']);
             }
 

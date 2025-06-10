@@ -125,22 +125,27 @@ class InstituteController extends Controller
                 return back()->withInput()->with('error', 'Pendaftaran gagal dikemas kini. Sila cuba lagi.');
             }
 
-            try {
-                $email = DB::table('client')
-                    ->where('id', $id)
-                    ->value('mel');
+            $email = DB::table('client')
+                ->where('id', $id)
+                ->value('mel');
 
-                if ($email) {
-                    Mail::to($email)->send(new ApplicationConfirmation());
-                }
-            } catch (\Exception $e) {
-                Log::channel('external_api_error')->error('Failed to Send Email for New Institute Registration', [
-                    'user_id' => Auth::id(),
-                    'client_id' => $id,
-                    'email' => $email ?? null,
-                    'error' => $e->getMessage(),
-                ]);
+            if ($email) {
+                $to = [
+                    [
+                        'email' => $email,
+                        'name' => ''
+                    ]
+                ];
+
+                $dynamicTemplateData = [
+                ];
+
+                $templateType = 'mais-application-confirmation';
+
+                // Just call the function - it handles success/failure internally
+                $this->sendEmail($to, $dynamicTemplateData, $templateType);
             }
+
 
             return redirect()->back()->with('success', 'Permohonan anda telah dihantar.');
         }

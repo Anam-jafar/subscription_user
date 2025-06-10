@@ -161,9 +161,9 @@
                   </a>
 
                   <!-- Send New Button -->
-                  <a href="{{ route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code]) }}"
-                    target=_blank
-                    class="flex w-full items-center rounded-lg bg-gray-100 p-4 transition-colors hover:bg-gray-200 md:w-auto">
+                  <a href="{{ $invoiceStatus == 1 ? '#' : route('makePayment', ['id' => $user->uid, 'c_id' => $invoiceDetails->code, 'in_id' => $invoiceDetails->tid]) }}"
+                    target="_blank"
+                    class="{{ $invoiceStatus == 1 ? 'pointer-events-none opacity-60 cursor-not-allowed' : '' }} flex w-full items-center rounded-lg bg-gray-100 p-4 transition-colors hover:bg-gray-200 md:w-auto">
                     <div class="flex items-center">
                       <img src="{{ asset('subscription/assets/icons/subscription_payment_01.svg') }}" alt="PDF Icon"
                         class="mr-3 h-10 w-10" />

@@ -34,7 +34,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::match(['get', 'post'], '/institute-registration/{id}', [InstituteController::class, 'instituteRegistration'])->name('instituteRegistration');
 
-Route::get('/payment-link/{id}/{c_id}', [BaseController::class, 'makePayment'])->name('makePayment');
+Route::get('/payment-link/{id}/{c_id}/{in_id}', [BaseController::class, 'makePayment'])->name('makePayment');
 
 
 // Route::get('/download/attachment/{year}/{filename}', function ($year, $filename) {

@@ -164,7 +164,7 @@
           return;
         }
 
-        fetch(`search-institutes?institute_name=${query}`)
+        fetch(`{{ route('searchInstitutes') }}?institute_name=${query}`)
           .then(response => response.json())
           .then(data => {
             searchResults.innerHTML = "";
@@ -208,7 +208,7 @@
       function fetchAndShowCities() {
         const query = cityInput.value.trim();
 
-        fetch(`get-cities`)
+        fetch(`{{ route('getCities') }}`)
           .then(response => response.json())
           .then(data => {
             cityResults.innerHTML = "";
@@ -255,7 +255,7 @@
 
         const query = instituteInput.value.trim();
 
-        fetch(`get-institutes?city=${selectedCity}&search=${query}`) // 🔹 Use selectedCity (code)
+        fetch(`{{ route('getInstitutes') }}?city=${selectedCity}&search=${query}`) // 🔹 Use selectedCity (code)
           .then(response => response.json())
           .then(data => {
             instituteResults.innerHTML = "";
