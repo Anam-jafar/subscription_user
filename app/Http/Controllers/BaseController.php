@@ -349,6 +349,9 @@ class BaseController extends Controller
         $processedBy = DB::table('usr')
             ->where('uid', $invoiceRecord->adm)
             ->value('name') ?? '';
+        $state = DB::table('type')
+            ->where('code', $user->state)
+            ->value('prm') ?? '';
 
         return [
             'company' => [
@@ -371,7 +374,7 @@ class BaseController extends Controller
                 'address_line_1' => $user->addr ?? 'N/A',
                 'address_line_2' => $user->addr1 ?? '',
                 'postal_code' => $user->pcode ?? '',
-                'state' => $user->STATE ?? $user->state ?? '',
+                'state' => isset($state) ? strtoupper($state) : '',
                 'country' => 'MALAYSIA',
                 'officer' => $user->con1 ?? '',
                 'phone' => $user->tel1 ?? '',

@@ -21,7 +21,7 @@
         <!-- Select Input -->
         <div class="w-full lg:w-auto">
           <select id="{{ $filter['name'] }}" name="{{ $filter['name'] }}"
-            class="ti-form-select w-full text-ellipsis rounded-sm py-2 pr-2" onchange="this.form.submit()">
+            class="ti-form-select w-full text-ellipsis rounded-sm py-2 pr-4" onchange="this.form.submit()">
             <option value="" {{ request($filter['name']) == '' ? 'selected' : '' }}>
               {{ $filter['label'] }}
             </option>

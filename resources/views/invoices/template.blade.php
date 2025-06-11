@@ -259,7 +259,7 @@
         <tr>
           <!-- Left Side -->
           <td class="customer-info" width="48%">
-            <span class="invoice-to-title"> <strong>Invois Kepada</strong> </span><br>
+            <span class="invoice-to-title"> <strong>{{ $invoiceData['invoice']['title'] }} Kepada</strong> </span><br>
             {{ $invoiceData['customer']['name'] }}<br>
             {{ $invoiceData['customer']['address_line_1'] }}<br>
             @if (!empty($invoiceData['customer']['address_line_2']))
