@@ -350,6 +350,7 @@ class FinancialStatementController extends Controller
                         ->where('fin_year', $validatedData['fin_year'])
                         ->where('fin_category', $validatedData['fin_category'])
                         ->where('status', '!=', 3)
+                        ->where('id', '!=', $id)
                         ->exists()) {
                 return back()->withInput()->with('error', 'Laporan kewangan untuk tahun dan kategori ini sudah wujud.');
             }
