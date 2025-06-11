@@ -234,6 +234,13 @@ class FinancialStatementController extends Controller
 
             try {
                 $institute = Institute::with('Type')->where('uid', $validatedData['inst_refno'])->first();
+                if (FinancialStatement::where('inst_refno', $validatedData['inst_refno'])
+                    ->where('fin_year', $validatedData['fin_year'])
+                    ->where('fin_category', $validatedData['fin_category'])
+                    ->where('status', '!=', 3)
+                    ->exists()) {
+                    return back()->withInput()->with('error', 'Laporan kewangan untuk tahun dan kategori ini sudah wujud.');
+                }
 
                 $institutionType = $request->input('institute_type') ?? Auth::user()->cate;
 
@@ -337,6 +344,16 @@ class FinancialStatementController extends Controller
             $validatedData['status'] = $request->input('draft') == "true" ? 0 : 1;
 
             $validatedData['submission_date'] = $validatedData['status'] == 1 ? now() : null;
+
+
+            if (FinancialStatement::where('inst_refno', $validatedData['inst_refno'])
+                        ->where('fin_year', $validatedData['fin_year'])
+                        ->where('fin_category', $validatedData['fin_category'])
+                        ->where('status', '!=', 3)
+                        ->exists()) {
+                return back()->withInput()->with('error', 'Laporan kewangan untuk tahun dan kategori ini sudah wujud.');
+            }
+
 
             try {
                 $attachmentData = $this->handleAttachments(
