@@ -251,6 +251,7 @@ class FinancialStatementController extends Controller
 
                 $validatedData['institute'] = $institution ?? null;
                 $validatedData['institute_type'] = $institutionType ?? null;
+                $validatedData['created_by'] = Auth::user()->con1.', '.Auth::user()->pos1.', '.Auth::user()->tel1;
 
                 $fin_category = DB::table('type')
                     ->where('grp', 'statement')
@@ -306,6 +307,11 @@ class FinancialStatementController extends Controller
                 ->where('code', $code)
                 ->value('lvl');
 
+            if (!in_array($instituteType, [1, 2])) {
+                return redirect()->back()->with('error', 'Jenis institusi tidak dipilih. Sila hubungi pihak penyelenggaraan.');
+            }
+
+
             $years = $this->years;
             $parameters = $this->getCommon();
 
@@ -343,8 +349,17 @@ class FinancialStatementController extends Controller
             $validatedData = $validator->validated();
             $validatedData['status'] = $request->input('draft') == "true" ? 0 : 1;
 
-            $validatedData['submission_date'] = $validatedData['status'] == 1 ? now() : null;
 
+            if ($validatedData['status'] == 1) {
+                $validatedData['submission_date'] = now();
+                $validatedData['submission_refno'] = $this->generateUniqueSubmissionRefno(
+                    date('Y'),
+                    $fin_category,
+                    $institute->uid
+                );
+            } else {
+                $validatedData['submission_date'] = null;
+            }
 
             if (FinancialStatement::where('inst_refno', $validatedData['inst_refno'])
                         ->where('fin_year', $validatedData['fin_year'])
@@ -387,6 +402,10 @@ class FinancialStatementController extends Controller
                 ->where('code', $code)
                 ->value('lvl');
 
+            if (!in_array($instituteType, [1, 2])) {
+                return redirect()->back()->with('error', 'Jenis institusi tidak dipilih. Sila hubungi pihak penyelenggaraan.');
+            }
+
             $years = $this->years;
             $parameters = $this->getCommon();
 
@@ -417,12 +436,25 @@ class FinancialStatementController extends Controller
             $verifiedBy = $verifiedByUser->name ?? null;
 
             $institute = Institute::with('UserPosition')->where('uid', $financialStatement->inst_refno)->firstOrFail();
-
+            $financialStatement->created_by = [
+                'name' => $createBy[0] ?? $institute->con1,
+                'position' => Parameter::where('grp', 'user_position')
+                        ->where('code', $createBy[1] ?? '')
+                        ->value('prm')
+                    ?? Parameter::where('grp', 'user_position')
+                    ->where('code', $institute->pos1 ?? '')
+                    ->value('prm'),
+                'phone' => $createBy[2] ?? $institute->tel1,
+            ];
             $code = $request->input('institute_type') ?? $institute->cate ?? Auth::user()->cate;
             $instituteType = (int) DB::table('type')
                 ->where('grp', 'type_CLIENT')
                 ->where('code', $code)
                 ->value('lvl');
+
+            if (!in_array($instituteType, [1, 2])) {
+                return redirect()->back()->with('error', 'Jenis institusi tidak dipilih. Sila hubungi pihak penyelenggaraan.');
+            }
 
             $years = $this->years;
 

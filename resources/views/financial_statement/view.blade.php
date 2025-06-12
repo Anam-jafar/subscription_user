@@ -36,10 +36,10 @@
                             <h5 class="text-start"> Dihantar oleh </h5>
                           </div>
                           <div class="mb-4 mt-4 grid max-w-3xl grid-cols-1 gap-x-16 gap-y-2">
+                            <x-show-key-value :key="'Nama Pengawal / Wakil Institusi'" :value="$financialStatement->created_by['name']" />
+                            <x-show-key-value :key="'Jawatan'" :value="$financialStatement->created_by['position']" />
+                            <x-show-key-value :key="'No. H/P'" :value="$financialStatement->created_by['phone']" />
 
-                            <x-show-key-value :key="'Nama Pengawal / Wakil Institusi'" :value="$institute->con1" />
-                            <x-show-key-value :key="'Jawatan'" :value="$institute->UserPosition->prm" />
-                            <x-show-key-value :key="'No. H/P'" :value="$institute->hp" />
                             <x-show-key-value :key="'Emel'" :value="$institute->mel" />
                             <x-show-key-value :key="'Dihantar pada '" :value="$financialStatement->submission_date" />
 
